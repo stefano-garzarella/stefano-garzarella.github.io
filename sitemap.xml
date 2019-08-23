@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/page/about/</loc>
+    <lastmod>2019-08-23T17:39:08+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/page/</loc>
+    <lastmod>2019-08-23T17:39:08+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/</loc>
+    <lastmod>2019-08-23T17:39:08+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/linux/</loc>
+    <lastmod>2019-08-23T15:26:54+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/posts/</loc>
+    <lastmod>2019-08-23T15:26:54+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/qemu/</loc>
+    <lastmod>2019-08-23T15:26:54+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/</loc>
+    <lastmod>2019-08-23T15:26:54+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/</loc>
+    <lastmod>2019-08-23T15:26:54+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/categories/</loc>
+  </url>
+  
+</urlset>

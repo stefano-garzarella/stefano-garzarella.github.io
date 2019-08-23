@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sgarzare&#39;s blog</title>
+    <link>https://stefano-garzarella.github.io/</link>
+    <description>Recent content on sgarzare&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
+    <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
+    <lastBuildDate>Fri, 23 Aug 2019 17:39:08 +0200</lastBuildDate>
+    
+	<atom:link href="https://stefano-garzarella.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>About</title>
+      <link>https://stefano-garzarella.github.io/page/about/</link>
+      <pubDate>Fri, 23 Aug 2019 17:39:08 +0200</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/page/about/</guid>
+      <description>I am Software Engineer at Red Hat. I&amp;rsquo;m working on virtualization and networking topics in QEMU and Linux kernel. Current projects cover virtio-vsock, QEMU network storage, and lightweight VMs.
+The postings on this site are my own and don&amp;rsquo;t necessarily represent Red Hat&amp;rsquo;s positions, strategies or opinions.</description>
+    </item>
+    
+    <item>
+      <title>QEMU 4.0 boots uncompressed Linux x86_64 kernel</title>
+      <link>https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/</link>
+      <pubDate>Fri, 23 Aug 2019 15:26:54 +0200</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;QEMU 4.0&lt;/strong&gt; is now able to boot directly into the &lt;strong&gt;uncompressed Linux x86_64 kernel binary&lt;/strong&gt; with minimal firmware involvement using the &lt;strong&gt;PVH entry point&lt;/strong&gt; defined in the &lt;a href=&#34;https://xenbits.xen.org/docs/unstable/misc/pvh.html&#34;&gt;x86/HVM direct boot ABI&lt;/a&gt;. (&lt;code&gt;CONFIG_PVH=y&lt;/code&gt; must be enabled in the Linux config file).&lt;/p&gt;
+
+&lt;p&gt;The x86/HVM direct boot ABI was initially developed for Xen guests, but with &lt;a href=&#34;#patches&#34;&gt;latest changes in both QEMU and Linux&lt;/a&gt;, QEMU is able to use that same entry point for booting KVM guests.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
