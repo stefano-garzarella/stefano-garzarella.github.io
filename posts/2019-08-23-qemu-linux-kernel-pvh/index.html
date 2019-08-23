@@ -470,6 +470,20 @@ if (!doNotTrack) {
 
       
         
+          
+          <div class="disqus-comments">                  
+            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh">comments</span></button>
+            <div id="disqus_thread"></div>
+
+            <script type="text/javascript">
+              var disqus_config = function () {
+              this.page.url = 'https:\/\/stefano-garzarella.github.io\/posts\/2019-08-23-qemu-linux-kernel-pvh';
+            };
+
+          </script>
+          </div>
+          
+        
         
       
 
@@ -582,6 +596,28 @@ if (!doNotTrack) {
 
 
 
+
+
+
+<script type="text/javascript">
+$(function(){
+  $('#show-comments').on('click', function(){
+    var disqus_shortname = 'stefanogarzarella';
+      
+    (function() {
+      var disqus = document.createElement('script'); 
+      disqus.type = 'text/javascript'; 
+      disqus.async = true;
+      disqus.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(disqus);
+    })();
+      
+    $(this).hide(); 
+    });
+  });
+      
+</script>
+<script id="dsq-count-scr" src="//stefanogarzarella.disqus.com/count.js" async></script>
 
 
 
