@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>How to measure the boot time of a Linux VM with QEMU - sgarzare&#39;s blog</title>
+  <meta property="og:title" content="How to measure the boot time of a Linux VM with QEMU" />
+  <meta name="twitter:title" content="How to measure the boot time of a Linux VM with QEMU" />
+  <meta name="description" content="The stefano-garzarella/qemu-boot-time
+repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
+to measure the boot time of a Linux VM with QEMU.
+
+Using I/O writes, we can trace events to measure the time consumed during the
+boot phase by the different components:
+
+
+firmware
+
+
+SeaBIOS
+qboot
+
+optionrom
+
+
+linuxboot [bzImage]
+pvh [vmlinux &#43; PVH entry point]
+
+Linux kernel
+">
+  <meta property="og:description" content="The stefano-garzarella/qemu-boot-time
+repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
+to measure the boot time of a Linux VM with QEMU.
+
+Using I/O writes, we can trace events to measure the time consumed during the
+boot phase by the different components:
+
+
+firmware
+
+
+SeaBIOS
+qboot
+
+optionrom
+
+
+linuxboot [bzImage]
+pvh [vmlinux &#43; PVH entry point]
+
+Linux kernel
+">
+  <meta name="twitter:description" content="The stefano-garzarella/qemu-boot-time
+repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
+to measure the boot time of a Linux VM with QEMU.
+
+Using I/O writes, we can trace …">
+  <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "sgarzare\x27s blog",
+    
+    "url": "https:\/\/stefano-garzarella.github.io"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/stefano-garzarella.github.io"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/stefano-garzarella.github.io",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-24-qemu-linux-boot-time\/",
+          "name": "How to measure the boot time of a linux v m with q e m u"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Stefano Garzarella"
+  },
+  "headline": "How to measure the boot time of a Linux VM with QEMU",
+  "description" : "The stefano-garzarella\/qemu-boot-time repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches to measure the boot time of a Linux VM with QEMU.\nUsing I\/O writes, we can trace events to measure the time consumed during the boot phase by the different components:\n firmware  SeaBIOS qboot  optionrom  linuxboot [bzImage] pvh [vmlinux \x2b PVH entry point]  Linux kernel ",
+  "inLanguage" : "en",
+  "wordCount":  882 ,
+  "datePublished" : "2019-08-24T15:03:30",
+  "dateModified" : "2019-08-24T15:03:30",
+  "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
+  "keywords" : [ "qemu, linux, boot" ],
+  "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-24-qemu-linux-boot-time\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/stefano-garzarella.github.io",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="How to measure the boot time of a Linux VM with QEMU" />
+<meta property="og:description" content="The stefano-garzarella/qemu-boot-time
+repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
+to measure the boot time of a Linux VM with QEMU.
+
+Using I/O writes, we can trace events to measure the time consumed during the
+boot phase by the different components:
+
+
+firmware
+
+
+SeaBIOS
+qboot
+
+optionrom
+
+
+linuxboot [bzImage]
+pvh [vmlinux &#43; PVH entry point]
+
+Linux kernel
+">
+<meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
+<meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="sgarzare&#39;s blog" />
+
+  <meta name="twitter:title" content="How to measure the boot time of a Linux VM with QEMU" />
+  <meta name="twitter:description" content="The stefano-garzarella/qemu-boot-time
+repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
+to measure the boot time of a Linux VM with QEMU.
+
+Using I/O writes, we can trace …">
+  <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@sgarzarella" />
+  <meta name="twitter:creator" content="@sgarzarella" />
+  <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
+  <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@sgarzarella" />
+  <meta name="twitter:creator" content="@sgarzarella" />
+  <meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="sgarzare&#39;s blog" />
+
+  <meta name="generator" content="Hugo 0.57.2" />
+  <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://stefano-garzarella.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-146409373-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://stefano-garzarella.github.io">sgarzare&#39;s blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="sgarzare&#39;s blog" href="https://stefano-garzarella.github.io">
+            <img class="avatar-img" src="https://stefano-garzarella.github.io/img/avatar-icon.jpg" alt="sgarzare&#39;s blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="posts-heading">
+              
+                <h1>How to measure the boot time of a Linux VM with QEMU</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
+repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
+to measure the boot time of a Linux VM with QEMU.</p>
+
+<p>Using I/O writes, we can trace events to measure the time consumed during the
+boot phase by the different components:</p>
+
+<ul>
+<li>firmware
+
+<ul>
+<li>SeaBIOS</li>
+<li>qboot</li>
+</ul></li>
+<li>optionrom
+
+<ul>
+<li>linuxboot [bzImage]</li>
+<li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">pvh [vmlinux + PVH entry point]</a></li>
+</ul></li>
+<li>Linux kernel</li>
+</ul>
+
+<p>We extended the I/O port addresses and values defined in
+<a href="https://github.com/bonzini/qboot/blob/master/benchmark.h">qboot/benchmark.h</a>
+adding
+<a href="https://github.com/stefano-garzarella/qemu-boot-time/blob/master/benchmark.h">new trace points to trace the kernel boot time</a>.</p>
+
+<p>In the repository you can find
+<a href="https://github.com/stefano-garzarella/qemu-boot-time#patches">patches for Linux, QEMU, and SeaBIOS</a> to add the I/O writes in the components involved during the boot,
+and a <a href="https://github.com/stefano-garzarella/qemu-boot-time/blob/master/perf-script/qemu-perf-script.py">Python perf-script</a> useful to process the data recorded through <code>perf</code>
+using perf-script’s built-in Python interpreter.</p>
+
+<h2 id="trace-points">Trace points</h2>
+
+<p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time/blob/master/benchmark.h">benchmark.h</a>
+file contains the following trace points used in the <a href="https://github.com/stefano-garzarella/qemu-boot-time/tree/master/patches">patches</a>:</p>
+
+<ul>
+<li>QEMU
+
+<ul>
+<li><code>qemu_init_end</code>: first kvm_entry (i.e. QEMU initialized has finished)</li>
+</ul></li>
+<li>Firmware (SeaBIOS + optionrom or qboot)
+
+<ul>
+<li><code>fw_start</code>: first entry of the firmware</li>
+<li><code>fw_do_boot</code>: after the firmware initialization (e.g. PCI setup, etc.)</li>
+<li><code>linux_start_boot</code>: before the jump to the Linux kernel</li>
+<li><code>linux_start_pvhboot</code>: before the jump to the Linux PVH kernel</li>
+</ul></li>
+<li>Linux Kernel
+
+<ul>
+<li><code>linux_start_kernel</code>: first entry of the Linux kernel</li>
+<li><code>linux_start_user</code>: before starting the init process</li>
+</ul></li>
+</ul>
+
+<h3 id="custom-trace-points">Custom trace points</h3>
+
+<p>If you want to add new trace points, you can simply add an I/O write to
+<code>LINUX_EXIT_PORT</code> or <code>FW_EXIT_PORT</code> I/O port with a value (&gt; 7) that
+identifies the trace point:</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">outb</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">LINUX_EXIT_PORT</span><span class="p">);</span></code></pre></div>
+<p>The <code>perf script</code> output will contain <code>Exit point 10</code> line that identifies your
+custom trace point:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"> qemu_init_end: <span class="m">143</span>.770419
+ fw_start: <span class="m">143</span>.964328 <span class="o">(</span>+0.193909<span class="o">)</span>
+ fw_do_boot: <span class="m">164</span>.71107 <span class="o">(</span>+20.746742<span class="o">)</span>
+ Exit point <span class="m">10</span>: <span class="m">165</span>.396804 <span class="o">(</span>+0.685734<span class="o">)</span>
+ linux_start_kernel: <span class="m">165</span>.979486 <span class="o">(</span>+0.582682<span class="o">)</span>
+ linux_start_user: <span class="m">272</span>.178335 <span class="o">(</span>+106.198849<span class="o">)</span></code></pre></div>
+<h2 id="how-to-use">How to use</h2>
+
+<h3 id="clone-qemu-boot-time-repository">Clone qemu-boot-time repository</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">REPOS</span><span class="o">=</span><span class="s2">&#34;~/repos&#34;</span>
+<span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>
+git clone https://github.com/stefano-garzarella/qemu-boot-time.git</code></pre></div>
+<h3 id="apply-patches-to-linux-qemu-and-seabios">Apply patches to Linux, QEMU and SeaBIOS</h3>
+
+<p>Trace points are printed only if they are recorded, so you can enable few of
+them, patching only the components that you are interested in.</p>
+
+<h4 id="linux">Linux</h4>
+
+<p>Apply the <code>patches/linux.patch</code> to your Linux kernel in order to trace kernel
+events</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/linux
+git checkout -b benchmark
+git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/patches/linux.patch</code></pre></div>
+<h4 id="qemu">QEMU</h4>
+
+<p>Apply the <code>patches/qemu.patch</code> to your QEMU in order to trace optionrom
+events</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu
+git checkout -b benchmark
+git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/patches/qemu.patch
+
+mkdir build-benchmark
+<span class="nb">cd</span> build-benchmark
+../configure --target-list<span class="o">=</span>x86_64-softmmu ...
+make</code></pre></div>
+<p>You can use <code>qemu-system-x86_64 -L ${REPOS}/qemu/build-benchmark/pc-bios/optionrom/ ...</code>
+to use the optionrom patched.</p>
+
+<h4 id="seabios">SeaBIOS</h4>
+
+<p>Apply the <code>patches/seabios.patch</code> to your SeaBIOS in order to trace bios
+events</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/seabios
+git checkout -b benchmark
+git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/patches/seabios.patch
+
+make clean distclean
+cp <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu/roms/config.seabios-256k .config
+make oldnoconfig</code></pre></div>
+<p>You can use <code>qemu-system-x86_64 -bios ${REPOS}/seabios/out/bios.bin ...</code> to use
+the SeaBIOS image patched.</p>
+
+<h4 id="qboot">qboot</h4>
+
+<p>qboot already defines trace points, we just need to compile it defining
+<code>BENCHMARK_HACK</code></p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qboot
+make clean
+<span class="nv">BIOS_CFLAGS</span><span class="o">=</span><span class="s2">&#34;-DBENCHMARK_HACK=1&#34;</span> make</code></pre></div>
+<p>You can use <code>qemu-system-x86_64 -bios ${REPOS}/qboot/bios.bin ...</code> to use the
+qboot image.</p>
+
+<h3 id="enable-kvm-events">Enable KVM events</h3>
+
+<p>The following steps allow <code>perf record</code> to get the kvm trace events:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">echo</span> <span class="m">1</span> &gt; /sys/kernel/debug/tracing/events/kvm/enable
+<span class="nb">echo</span> -1 &gt; /proc/sys/kernel/perf_event_paranoid
+mount -o remount,mode<span class="o">=</span><span class="m">755</span> /sys/kernel/debug
+mount -o remount,mode<span class="o">=</span><span class="m">755</span> /sys/kernel/debug/tracing</code></pre></div>
+<h3 id="record-the-trace-events">Record the trace events</h3>
+
+<p>Start perf record to get the trace events</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">PERF_DATA</span><span class="o">=</span><span class="s2">&#34;qemu_perf.data&#34;</span>
+perf record -a -e kvm:kvm_entry -e kvm:kvm_pio -e sched:sched_process_exec <span class="se">\
+</span><span class="se"></span>            -o <span class="nv">$PERF_DATA</span> <span class="p">&amp;</span>
+<span class="nv">PERF_PID</span><span class="o">=</span><span class="nv">$!</span></code></pre></div>
+<p>You can run QEMU multiple times to get also some statistics (Avg/Min/Max)</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se">\
+</span><span class="se"></span>                   -bios seabios/out/bios.bin <span class="se">\
+</span><span class="se"></span>                   -L qemu/build-benchmark/pc-bios/optionrom/ <span class="se">\
+</span><span class="se"></span>                   -kernel linux/bzImage ...
+qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se">\
+</span><span class="se"></span>                   -bios seabios/out/bios.bin <span class="se">\
+</span><span class="se"></span>                   -L qemu/build-benchmark/pc-bios/optionrom/ <span class="se">\
+</span><span class="se"></span>                   -kernel linux/bzImage ...
+qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se">\
+</span><span class="se"></span>                   -bios seabios/out/bios.bin <span class="se">\
+</span><span class="se"></span>                   -L qemu/build-benchmark/pc-bios/optionrom/ <span class="se">\
+</span><span class="se"></span>                   -kernel linux/bzImage ...</code></pre></div>
+<p>Stop perf record</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">kill</span> <span class="nv">$PERF_PID</span></code></pre></div>
+<h3 id="process-the-trace-recorded-using-the-qemu-perf-script-py">Process the trace recorded using the qemu-perf-script.py</h3>
+
+<p>Note: times printed in milliseconds</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">perf script -s <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/perf-script/qemu-perf-script.py -i <span class="nv">$PERF_DATA</span>
+
+in trace_begin
+sched__sched_process_exec     <span class="m">1</span> <span class="m">55061</span>.435418353   <span class="m">289738</span> qemu-system-x86
+kvm__kvm_entry           <span class="m">1</span> <span class="m">55061</span>.466887708   <span class="m">289741</span> qemu-system-x86
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.467070650   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
+
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.475818073   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
+
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.477168037   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
+
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.558779540   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
+
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.686849663   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
+
+sched__sched_process_exec     <span class="m">4</span> <span class="m">55067</span>.461869075   <span class="m">289793</span> qemu-system-x86
+kvm__kvm_entry           <span class="m">4</span> <span class="m">55067</span>.496402472   <span class="m">289796</span> qemu-system-x86
+kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.496555385   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
+
+kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.505067184   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
+
+kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.506395502   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
+
+kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.584029910   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
+
+kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.704751791   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
+
+sched__sched_process_exec     <span class="m">0</span> <span class="m">55070</span>.073823767   <span class="m">289827</span> qemu-system-x86
+kvm__kvm_entry           <span class="m">0</span> <span class="m">55070</span>.110507211   <span class="m">289830</span> qemu-system-x86
+kvm__kvm_pio             <span class="m">0</span> <span class="m">55070</span>.110694645   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
+
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55070</span>.120092692   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
+
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55070</span>.121437922   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
+
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55070</span>.198628779   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
+
+kvm__kvm_pio             <span class="m">1</span> <span class="m">55070</span>.315734630   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
+
+in trace_end
+Trace qemu-system-x86
+<span class="m">1</span><span class="o">)</span> pid <span class="m">289738</span>
+ qemu_init_end: <span class="m">31</span>.469355
+ fw_start: <span class="m">31</span>.652297 <span class="o">(</span>+0.182942<span class="o">)</span>
+ fw_do_boot: <span class="m">40</span>.39972 <span class="o">(</span>+8.747423<span class="o">)</span>
+ linux_start_boot: <span class="m">41</span>.749684 <span class="o">(</span>+1.349964<span class="o">)</span>
+ linux_start_kernel: <span class="m">123</span>.361187 <span class="o">(</span>+81.611503<span class="o">)</span>
+ linux_start_user: <span class="m">251</span>.43131 <span class="o">(</span>+128.070123<span class="o">)</span>
+<span class="m">2</span><span class="o">)</span> pid <span class="m">289793</span>
+ qemu_init_end: <span class="m">34</span>.533397
+ fw_start: <span class="m">34</span>.68631 <span class="o">(</span>+0.152913<span class="o">)</span>
+ fw_do_boot: <span class="m">43</span>.198109 <span class="o">(</span>+8.511799<span class="o">)</span>
+ linux_start_boot: <span class="m">44</span>.526427 <span class="o">(</span>+1.328318<span class="o">)</span>
+ linux_start_kernel: <span class="m">122</span>.160835 <span class="o">(</span>+77.634408<span class="o">)</span>
+ linux_start_user: <span class="m">242</span>.882716 <span class="o">(</span>+120.721881<span class="o">)</span>
+<span class="m">3</span><span class="o">)</span> pid <span class="m">289827</span>
+ qemu_init_end: <span class="m">36</span>.683444
+ fw_start: <span class="m">36</span>.870878 <span class="o">(</span>+0.187434<span class="o">)</span>
+ fw_do_boot: <span class="m">46</span>.268925 <span class="o">(</span>+9.398047<span class="o">)</span>
+ linux_start_boot: <span class="m">47</span>.614155 <span class="o">(</span>+1.34523<span class="o">)</span>
+ linux_start_kernel: <span class="m">124</span>.805012 <span class="o">(</span>+77.190857<span class="o">)</span>
+ linux_start_user: <span class="m">241</span>.910863 <span class="o">(</span>+117.105851<span class="o">)</span>
+
+Avg
+ qemu_init_end: <span class="m">34</span>.228732
+ fw_start: <span class="m">34</span>.403161 <span class="o">(</span>+0.174429<span class="o">)</span>
+ fw_do_boot: <span class="m">43</span>.288918 <span class="o">(</span>+8.885757<span class="o">)</span>
+ linux_start_boot: <span class="m">44</span>.630088 <span class="o">(</span>+1.34117<span class="o">)</span>
+ linux_start_kernel: <span class="m">123</span>.442344 <span class="o">(</span>+78.812256<span class="o">)</span>
+ linux_start_user: <span class="m">245</span>.408296 <span class="o">(</span>+121.965952<span class="o">)</span>
+
+Min
+ qemu_init_end: <span class="m">31</span>.469355
+ fw_start: <span class="m">31</span>.652297 <span class="o">(</span>+0.182942<span class="o">)</span>
+ fw_do_boot: <span class="m">40</span>.39972 <span class="o">(</span>+8.747423<span class="o">)</span>
+ linux_start_boot: <span class="m">41</span>.749684 <span class="o">(</span>+1.349964<span class="o">)</span>
+ linux_start_kernel: <span class="m">122</span>.160835 <span class="o">(</span>+80.411151<span class="o">)</span>
+ linux_start_user: <span class="m">241</span>.910863 <span class="o">(</span>+119.750028<span class="o">)</span>
+
+Max
+ qemu_init_end: <span class="m">36</span>.683444
+ fw_start: <span class="m">36</span>.870878 <span class="o">(</span>+0.187434<span class="o">)</span>
+ fw_do_boot: <span class="m">46</span>.268925 <span class="o">(</span>+9.398047<span class="o">)</span>
+ linux_start_boot: <span class="m">47</span>.614155 <span class="o">(</span>+1.34523<span class="o">)</span>
+ linux_start_kernel: <span class="m">124</span>.805012 <span class="o">(</span>+77.190857<span class="o">)</span>
+ linux_start_user: <span class="m">242</span>.882716 <span class="o">(</span>+118.077704<span class="o">)</span></code></pre></div>
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;text=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//plus.google.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f" target="_blank" title="Share on Google Plus">
+          <i class="fab fa-google-plus"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;description=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+              </div>
+            </section>
+        
+
+        
+          
+          
+          <h4 class="see-also">See also</h4>
+          <ul>
+          
+            <li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">QEMU 4.0 boots uncompressed Linux x86_64 kernel</a></li>
+          
+          </ul>
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" data-toggle="tooltip" data-placement="top" title="QEMU 4.0 boots uncompressed Linux x86_64 kernel">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">                  
+            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time">comments</span></button>
+            <div id="disqus_thread"></div>
+
+            <script type="text/javascript">
+              var disqus_config = function () {
+              this.page.url = 'https:\/\/stefano-garzarella.github.io\/posts\/2019-08-24-qemu-linux-boot-time';
+            };
+
+          </script>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:sgarzare@redhat.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/stefano-garzarella" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://gitlab.com/sgarzarella" title="GitLab">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://bitbucket.org/sgarzarella" title="Bitbucket">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-bitbucket fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/sgarzarella" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/stefanogarzarella" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="stefano-garzarella.github.io">Stefano Garzarella</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2019
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://stefano-garzarella.github.io">sgarzare&#39;s blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.57.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://stefano-garzarella.github.io/js/main.js"></script>
+<script src="https://stefano-garzarella.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://stefano-garzarella.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+$(function(){
+  $('#show-comments').on('click', function(){
+    var disqus_shortname = 'stefano-garzarella-github-io';
+      
+    (function() {
+      var disqus = document.createElement('script'); 
+      disqus.type = 'text/javascript'; 
+      disqus.async = true;
+      disqus.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(disqus);
+    })();
+      
+    $(this).hide(); 
+    });
+  });
+      
+</script>
+<script id="dsq-count-scr" src="//stefano-garzarella-github-io.disqus.com/count.js" async></script>
+
+
+
+
+  </body>
+</html>
+

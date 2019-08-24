@@ -7,10 +7,40 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Fri, 23 Aug 2019 15:26:54 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 24 Aug 2019 15:03:30 +0200</lastBuildDate>
     
 	<atom:link href="https://stefano-garzarella.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to measure the boot time of a Linux VM with QEMU</title>
+      <link>https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/</link>
+      <pubDate>Sat, 24 Aug 2019 15:03:30 +0200</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/</guid>
+      <description>&lt;p&gt;The &lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time&#34;&gt;stefano-garzarella/qemu-boot-time&lt;/a&gt;
+repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
+to measure the boot time of a Linux VM with QEMU.&lt;/p&gt;
+
+&lt;p&gt;Using I/O writes, we can trace events to measure the time consumed during the
+boot phase by the different components:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;firmware
+
+&lt;ul&gt;
+&lt;li&gt;SeaBIOS&lt;/li&gt;
+&lt;li&gt;qboot&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;optionrom
+
+&lt;ul&gt;
+&lt;li&gt;linuxboot [bzImage]&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/&#34;&gt;pvh [vmlinux + PVH entry point]&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Linux kernel&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>QEMU 4.0 boots uncompressed Linux x86_64 kernel</title>

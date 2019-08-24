@@ -10,23 +10,23 @@
   <title>Overview of all pages with the tag #linux - sgarzare&#39;s blog</title>
   <meta property="og:title" content="Overview of all pages with the tag #linux" />
   <meta name="twitter:title" content="Overview of all pages with the tag #linux" />
-  <meta name="description" content="Overview of all pages with the tag #linux, such as: QEMU 4.0 boots uncompressed Linux x86_64 kernel">
-  <meta property="og:description" content="Overview of all pages with the tag #linux, such as: QEMU 4.0 boots uncompressed Linux x86_64 kernel">
-  <meta name="twitter:description" content="Overview of all pages with the tag #linux, such as: QEMU 4.0 boots uncompressed Linux x86_64 kernel">
+  <meta name="description" content="Overview of all pages with the tag #linux, such as: How to measure the boot time of a Linux VM with QEMU">
+  <meta property="og:description" content="Overview of all pages with the tag #linux, such as: How to measure the boot time of a Linux VM with QEMU">
+  <meta name="twitter:description" content="Overview of all pages with the tag #linux, such as: How to measure the boot time of a Linux VM with QEMU">
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
     "@type": "WebSite",
-    "name": "sgarzare&#39;s blog",
+    "name": "sgarzare\x27s blog",
     
-    "url": "https://stefano-garzarella.github.io"
+    "url": "https:\/\/stefano-garzarella.github.io"
 }
 </script><script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "Organization",
   "name": "",
-  "url": "https://stefano-garzarella.github.io"
+  "url": "https:\/\/stefano-garzarella.github.io"
   
   
   
@@ -224,6 +224,75 @@ if (!doNotTrack) {
         <div class="posts-list">
           
             <article class="post-preview">
+              <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/">
+                <h2 class="post-title">How to measure the boot time of a Linux VM with QEMU</h2>
+
+                
+              </a>
+
+              <p class="post-meta">
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/24
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;882&nbsp;words
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+  
+  
+</span>
+
+
+              </p>
+              <div class="post-entry">
+                
+                  <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
+repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
+to measure the boot time of a Linux VM with QEMU.</p>
+
+<p>Using I/O writes, we can trace events to measure the time consumed during the
+boot phase by the different components:</p>
+
+<ul>
+<li>firmware
+
+<ul>
+<li>SeaBIOS</li>
+<li>qboot</li>
+</ul></li>
+<li>optionrom
+
+<ul>
+<li>linuxboot [bzImage]</li>
+<li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">pvh [vmlinux + PVH entry point]</a></li>
+</ul></li>
+<li>Linux kernel</li>
+</ul>
+                  <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <div class="blog-tags">
+                  
+                    <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+                  
+                    <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+                  
+                    <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
+                  
+                </div>
+              
+
+            </article>
+          
+            <article class="post-preview">
               <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/">
                 <h2 class="post-title">QEMU 4.0 boots uncompressed Linux x86_64 kernel</h2>
 
@@ -265,6 +334,8 @@ if (!doNotTrack) {
                     <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
                   
                     <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+                  
+                    <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
                   
                 </div>
               
