@@ -63,5 +63,25 @@ The postings on this site are my own and don&amp;rsquo;t necessarily represent R
 &lt;p&gt;The x86/HVM direct boot ABI was initially developed for Xen guests, but with &lt;a href=&#34;#patches&#34;&gt;latest changes in both QEMU and Linux&lt;/a&gt;, QEMU is able to use that same entry point for booting KVM guests.&lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title>iperf3-vsock: how to measure VSOCK performance</title>
+      <link>https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/</link>
+      <pubDate>Thu, 22 Aug 2019 17:52:06 +0200</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/</guid>
+      <description>&lt;p&gt;The &lt;a href=&#34;https://github.com/stefano-garzarella/iperf-vsock&#34;&gt;iperf-vsock&lt;/a&gt; repository
+contains few patches to add the support of VSOCK address family to &lt;code&gt;iperf3&lt;/code&gt;.
+In this way &lt;code&gt;iperf3&lt;/code&gt; can be used to measure the performance between guest and
+host using VSOCK sockets.&lt;/p&gt;
+
+&lt;p&gt;The VSOCK address family facilitates communication between virtual
+machines and the host they are running on.&lt;/p&gt;
+
+&lt;p&gt;To test VSOCK sockets (only Linux), you must use the new option &lt;code&gt;--vsock&lt;/code&gt; on
+both server and client.
+Other iperf3 options (e.g. &lt;code&gt;-t, -l, -P, -R, --bidir&lt;/code&gt;) are well supported by
+VSOCK tests.&lt;/p&gt;</description>
+    </item>
+    
   </channel>
 </rss>

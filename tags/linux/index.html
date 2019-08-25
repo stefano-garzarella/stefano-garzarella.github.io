@@ -342,6 +342,67 @@ boot phase by the different components:</p>
 
             </article>
           
+            <article class="post-preview">
+              <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/">
+                <h2 class="post-title">iperf3-vsock: how to measure VSOCK performance</h2>
+
+                
+              </a>
+
+              <p class="post-meta">
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/22
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;340&nbsp;words
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+  
+  
+</span>
+
+
+              </p>
+              <div class="post-entry">
+                
+                  <p>The <a href="https://github.com/stefano-garzarella/iperf-vsock">iperf-vsock</a> repository
+contains few patches to add the support of VSOCK address family to <code>iperf3</code>.
+In this way <code>iperf3</code> can be used to measure the performance between guest and
+host using VSOCK sockets.</p>
+
+<p>The VSOCK address family facilitates communication between virtual
+machines and the host they are running on.</p>
+
+<p>To test VSOCK sockets (only Linux), you must use the new option <code>--vsock</code> on
+both server and client.
+Other iperf3 options (e.g. <code>-t, -l, -P, -R, --bidir</code>) are well supported by
+VSOCK tests.</p>
+                  <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <div class="blog-tags">
+                  
+                    <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
+                  
+                    <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+                  
+                    <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+                  
+                    <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
+                  
+                </div>
+              
+
+            </article>
+          
         </div>
         
       </div>

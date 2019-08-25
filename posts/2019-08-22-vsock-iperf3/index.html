@@ -7,16 +7,37 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>QEMU 4.0 boots uncompressed Linux x86_64 kernel - sgarzare&#39;s blog</title>
-  <meta property="og:title" content="QEMU 4.0 boots uncompressed Linux x86_64 kernel" />
-  <meta name="twitter:title" content="QEMU 4.0 boots uncompressed Linux x86_64 kernel" />
-  <meta name="description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).
+  <title>iperf3-vsock: how to measure VSOCK performance - sgarzare&#39;s blog</title>
+  <meta property="og:title" content="iperf3-vsock: how to measure VSOCK performance" />
+  <meta name="twitter:title" content="iperf3-vsock: how to measure VSOCK performance" />
+  <meta name="description" content="The iperf-vsock repository
+contains few patches to add the support of VSOCK address family to iperf3.
+In this way iperf3 can be used to measure the performance between guest and
+host using VSOCK sockets.
 
-The x86/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.">
-  <meta property="og:description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).
+The VSOCK address family facilitates communication between virtual
+machines and the host they are running on.
 
-The x86/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.">
-  <meta name="twitter:description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y …">
+To test VSOCK sockets (only Linux), you must use the new option --vsock on
+both server and client.
+Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by
+VSOCK tests.">
+  <meta property="og:description" content="The iperf-vsock repository
+contains few patches to add the support of VSOCK address family to iperf3.
+In this way iperf3 can be used to measure the performance between guest and
+host using VSOCK sockets.
+
+The VSOCK address family facilitates communication between virtual
+machines and the host they are running on.
+
+To test VSOCK sockets (only Linux), you must use the new option --vsock on
+both server and client.
+Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by
+VSOCK tests.">
+  <meta name="twitter:description" content="The iperf-vsock repository
+contains few patches to add the support of VSOCK address family to iperf3.
+In this way iperf3 can be used to measure the performance between guest and
+host using VSOCK …">
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -52,8 +73,8 @@ The x86/HVM direct boot ABI was initially developed for Xen guests, but with lat
         "@type": "ListItem",
         "position": 3,
         "item": {
-          "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-23-qemu-linux-kernel-pvh\/",
-          "name": "Q e m u 4.0 boots uncompressed linux x86 64 kernel"
+          "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-22-vsock-iperf3\/",
+          "name": "Iperf3 vsock how to measure v s o c k performance"
         }
     }]
 }
@@ -64,15 +85,15 @@ The x86/HVM direct boot ABI was initially developed for Xen guests, but with lat
   "author": {
     "name" : "Stefano Garzarella"
   },
-  "headline": "QEMU 4.0 boots uncompressed Linux x86_64 kernel",
-  "description" : "QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86\/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).\nThe x86\/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.\n",
+  "headline": "iperf3-vsock: how to measure VSOCK performance",
+  "description" : "The iperf-vsock repository contains few patches to add the support of VSOCK address family to iperf3. In this way iperf3 can be used to measure the performance between guest and host using VSOCK sockets.\nThe VSOCK address family facilitates communication between virtual machines and the host they are running on.\nTo test VSOCK sockets (only Linux), you must use the new option --vsock on both server and client. Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by VSOCK tests.\n",
   "inLanguage" : "en",
-  "wordCount":  311 ,
-  "datePublished" : "2019-08-23T15:26:54",
-  "dateModified" : "2019-08-23T15:26:54",
+  "wordCount":  340 ,
+  "datePublished" : "2019-08-22T17:52:06",
+  "dateModified" : "2019-08-22T17:52:06",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
-  "keywords" : [ "qemu, linux, boot" ],
-  "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-23-qemu-linux-kernel-pvh\/",
+  "keywords" : [ "vsock, linux, qemu, net" ],
+  "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-22-vsock-iperf3\/",
   "publisher" : {
     "@type": "Organization",
     "name" : "https:\/\/stefano-garzarella.github.io",
@@ -86,17 +107,29 @@ The x86/HVM direct boot ABI was initially developed for Xen guests, but with lat
 }
 </script>
 
-<meta property="og:title" content="QEMU 4.0 boots uncompressed Linux x86_64 kernel" />
-<meta property="og:description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).
+<meta property="og:title" content="iperf3-vsock: how to measure VSOCK performance" />
+<meta property="og:description" content="The iperf-vsock repository
+contains few patches to add the support of VSOCK address family to iperf3.
+In this way iperf3 can be used to measure the performance between guest and
+host using VSOCK sockets.
 
-The x86/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.">
+The VSOCK address family facilitates communication between virtual
+machines and the host they are running on.
+
+To test VSOCK sockets (only Linux), you must use the new option --vsock on
+both server and client.
+Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by
+VSOCK tests.">
 <meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-<meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" />
+<meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
-  <meta name="twitter:title" content="QEMU 4.0 boots uncompressed Linux x86_64 kernel" />
-  <meta name="twitter:description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y …">
+  <meta name="twitter:title" content="iperf3-vsock: how to measure VSOCK performance" />
+  <meta name="twitter:description" content="The iperf-vsock repository
+contains few patches to add the support of VSOCK address family to iperf3.
+In this way iperf3 can be used to measure the performance between guest and
+host using VSOCK …">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@sgarzarella" />
@@ -107,7 +140,7 @@ The x86/HVM direct boot ABI was initially developed for Xen guests, but with lat
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
-  <meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" />
+  <meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
@@ -257,7 +290,7 @@ if (!doNotTrack) {
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="posts-heading">
               
-                <h1>QEMU 4.0 boots uncompressed Linux x86_64 kernel</h1>
+                <h1>iperf3-vsock: how to measure VSOCK performance</h1>
               
               
                 <hr class="small">
@@ -277,116 +310,84 @@ if (!doNotTrack) {
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        <p><strong>QEMU 4.0</strong> is now able to boot directly into the <strong>uncompressed Linux x86_64 kernel binary</strong> with minimal firmware involvement using the <strong>PVH entry point</strong> defined in the <a href="https://xenbits.xen.org/docs/unstable/misc/pvh.html">x86/HVM direct boot ABI</a>. (<code>CONFIG_PVH=y</code> must be enabled in the Linux config file).</p>
+        <p>The <a href="https://github.com/stefano-garzarella/iperf-vsock">iperf-vsock</a> repository
+contains few patches to add the support of VSOCK address family to <code>iperf3</code>.
+In this way <code>iperf3</code> can be used to measure the performance between guest and
+host using VSOCK sockets.</p>
 
-<p>The x86/HVM direct boot ABI was initially developed for Xen guests, but with <a href="#patches">latest changes in both QEMU and Linux</a>, QEMU is able to use that same entry point for booting KVM guests.</p>
+<p>The VSOCK address family facilitates communication between virtual
+machines and the host they are running on.</p>
+
+<p>To test VSOCK sockets (only Linux), you must use the new option <code>--vsock</code> on
+both server and client.
+Other iperf3 options (e.g. <code>-t, -l, -P, -R, --bidir</code>) are well supported by
+VSOCK tests.</p>
 
 <h2 id="prerequisites">Prerequisites</h2>
 
 <ul>
-<li>QEMU &gt;= 4.0</li>
-<li>Linux kernel &gt;= 4.21
-
-<ul>
-<li><code>CONFIG_PVH=y</code> enabled</li>
-<li><code>vmlinux</code> uncompressed image</li>
-</ul></li>
+<li>Linux host kernel &gt;= 4.8</li>
+<li>Linux guest kernel &gt;= 4.8</li>
+<li>QEMU &gt;= 2.8</li>
 </ul>
 
-<h2 id="how-to-use">How to use</h2>
+<h2 id="build-iperf3-vsock-from-source">Build iperf3-vsock from source</h2>
 
-<p>To boot the PVH kernel image, you can use the <code>-kernel</code> parameter specifying the path to the <code>vmlinux</code> image.</p>
-<div class="highlight"><pre class="chroma">qemu-system-x86_64 -machine q35,accel=kvm \
-    -kernel /path/to/vmlinux \
-    -drive file=/path/to/rootfs.ext2,if=virtio,format=raw \
-    -append &#39;root=/dev/vda console=ttyS0&#39; -vga none -display none \
-    -serial mon:stdio</pre></div>
-<p>The <code>-initrd</code> and <code>-append</code> parameters are also supported as for compressed images.</p>
+<h3 id="clone-repository">Clone repository</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">git clone https://github.com/stefano-garzarella/iperf-vsock
+<span class="nb">cd</span> iperf-vsock</code></pre></div>
+<h3 id="building">Building</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">mkdir build
+<span class="nb">cd</span> build
+../configure
+make</code></pre></div>
+<p>(Note: If configure fails, try running <code>./bootstrap.sh</code> first)</p>
 
-<h3 id="details">Details</h3>
+<h2 id="example-with-fedora-30-host-and-guest">Example with Fedora 30 (host and guest):</h2>
 
-<p>QEMU will automatically recognize if the <code>vmlinux</code> image has the PVH entry point and it will use SeaBIOS with the new <code>pvh.bin</code> optionrom to load the uncompressed image into the guest VM.</p>
+<h3 id="host-start-the-vm">Host: start the VM</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">GUEST_CID</span><span class="o">=</span><span class="m">3</span>
+sudo modprobe vhost_vsock
+sudo qemu-system-x86_64 -m 1G -smp <span class="m">2</span> -cpu host -M <span class="nv">accel</span><span class="o">=</span>kvm	<span class="se">\
+</span><span class="se"></span>     -drive <span class="k">if</span><span class="o">=</span>virtio,file<span class="o">=</span>/path/to/fedora.img,format<span class="o">=</span>qcow2     <span class="se">\
+</span><span class="se"></span>     -device vhost-vsock-pci,guest-cid<span class="o">=</span><span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span></code></pre></div>
+<h3 id="guest-start-iperf-server">Guest: start iperf server</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># SELinux can block you, so you can write a policy or temporally disable it</span>
+sudo setenforce <span class="m">0</span>
+iperf-vsock/build/src/iperf3 --vsock -s</code></pre></div>
+<h3 id="host-start-iperf-client">Host: start iperf client</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">iperf-vsock/build/src/iperf3 --vsock -c <span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span></code></pre></div>
+<h3 id="output">Output</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">Connecting to host <span class="m">3</span>, port <span class="m">5201</span>
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span> <span class="nb">local</span> <span class="m">2</span> port <span class="m">4008596529</span> connected to <span class="m">3</span> port <span class="m">5201</span>
+<span class="o">[</span> ID<span class="o">]</span> Interval           Transfer     Bitrate
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">0</span>.00-1.00   sec  <span class="m">1</span>.30 GBytes  <span class="m">11</span>.2 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">1</span>.00-2.00   sec  <span class="m">1</span>.67 GBytes  <span class="m">14</span>.3 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">2</span>.00-3.00   sec  <span class="m">1</span>.57 GBytes  <span class="m">13</span>.5 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">3</span>.00-4.00   sec  <span class="m">1</span>.49 GBytes  <span class="m">12</span>.8 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">4</span>.00-5.00   sec   <span class="m">971</span> MBytes  <span class="m">8</span>.15 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">5</span>.00-6.00   sec  <span class="m">1</span>.01 GBytes  <span class="m">8</span>.71 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">6</span>.00-7.00   sec  <span class="m">1</span>.44 GBytes  <span class="m">12</span>.3 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">7</span>.00-8.00   sec  <span class="m">1</span>.62 GBytes  <span class="m">13</span>.9 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">8</span>.00-9.00   sec  <span class="m">1</span>.61 GBytes  <span class="m">13</span>.8 Gbits/sec
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">9</span>.00-10.00  sec  <span class="m">1</span>.63 GBytes  <span class="m">14</span>.0 Gbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+<span class="o">[</span> ID<span class="o">]</span> Interval           Transfer     Bitrate
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">0</span>.00-10.00  sec  <span class="m">14</span>.3 GBytes  <span class="m">12</span>.3 Gbits/sec                  sender
+<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">0</span>.00-10.00  sec  <span class="m">14</span>.3 GBytes  <span class="m">12</span>.3 Gbits/sec                  receiver
 
-<p>As an alternative, <a href="https://github.com/bonzini/qboot">qboot</a> can be used to load the PVH image.</p>
-
-<h3 id="performance">Performance</h3>
-
-<p>Perf script and patches used to measure boot time: <a href="https://github.com/stefano-garzarella/qemu-boot-time">https://github.com/stefano-garzarella/qemu-boot-time</a>.</p>
-
-<p><em>The following values are expressed in milliseconds [ms]</em></p>
-
-<ul>
-<li><p>QEMU (q35 machine) + SeaBIOS + bzImage</p>
-
-<ul>
-<li><code>qemu_init_end</code>: 36.072056</li>
-<li><code>linux_start_kernel</code>: 114.669522 (+78.597466)</li>
-<li><code>linux_start_user</code>: 191.748567 (+77.079045)</li>
-</ul></li>
-
-<li><p><strong>QEMU (q35 machine) + SeaBIOS + vmlinux(PVH)</strong></p>
-
-<ul>
-<li><code>qemu_init_end</code>: 51.588200</li>
-<li><code>linux_start_kernel</code>: 62.124665 (+10.536465)</li>
-<li><code>linux_start_user</code>: 139.460582 (+77.335917)</li>
-</ul></li>
-
-<li><p>QEMU (q35 machine) + qboot + bzImage</p>
-
-<ul>
-<li>qemu_init_end: 36.443638</li>
-<li>linux_start_kernel: 106.73115 (+70.287512)</li>
-<li>linux_start_user: 184.575531 (+77.844381)</li>
-</ul></li>
-
-<li><p>QEMU (q35 machine) + qboot + vmlinux(PVH)</p>
-
-<ul>
-<li>qemu_init_end: 51.877656</li>
-<li>linux_start_kernel: 56.710735 (+4.833079)</li>
-<li>linux_start_user: 133.808972 (+77.098237)</li>
-</ul></li>
-
-<li><p>Tracepoints:</p>
-
-<ul>
-<li><code>qemu_init_end</code>: first kvm_entry (i.e. QEMU initialization has finished)</li>
-<li><code>linux_start_kernel</code>: first entry of the Linux kernel (<code>start_kernel()</code>)</li>
-<li><code>linux_start_user</code>: before starting the init process</li>
-</ul></li>
-</ul>
-
-<h2 id="patches">Patches</h2>
-
-<p>Linux patches merged upstream in Linux 4.21:</p>
-
-<ul>
-<li><a href="https://lkml.org/lkml/2018/12/14/1330">https://lkml.org/lkml/2018/12/14/1330</a></li>
-</ul>
-
-<p>QEMU patches merged upstream in QEMU 4.0:</p>
-
-<ul>
-<li><a href="https://www.mail-archive.com/qemu-devel@nongnu.org/msg587312.html">https://www.mail-archive.com/qemu-devel@nongnu.org/msg587312.html</a></li>
-<li><a href="https://www.mail-archive.com/qemu-devel@nongnu.org/msg588561.html">https://www.mail-archive.com/qemu-devel@nongnu.org/msg588561.html</a></li>
-</ul>
-
-<p>qboot patches merged upstream:</p>
-
-<ul>
-<li><a href="https://github.com/bonzini/qboot/pull/17">https://github.com/bonzini/qboot/pull/17</a></li>
-<li><a href="https://github.com/bonzini/qboot/pull/18">https://github.com/bonzini/qboot/pull/18</a></li>
-</ul>
+iperf Done.</code></pre></div>
 
         
           <div class="blog-tags">
             
-              <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+              <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
             
               <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
             
-              <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
+              <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
             
           </div>
         
@@ -401,49 +402,49 @@ if (!doNotTrack) {
     <ul class="share">
       
       <li>
-        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;text=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;text=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//plus.google.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-23-qemu-linux-kernel-pvh%2f" target="_blank" title="Share on Google Plus">
+        <a href="//plus.google.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f" target="_blank" title="Share on Google Plus">
           <i class="fab fa-google-plus"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-23-qemu-linux-kernel-pvh%2f" target="_blank" title="Share on Facebook">
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f" target="_blank" title="Share on Facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;title=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel" target="_blank" title="Share on Reddit">
+        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;title=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance" target="_blank" title="Share on Reddit">
           <i class="fab fa-reddit"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;title=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel" target="_blank" title="Share on LinkedIn">
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;title=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance" target="_blank" title="Share on LinkedIn">
           <i class="fab fa-linkedin"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;title=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel" target="_blank" title="Share on StumbleUpon">
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;title=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance" target="_blank" title="Share on StumbleUpon">
           <i class="fab fa-stumbleupon"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;description=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel" target="_blank" title="Share on Pinterest">
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;description=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance" target="_blank" title="Share on Pinterest">
           <i class="fab fa-pinterest"></i>
         </a>
       </li>
@@ -457,26 +458,15 @@ if (!doNotTrack) {
         
           
           
-          <h4 class="see-also">See also</h4>
-          <ul>
-          
-            <li><a href="/posts/2019-08-22-vsock-iperf3/">iperf3-vsock: how to measure VSOCK performance</a></li>
-          
-          </ul>
-          
         
       </article>
 
       
         <ul class="pager blog-pager">
           
-            <li class="previous">
-              <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/" data-toggle="tooltip" data-placement="top" title="iperf3-vsock: how to measure VSOCK performance">&larr; Previous Post</a>
-            </li>
-          
           
             <li class="next">
-              <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" data-toggle="tooltip" data-placement="top" title="How to measure the boot time of a Linux VM with QEMU">Next Post &rarr;</a>
+              <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" data-toggle="tooltip" data-placement="top" title="QEMU 4.0 boots uncompressed Linux x86_64 kernel">Next Post &rarr;</a>
             </li>
           
         </ul>
@@ -487,12 +477,12 @@ if (!doNotTrack) {
         
           
           <div class="disqus-comments">                  
-            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh">comments</span></button>
+            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3">comments</span></button>
             <div id="disqus_thread"></div>
 
             <script type="text/javascript">
               var disqus_config = function () {
-              this.page.url = 'https:\/\/stefano-garzarella.github.io\/posts\/2019-08-23-qemu-linux-kernel-pvh';
+              this.page.url = 'https:\/\/stefano-garzarella.github.io\/posts\/2019-08-22-vsock-iperf3';
             };
 
           </script>

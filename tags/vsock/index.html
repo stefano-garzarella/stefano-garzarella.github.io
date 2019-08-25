@@ -7,9 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>Posts - sgarzare&#39;s blog</title>
-  <meta property="og:title" content="Posts" />
-  <meta name="twitter:title" content="Posts" />
+  <title>Overview of all pages with the tag #vsock - sgarzare&#39;s blog</title>
+  <meta property="og:title" content="Overview of all pages with the tag #vsock" />
+  <meta name="twitter:title" content="Overview of all pages with the tag #vsock" />
+  <meta name="description" content="Overview of all pages with the tag #vsock, such as: iperf3-vsock: how to measure VSOCK performance">
+  <meta property="og:description" content="Overview of all pages with the tag #vsock, such as: iperf3-vsock: how to measure VSOCK performance">
+  <meta name="twitter:description" content="Overview of all pages with the tag #vsock, such as: iperf3-vsock: how to measure VSOCK performance">
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -31,13 +34,13 @@
 }
 </script>
 
-<meta property="og:title" content="Posts" />
+<meta property="og:title" content="vsock" />
 <meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-<meta property="og:url" content="https://stefano-garzarella.github.io/posts/" />
+<meta property="og:url" content="https://stefano-garzarella.github.io/tags/vsock/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
-  <meta name="twitter:title" content="Posts" />
+  <meta name="twitter:title" content="vsock" />
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@sgarzarella" />
@@ -48,7 +51,7 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
-  <meta property="og:url" content="https://stefano-garzarella.github.io/posts/" />
+  <meta property="og:url" content="https://stefano-garzarella.github.io/tags/vsock/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
@@ -196,9 +199,9 @@ if (!doNotTrack) {
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="posts-heading">
+            <div class="tags-heading">
               
-                <h1>Posts</h1>
+                <h1>vsock</h1>
               
               
                 <hr class="small">
@@ -219,125 +222,6 @@ if (!doNotTrack) {
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
         <div class="posts-list">
-          
-            <article class="post-preview">
-              <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/">
-                <h2 class="post-title">How to measure the boot time of a Linux VM with QEMU</h2>
-
-                
-              </a>
-
-              <p class="post-meta">
-                <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/24
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;882&nbsp;words
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-  
-  
-</span>
-
-
-              </p>
-              <div class="post-entry">
-                
-                  <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
-repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU.</p>
-
-<p>Using I/O writes, we can trace events to measure the time consumed during the
-boot phase by the different components:</p>
-
-<ul>
-<li>firmware
-
-<ul>
-<li>SeaBIOS</li>
-<li>qboot</li>
-</ul></li>
-<li>optionrom
-
-<ul>
-<li>linuxboot [bzImage]</li>
-<li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">pvh [vmlinux + PVH entry point]</a></li>
-</ul></li>
-<li>Linux kernel</li>
-</ul>
-                  <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <div class="blog-tags">
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-                  
-                </div>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/">
-                <h2 class="post-title">QEMU 4.0 boots uncompressed Linux x86_64 kernel</h2>
-
-                
-              </a>
-
-              <p class="post-meta">
-                <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/23
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;311&nbsp;words
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-  
-  
-</span>
-
-
-              </p>
-              <div class="post-entry">
-                
-                  <p><strong>QEMU 4.0</strong> is now able to boot directly into the <strong>uncompressed Linux x86_64 kernel binary</strong> with minimal firmware involvement using the <strong>PVH entry point</strong> defined in the <a href="https://xenbits.xen.org/docs/unstable/misc/pvh.html">x86/HVM direct boot ABI</a>. (<code>CONFIG_PVH=y</code> must be enabled in the Linux config file).</p>
-
-<p>The x86/HVM direct boot ABI was initially developed for Xen guests, but with <a href="#patches">latest changes in both QEMU and Linux</a>, QEMU is able to use that same entry point for booting KVM guests.</p>
-                  <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <div class="blog-tags">
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-                  
-                </div>
-              
-
-            </article>
           
             <article class="post-preview">
               <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/">
@@ -462,7 +346,7 @@ VSOCK tests.</p>
               </li>
           
           <li>
-            <a href="/posts/index.xml" title="RSS">
+            <a href="/tags/vsock/index.xml" title="RSS">
               <span class="fa-stack fa-lg">
                 <i class="fas fa-circle fa-stack-2x"></i>
                 <i class="fas fa-rss fa-stack-1x fa-inverse"></i>

@@ -39,5 +39,23 @@
       <description></description>
     </item>
     
+    <item>
+      <title>net</title>
+      <link>https://stefano-garzarella.github.io/tags/net/</link>
+      <pubDate>Thu, 22 Aug 2019 17:52:06 +0200</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/net/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vsock</title>
+      <link>https://stefano-garzarella.github.io/tags/vsock/</link>
+      <pubDate>Thu, 22 Aug 2019 17:52:06 +0200</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/vsock/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

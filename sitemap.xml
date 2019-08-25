@@ -53,6 +53,21 @@
   </url>
   
   <url>
+    <loc>https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/</loc>
+    <lastmod>2019-08-22T17:52:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/net/</loc>
+    <lastmod>2019-08-22T17:52:06+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/vsock/</loc>
+    <lastmod>2019-08-22T17:52:06+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://stefano-garzarella.github.io/categories/</loc>
   </url>
   
