@@ -7,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>How to measure the boot time of a Linux VM with QEMU - sgarzare&#39;s blog</title>
-  <meta property="og:title" content="How to measure the boot time of a Linux VM with QEMU" />
-  <meta name="twitter:title" content="How to measure the boot time of a Linux VM with QEMU" />
+  <title>How to measure the boot time of a Linux VM with QEMU/KVM - sgarzare&#39;s blog</title>
+  <meta property="og:title" content="How to measure the boot time of a Linux VM with QEMU/KVM" />
+  <meta name="twitter:title" content="How to measure the boot time of a Linux VM with QEMU/KVM" />
   <meta name="description" content="The stefano-garzarella/qemu-boot-time
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU.
+to measure the boot time of a Linux VM with QEMU/KVM.
 
 Using I/O writes, we can trace events to measure the time consumed during the
 boot phase by the different components:
@@ -34,7 +34,7 @@ Linux kernel
 ">
   <meta property="og:description" content="The stefano-garzarella/qemu-boot-time
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU.
+to measure the boot time of a Linux VM with QEMU/KVM.
 
 Using I/O writes, we can trace events to measure the time consumed during the
 boot phase by the different components:
@@ -56,7 +56,7 @@ Linux kernel
 ">
   <meta name="twitter:description" content="The stefano-garzarella/qemu-boot-time
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU.
+to measure the boot time of a Linux VM with QEMU/KVM.
 
 Using I/O writes, we can trace …">
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
@@ -95,7 +95,7 @@ Using I/O writes, we can trace …">
         "position": 3,
         "item": {
           "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-24-qemu-linux-boot-time\/",
-          "name": "How to measure the boot time of a linux v m with q e m u"
+          "name": "How to measure the boot time of a linux v m with q e m u\/ k v m"
         }
     }]
 }
@@ -106,8 +106,8 @@ Using I/O writes, we can trace …">
   "author": {
     "name" : "Stefano Garzarella"
   },
-  "headline": "How to measure the boot time of a Linux VM with QEMU",
-  "description" : "The stefano-garzarella\/qemu-boot-time repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches to measure the boot time of a Linux VM with QEMU.\nUsing I\/O writes, we can trace events to measure the time consumed during the boot phase by the different components:\n firmware  SeaBIOS qboot  optionrom  linuxboot [bzImage] pvh [vmlinux \x2b PVH entry point]  Linux kernel ",
+  "headline": "How to measure the boot time of a Linux VM with QEMU\/KVM",
+  "description" : "The stefano-garzarella\/qemu-boot-time repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches to measure the boot time of a Linux VM with QEMU\/KVM.\nUsing I\/O writes, we can trace events to measure the time consumed during the boot phase by the different components:\n firmware  SeaBIOS qboot  optionrom  linuxboot [bzImage] pvh [vmlinux \x2b PVH entry point]  Linux kernel ",
   "inLanguage" : "en",
   "wordCount":  882 ,
   "datePublished" : "2019-08-24T15:03:30",
@@ -128,10 +128,10 @@ Using I/O writes, we can trace …">
 }
 </script>
 
-<meta property="og:title" content="How to measure the boot time of a Linux VM with QEMU" />
+<meta property="og:title" content="How to measure the boot time of a Linux VM with QEMU/KVM" />
 <meta property="og:description" content="The stefano-garzarella/qemu-boot-time
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU.
+to measure the boot time of a Linux VM with QEMU/KVM.
 
 Using I/O writes, we can trace events to measure the time consumed during the
 boot phase by the different components:
@@ -156,10 +156,10 @@ Linux kernel
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
-  <meta name="twitter:title" content="How to measure the boot time of a Linux VM with QEMU" />
+  <meta name="twitter:title" content="How to measure the boot time of a Linux VM with QEMU/KVM" />
   <meta name="twitter:description" content="The stefano-garzarella/qemu-boot-time
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU.
+to measure the boot time of a Linux VM with QEMU/KVM.
 
 Using I/O writes, we can trace …">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
@@ -322,7 +322,7 @@ if (!doNotTrack) {
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="posts-heading">
               
-                <h1>How to measure the boot time of a Linux VM with QEMU</h1>
+                <h1>How to measure the boot time of a Linux VM with QEMU/KVM</h1>
               
               
                 <hr class="small">
@@ -344,7 +344,7 @@ if (!doNotTrack) {
       <article role="main" class="blog-post">
         <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU.</p>
+to measure the boot time of a Linux VM with QEMU/KVM.</p>
 
 <p>Using I/O writes, we can trace events to measure the time consumed during the
 boot phase by the different components:</p>
@@ -614,7 +614,7 @@ Max
     <ul class="share">
       
       <li>
-        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;text=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;text=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU%2fKVM&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -635,28 +635,28 @@ Max
   
       
       <li>
-        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU" target="_blank" title="Share on Reddit">
+        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU%2fKVM" target="_blank" title="Share on Reddit">
           <i class="fab fa-reddit"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU" target="_blank" title="Share on LinkedIn">
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU%2fKVM" target="_blank" title="Share on LinkedIn">
           <i class="fab fa-linkedin"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU" target="_blank" title="Share on StumbleUpon">
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;title=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU%2fKVM" target="_blank" title="Share on StumbleUpon">
           <i class="fab fa-stumbleupon"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;description=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU" target="_blank" title="Share on Pinterest">
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-24-qemu-linux-boot-time%2f&amp;description=How%20to%20measure%20the%20boot%20time%20of%20a%20Linux%20VM%20with%20QEMU%2fKVM" target="_blank" title="Share on Pinterest">
           <i class="fab fa-pinterest"></i>
         </a>
       </li>
