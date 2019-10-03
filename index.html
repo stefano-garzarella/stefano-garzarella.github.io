@@ -8,8 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <title>sgarzare&#39;s blog - sgarzare&#39;s blog</title>
-  <meta property="og:title" content="sgarzare&#39;s blog" />
-  <meta name="twitter:title" content="sgarzare&#39;s blog" />
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -43,16 +41,7 @@
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-  <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@sgarzarella" />
-  <meta name="twitter:creator" content="@sgarzarella" />
-  <meta property="og:url" content="https://stefano-garzarella.github.io/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="sgarzare&#39;s blog" />
-
-  <meta name="generator" content="Hugo 0.58.0" />
+  <meta name="generator" content="Hugo 0.58.3" />
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -112,6 +101,12 @@ if (!doNotTrack) {
         
 
         
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
       </ul>
     </div>
 
@@ -129,6 +124,23 @@ if (!doNotTrack) {
 </nav>
 
 
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search sgarzare&#39;s blog</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
     
@@ -227,14 +239,15 @@ if (!doNotTrack) {
           
           
             <article class="post-preview">
-              <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/">
-                <h2 class="post-title">How to measure the boot time of a Linux VM with QEMU/KVM</h2>
-                
-                
-                
-              </a>
+    <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/">
+        <h2 class="post-title">How to measure the boot time of a Linux VM with QEMU/KVM</h2>
+        
+        
+        
+    </a>
 
-              <span class="post-meta">
+    <p class="post-meta">
+        <span class="post-meta">
   
   
   <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/24
@@ -254,9 +267,10 @@ if (!doNotTrack) {
 </span>
 
 
-              <div class="post-entry">
-                
-                  <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
+    </p>
+    <div class="post-entry">
+        
+        <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
 to measure the boot time of a Linux VM with QEMU/KVM.</p>
 
@@ -278,32 +292,34 @@ boot phase by the different components:</p>
 </ul></li>
 <li>Linux kernel</li>
 </ul>
-                  <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" class="post-read-more">[Read More]</a>
-                
-              </div>
+        <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" class="post-read-more">[Read More]</a>
+        
+    </div>
 
-              
-                <div class="blog-tags">
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-                  
-                </div>
-              
-            </article>
+    
+    <div class="blog-tags">
+        
+        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
+        
+    </div>
+    
+
+</article>
           
             <article class="post-preview">
-              <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/">
-                <h2 class="post-title">QEMU 4.0 boots uncompressed Linux x86_64 kernel</h2>
-                
-                
-                
-              </a>
+    <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/">
+        <h2 class="post-title">QEMU 4.0 boots uncompressed Linux x86_64 kernel</h2>
+        
+        
+        
+    </a>
 
-              <span class="post-meta">
+    <p class="post-meta">
+        <span class="post-meta">
   
   
   <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/23
@@ -323,37 +339,40 @@ boot phase by the different components:</p>
 </span>
 
 
-              <div class="post-entry">
-                
-                  <p><strong>QEMU 4.0</strong> is now able to boot directly into the <strong>uncompressed Linux x86_64 kernel binary</strong> with minimal firmware involvement using the <strong>PVH entry point</strong> defined in the <a href="https://xenbits.xen.org/docs/unstable/misc/pvh.html">x86/HVM direct boot ABI</a>. (<code>CONFIG_PVH=y</code> must be enabled in the Linux config file).</p>
+    </p>
+    <div class="post-entry">
+        
+        <p><strong>QEMU 4.0</strong> is now able to boot directly into the <strong>uncompressed Linux x86_64 kernel binary</strong> with minimal firmware involvement using the <strong>PVH entry point</strong> defined in the <a href="https://xenbits.xen.org/docs/unstable/misc/pvh.html">x86/HVM direct boot ABI</a>. (<code>CONFIG_PVH=y</code> must be enabled in the Linux config file).</p>
 
 <p>The x86/HVM direct boot ABI was initially developed for Xen guests, but with <a href="#patches">latest changes in both QEMU and Linux</a>, QEMU is able to use that same entry point for booting KVM guests.</p>
-                  <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" class="post-read-more">[Read More]</a>
-                
-              </div>
+        <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" class="post-read-more">[Read More]</a>
+        
+    </div>
 
-              
-                <div class="blog-tags">
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-                  
-                </div>
-              
-            </article>
+    
+    <div class="blog-tags">
+        
+        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
+        
+    </div>
+    
+
+</article>
           
             <article class="post-preview">
-              <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/">
-                <h2 class="post-title">iperf3-vsock: how to measure VSOCK performance</h2>
-                
-                
-                
-              </a>
+    <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/">
+        <h2 class="post-title">iperf3-vsock: how to measure VSOCK performance</h2>
+        
+        
+        
+    </a>
 
-              <span class="post-meta">
+    <p class="post-meta">
+        <span class="post-meta">
   
   
   <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/22
@@ -373,9 +392,10 @@ boot phase by the different components:</p>
 </span>
 
 
-              <div class="post-entry">
-                
-                  <p>The <a href="https://github.com/stefano-garzarella/iperf-vsock">iperf-vsock</a> repository
+    </p>
+    <div class="post-entry">
+        
+        <p>The <a href="https://github.com/stefano-garzarella/iperf-vsock">iperf-vsock</a> repository
 contains few patches to add the support of VSOCK address family to <code>iperf3</code>.
 In this way <code>iperf3</code> can be used to measure the performance between guest and
 host using VSOCK sockets.</p>
@@ -387,24 +407,25 @@ machines and the host they are running on.</p>
 both server and client.
 Other iperf3 options (e.g. <code>-t, -l, -P, -R, --bidir</code>) are well supported by
 VSOCK tests.</p>
-                  <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/" class="post-read-more">[Read More]</a>
-                
-              </div>
+        <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/" class="post-read-more">[Read More]</a>
+        
+    </div>
 
-              
-                <div class="blog-tags">
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-                  
-                    <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
-                  
-                </div>
-              
-            </article>
+    
+    <div class="blog-tags">
+        
+        <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
+        
+    </div>
+    
+
+</article>
           
         </div>
 
@@ -413,7 +434,16 @@ VSOCK tests.</p>
     </div>
   </div>
 
-    <footer>
+      
+    <div class="page-meta">
+  
+  
+  
+</div>
+
+
+  
+<footer>
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -497,7 +527,7 @@ VSOCK tests.</p>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.58.0</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="https://gohugo.io">Hugo v0.58.3</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
@@ -515,6 +545,18 @@ VSOCK tests.</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://stefano-garzarella.github.io/js/load-photoswipe.js"></script>
 
 
+
+<script>
+  (function() {
+    var cx = '011433376634952630999:louybk8offk';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
 
 
 
@@ -544,6 +586,7 @@ $(function(){
 
 
 
+    
   </body>
 </html>
 

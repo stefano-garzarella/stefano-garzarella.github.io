@@ -8,15 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <title>QEMU 4.0 boots uncompressed Linux x86_64 kernel - sgarzare&#39;s blog</title>
-  <meta property="og:title" content="QEMU 4.0 boots uncompressed Linux x86_64 kernel" />
-  <meta name="twitter:title" content="QEMU 4.0 boots uncompressed Linux x86_64 kernel" />
   <meta name="description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).
 
 The x86/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.">
-  <meta property="og:description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).
-
-The x86/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.">
-  <meta name="twitter:description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y …">
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -102,16 +96,7 @@ The x86/HVM direct boot ABI was initially developed for Xen guests, but with lat
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-  <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@sgarzarella" />
-  <meta name="twitter:creator" content="@sgarzarella" />
-  <meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="sgarzare&#39;s blog" />
-
-  <meta name="generator" content="Hugo 0.58.0" />
+  <meta name="generator" content="Hugo 0.58.3" />
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -171,6 +156,12 @@ if (!doNotTrack) {
         
 
         
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
       </ul>
     </div>
 
@@ -188,6 +179,23 @@ if (!doNotTrack) {
 </nav>
 
 
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search sgarzare&#39;s blog</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
     
@@ -450,13 +458,20 @@ if (!doNotTrack) {
 
         
           
+            
           
-          <h4 class="see-also">See also</h4>
-          <ul>
+
           
-            <li><a href="/posts/2019-08-22-vsock-iperf3/">iperf3-vsock: how to measure VSOCK performance</a></li>
-          
-          </ul>
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/posts/2019-08-24-qemu-linux-boot-time/">How to measure the boot time of a Linux VM with QEMU/KVM</a></li>
+                
+                    <li><a href="/posts/2019-08-22-vsock-iperf3/">iperf3-vsock: how to measure VSOCK performance</a></li>
+                
+              </ul>
+
           
         
       </article>
@@ -500,7 +515,8 @@ if (!doNotTrack) {
   </div>
 </div>
 
-    <footer>
+      
+<footer>
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -584,7 +600,7 @@ if (!doNotTrack) {
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.58.0</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="https://gohugo.io">Hugo v0.58.3</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
@@ -602,6 +618,18 @@ if (!doNotTrack) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://stefano-garzarella.github.io/js/load-photoswipe.js"></script>
 
 
+
+<script>
+  (function() {
+    var cx = '011433376634952630999:louybk8offk';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
 
 
 
@@ -631,6 +659,7 @@ $(function(){
 
 
 
+    
   </body>
 </html>
 
