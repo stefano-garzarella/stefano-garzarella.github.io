@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>vsock on sgarzare&#39;s blog</title>
@@ -9,7 +8,7 @@
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Thu, 22 Aug 2019 17:52:06 +0200</lastBuildDate>
     
-	<atom:link href="https://stefano-garzarella.github.io/tags/vsock/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://stefano-garzarella.github.io/tags/vsock/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -29,7 +28,62 @@ machines and the host they are running on.&lt;/p&gt;
 &lt;p&gt;To test VSOCK sockets (only Linux), you must use the new option &lt;code&gt;--vsock&lt;/code&gt; on
 both server and client.
 Other iperf3 options (e.g. &lt;code&gt;-t, -l, -P, -R, --bidir&lt;/code&gt;) are well supported by
-VSOCK tests.&lt;/p&gt;</description>
+VSOCK tests.&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Linux host kernel &amp;gt;= 4.8&lt;/li&gt;
+&lt;li&gt;Linux guest kernel &amp;gt;= 4.8&lt;/li&gt;
+&lt;li&gt;QEMU &amp;gt;= 2.8&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;build-iperf3-vsock-from-source&#34;&gt;Build iperf3-vsock from source&lt;/h2&gt;
+
+&lt;h3 id=&#34;clone-repository&#34;&gt;Clone repository&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;git clone https://github.com/stefano-garzarella/iperf-vsock
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; iperf-vsock&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;building&#34;&gt;Building&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir build
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; build
+../configure
+make&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(Note: If configure fails, try running &lt;code&gt;./bootstrap.sh&lt;/code&gt; first)&lt;/p&gt;
+
+&lt;h2 id=&#34;example-with-fedora-30-host-and-guest&#34;&gt;Example with Fedora 30 (host and guest):&lt;/h2&gt;
+
+&lt;h3 id=&#34;host-start-the-vm&#34;&gt;Host: start the VM&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
+sudo modprobe vhost_vsock
+sudo qemu-system-x86_64 -m 1G -smp &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; -cpu host -M &lt;span class=&#34;nv&#34;&gt;accel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm	&lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;     -drive &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;virtio,file&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/fedora.img,format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2     &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;     -device vhost-vsock-pci,guest-cid&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;guest-start-iperf-server&#34;&gt;Guest: start iperf server&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# SELinux can block you, so you can write a policy or temporally disable it&lt;/span&gt;
+sudo setenforce &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+iperf-vsock/build/src/iperf3 --vsock -s&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;host-start-iperf-client&#34;&gt;Host: start iperf client&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;iperf-vsock/build/src/iperf3 --vsock -c &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;output&#34;&gt;Output&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;Connecting to host &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;, port &lt;span class=&#34;m&#34;&gt;5201&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; port &lt;span class=&#34;m&#34;&gt;4008596529&lt;/span&gt; connected to &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; port &lt;span class=&#34;m&#34;&gt;5201&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ID&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Interval           Transfer     Bitrate
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.00-1.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.30 GBytes  &lt;span class=&#34;m&#34;&gt;11&lt;/span&gt;.2 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.00-2.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.67 GBytes  &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;.3 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;.00-3.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.57 GBytes  &lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;.5 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;.00-4.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.49 GBytes  &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;.8 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;.00-5.00   sec   &lt;span class=&#34;m&#34;&gt;971&lt;/span&gt; MBytes  &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;.15 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;.00-6.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.01 GBytes  &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;.71 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;.00-7.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.44 GBytes  &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;.3 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt;.00-8.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.62 GBytes  &lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;.9 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;.00-9.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.61 GBytes  &lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;.8 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;9&lt;/span&gt;.00-10.00  sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.63 GBytes  &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;.0 Gbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ID&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Interval           Transfer     Bitrate
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.00-10.00  sec  &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;.3 GBytes  &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;.3 Gbits/sec                  sender
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.00-10.00  sec  &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;.3 GBytes  &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;.3 Gbits/sec                  receiver
+
+iperf Done.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
   </channel>

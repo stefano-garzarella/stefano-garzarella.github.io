@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on sgarzare&#39;s blog</title>
@@ -9,7 +8,7 @@
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Sat, 24 Aug 2019 15:03:30 +0200</lastBuildDate>
     
-	<atom:link href="https://stefano-garzarella.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://stefano-garzarella.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -39,7 +38,234 @@ boot phase by the different components:&lt;/p&gt;
 &lt;li&gt;&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/&#34;&gt;pvh [vmlinux + PVH entry point]&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Linux kernel&lt;/li&gt;
-&lt;/ul&gt;</description>
+&lt;/ul&gt;
+
+&lt;p&gt;We extended the I/O port addresses and values defined in
+&lt;a href=&#34;https://github.com/bonzini/qboot/blob/master/benchmark.h&#34;&gt;qboot/benchmark.h&lt;/a&gt;
+adding
+&lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time/blob/master/benchmark.h&#34;&gt;new trace points to trace the kernel boot time&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the repository you can find
+&lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time#patches&#34;&gt;patches for Linux, QEMU, and SeaBIOS&lt;/a&gt; to add the I/O writes in the components involved during the boot,
+and a &lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time/blob/master/perf-script/qemu-perf-script.py&#34;&gt;Python perf-script&lt;/a&gt; useful to process the data recorded through &lt;code&gt;perf&lt;/code&gt;
+using perf-script’s built-in Python interpreter.&lt;/p&gt;
+
+&lt;h2 id=&#34;trace-points&#34;&gt;Trace points&lt;/h2&gt;
+
+&lt;p&gt;The &lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time/blob/master/benchmark.h&#34;&gt;benchmark.h&lt;/a&gt;
+file contains the following trace points used in the &lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time/tree/master/patches&#34;&gt;patches&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;QEMU
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;qemu_init_end&lt;/code&gt;: first kvm_entry (i.e. QEMU initialized has finished)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Firmware (SeaBIOS + optionrom or qboot)
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;fw_start&lt;/code&gt;: first entry of the firmware&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;fw_do_boot&lt;/code&gt;: after the firmware initialization (e.g. PCI setup, etc.)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_boot&lt;/code&gt;: before the jump to the Linux kernel&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_pvhboot&lt;/code&gt;: before the jump to the Linux PVH kernel&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Linux Kernel
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;linux_start_kernel&lt;/code&gt;: first entry of the Linux kernel&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_user&lt;/code&gt;: before starting the init process&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;custom-trace-points&#34;&gt;Custom trace points&lt;/h3&gt;
+
+&lt;p&gt;If you want to add new trace points, you can simply add an I/O write to
+&lt;code&gt;LINUX_EXIT_PORT&lt;/code&gt; or &lt;code&gt;FW_EXIT_PORT&lt;/code&gt; I/O port with a value (&amp;gt; 7) that
+identifies the trace point:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;    &lt;span class=&#34;n&#34;&gt;outb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LINUX_EXIT_PORT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;perf script&lt;/code&gt; output will contain &lt;code&gt;Exit point 10&lt;/code&gt; line that identifies your
+custom trace point:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt; qemu_init_end: &lt;span class=&#34;m&#34;&gt;143&lt;/span&gt;.770419
+ fw_start: &lt;span class=&#34;m&#34;&gt;143&lt;/span&gt;.964328 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.193909&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ fw_do_boot: &lt;span class=&#34;m&#34;&gt;164&lt;/span&gt;.71107 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+20.746742&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ Exit point &lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;165&lt;/span&gt;.396804 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.685734&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_kernel: &lt;span class=&#34;m&#34;&gt;165&lt;/span&gt;.979486 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.582682&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_user: &lt;span class=&#34;m&#34;&gt;272&lt;/span&gt;.178335 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+106.198849&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&#34;how-to-use&#34;&gt;How to use&lt;/h2&gt;
+
+&lt;h3 id=&#34;clone-qemu-boot-time-repository&#34;&gt;Clone qemu-boot-time repository&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;~/repos&amp;#34;&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;
+git clone https://github.com/stefano-garzarella/qemu-boot-time.git&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;apply-patches-to-linux-qemu-and-seabios&#34;&gt;Apply patches to Linux, QEMU and SeaBIOS&lt;/h3&gt;
+
+&lt;p&gt;Trace points are printed only if they are recorded, so you can enable few of
+them, patching only the components that you are interested in.&lt;/p&gt;
+
+&lt;h4 id=&#34;linux&#34;&gt;Linux&lt;/h4&gt;
+
+&lt;p&gt;Apply the &lt;code&gt;patches/linux.patch&lt;/code&gt; to your Linux kernel in order to trace kernel
+events&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/linux
+git checkout -b benchmark
+git am &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/patches/linux.patch&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4 id=&#34;qemu&#34;&gt;QEMU&lt;/h4&gt;
+
+&lt;p&gt;Apply the &lt;code&gt;patches/qemu.patch&lt;/code&gt; to your QEMU in order to trace optionrom
+events&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu
+git checkout -b benchmark
+git am &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/patches/qemu.patch
+
+mkdir build-benchmark
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; build-benchmark
+../configure --target-list&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;x86_64-softmmu ...
+make&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use &lt;code&gt;qemu-system-x86_64 -L ${REPOS}/qemu/build-benchmark/pc-bios/optionrom/ ...&lt;/code&gt;
+to use the optionrom patched.&lt;/p&gt;
+
+&lt;h4 id=&#34;seabios&#34;&gt;SeaBIOS&lt;/h4&gt;
+
+&lt;p&gt;Apply the &lt;code&gt;patches/seabios.patch&lt;/code&gt; to your SeaBIOS in order to trace bios
+events&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/seabios
+git checkout -b benchmark
+git am &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/patches/seabios.patch
+
+make clean distclean
+cp &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu/roms/config.seabios-256k .config
+make oldnoconfig&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use &lt;code&gt;qemu-system-x86_64 -bios ${REPOS}/seabios/out/bios.bin ...&lt;/code&gt; to use
+the SeaBIOS image patched.&lt;/p&gt;
+
+&lt;h4 id=&#34;qboot&#34;&gt;qboot&lt;/h4&gt;
+
+&lt;p&gt;qboot already defines trace points, we just need to compile it defining
+&lt;code&gt;BENCHMARK_HACK&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qboot
+make clean
+&lt;span class=&#34;nv&#34;&gt;BIOS_CFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;-DBENCHMARK_HACK=1&amp;#34;&lt;/span&gt; make&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can use &lt;code&gt;qemu-system-x86_64 -bios ${REPOS}/qboot/bios.bin ...&lt;/code&gt; to use the
+qboot image.&lt;/p&gt;
+
+&lt;h3 id=&#34;enable-kvm-events&#34;&gt;Enable KVM events&lt;/h3&gt;
+
+&lt;p&gt;The following steps allow &lt;code&gt;perf record&lt;/code&gt; to get the kvm trace events:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &amp;gt; /sys/kernel/debug/tracing/events/kvm/enable
+&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; -1 &amp;gt; /proc/sys/kernel/perf_event_paranoid
+mount -o remount,mode&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;755&lt;/span&gt; /sys/kernel/debug
+mount -o remount,mode&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;755&lt;/span&gt; /sys/kernel/debug/tracing&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;record-the-trace-events&#34;&gt;Record the trace events&lt;/h3&gt;
+
+&lt;p&gt;Start perf record to get the trace events&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;PERF_DATA&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;qemu_perf.data&amp;#34;&lt;/span&gt;
+perf record -a -e kvm:kvm_entry -e kvm:kvm_pio -e sched:sched_process_exec &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;            -o &lt;span class=&#34;nv&#34;&gt;$PERF_DATA&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;PERF_PID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can run QEMU multiple times to get also some statistics (Avg/Min/Max)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;qemu-system-x86_64 -machine q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -bios seabios/out/bios.bin &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -L qemu/build-benchmark/pc-bios/optionrom/ &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -kernel linux/bzImage ...
+qemu-system-x86_64 -machine q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -bios seabios/out/bios.bin &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -L qemu/build-benchmark/pc-bios/optionrom/ &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -kernel linux/bzImage ...
+qemu-system-x86_64 -machine q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -bios seabios/out/bios.bin &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -L qemu/build-benchmark/pc-bios/optionrom/ &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -kernel linux/bzImage ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Stop perf record&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;kill&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$PERF_PID&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;process-the-trace-recorded-using-the-qemu-perf-script-py&#34;&gt;Process the trace recorded using the qemu-perf-script.py&lt;/h3&gt;
+
+&lt;p&gt;Note: times printed in milliseconds&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;perf script -s &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/perf-script/qemu-perf-script.py -i &lt;span class=&#34;nv&#34;&gt;$PERF_DATA&lt;/span&gt;
+
+in trace_begin
+sched__sched_process_exec     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55061&lt;/span&gt;.435418353   &lt;span class=&#34;m&#34;&gt;289738&lt;/span&gt; qemu-system-x86
+kvm__kvm_entry           &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55061&lt;/span&gt;.466887708   &lt;span class=&#34;m&#34;&gt;289741&lt;/span&gt; qemu-system-x86
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55061&lt;/span&gt;.467070650   &lt;span class=&#34;m&#34;&gt;289741&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf5, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55061&lt;/span&gt;.475818073   &lt;span class=&#34;m&#34;&gt;289741&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf5, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55061&lt;/span&gt;.477168037   &lt;span class=&#34;m&#34;&gt;289741&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55061&lt;/span&gt;.558779540   &lt;span class=&#34;m&#34;&gt;289741&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55061&lt;/span&gt;.686849663   &lt;span class=&#34;m&#34;&gt;289741&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;
+
+sched__sched_process_exec     &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55067&lt;/span&gt;.461869075   &lt;span class=&#34;m&#34;&gt;289793&lt;/span&gt; qemu-system-x86
+kvm__kvm_entry           &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55067&lt;/span&gt;.496402472   &lt;span class=&#34;m&#34;&gt;289796&lt;/span&gt; qemu-system-x86
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55067&lt;/span&gt;.496555385   &lt;span class=&#34;m&#34;&gt;289796&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf5, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55067&lt;/span&gt;.505067184   &lt;span class=&#34;m&#34;&gt;289796&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf5, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55067&lt;/span&gt;.506395502   &lt;span class=&#34;m&#34;&gt;289796&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55067&lt;/span&gt;.584029910   &lt;span class=&#34;m&#34;&gt;289796&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55067&lt;/span&gt;.704751791   &lt;span class=&#34;m&#34;&gt;289796&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;
+
+sched__sched_process_exec     &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55070&lt;/span&gt;.073823767   &lt;span class=&#34;m&#34;&gt;289827&lt;/span&gt; qemu-system-x86
+kvm__kvm_entry           &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55070&lt;/span&gt;.110507211   &lt;span class=&#34;m&#34;&gt;289830&lt;/span&gt; qemu-system-x86
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55070&lt;/span&gt;.110694645   &lt;span class=&#34;m&#34;&gt;289830&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf5, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55070&lt;/span&gt;.120092692   &lt;span class=&#34;m&#34;&gt;289830&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf5, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55070&lt;/span&gt;.121437922   &lt;span class=&#34;m&#34;&gt;289830&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55070&lt;/span&gt;.198628779   &lt;span class=&#34;m&#34;&gt;289830&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;
+
+kvm__kvm_pio             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;55070&lt;/span&gt;.315734630   &lt;span class=&#34;m&#34;&gt;289830&lt;/span&gt; qemu-system-x86      &lt;span class=&#34;nv&#34;&gt;rw&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;port&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0xf4, &lt;span class=&#34;nv&#34;&gt;size&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;count&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;, &lt;span class=&#34;nv&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;
+
+in trace_end
+Trace qemu-system-x86
+&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; pid &lt;span class=&#34;m&#34;&gt;289738&lt;/span&gt;
+ qemu_init_end: &lt;span class=&#34;m&#34;&gt;31&lt;/span&gt;.469355
+ fw_start: &lt;span class=&#34;m&#34;&gt;31&lt;/span&gt;.652297 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.182942&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ fw_do_boot: &lt;span class=&#34;m&#34;&gt;40&lt;/span&gt;.39972 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+8.747423&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_boot: &lt;span class=&#34;m&#34;&gt;41&lt;/span&gt;.749684 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+1.349964&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_kernel: &lt;span class=&#34;m&#34;&gt;123&lt;/span&gt;.361187 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+81.611503&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_user: &lt;span class=&#34;m&#34;&gt;251&lt;/span&gt;.43131 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+128.070123&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; pid &lt;span class=&#34;m&#34;&gt;289793&lt;/span&gt;
+ qemu_init_end: &lt;span class=&#34;m&#34;&gt;34&lt;/span&gt;.533397
+ fw_start: &lt;span class=&#34;m&#34;&gt;34&lt;/span&gt;.68631 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.152913&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ fw_do_boot: &lt;span class=&#34;m&#34;&gt;43&lt;/span&gt;.198109 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+8.511799&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_boot: &lt;span class=&#34;m&#34;&gt;44&lt;/span&gt;.526427 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+1.328318&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_kernel: &lt;span class=&#34;m&#34;&gt;122&lt;/span&gt;.160835 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+77.634408&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_user: &lt;span class=&#34;m&#34;&gt;242&lt;/span&gt;.882716 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+120.721881&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; pid &lt;span class=&#34;m&#34;&gt;289827&lt;/span&gt;
+ qemu_init_end: &lt;span class=&#34;m&#34;&gt;36&lt;/span&gt;.683444
+ fw_start: &lt;span class=&#34;m&#34;&gt;36&lt;/span&gt;.870878 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.187434&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ fw_do_boot: &lt;span class=&#34;m&#34;&gt;46&lt;/span&gt;.268925 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+9.398047&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_boot: &lt;span class=&#34;m&#34;&gt;47&lt;/span&gt;.614155 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+1.34523&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_kernel: &lt;span class=&#34;m&#34;&gt;124&lt;/span&gt;.805012 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+77.190857&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_user: &lt;span class=&#34;m&#34;&gt;241&lt;/span&gt;.910863 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+117.105851&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+Avg
+ qemu_init_end: &lt;span class=&#34;m&#34;&gt;34&lt;/span&gt;.228732
+ fw_start: &lt;span class=&#34;m&#34;&gt;34&lt;/span&gt;.403161 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.174429&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ fw_do_boot: &lt;span class=&#34;m&#34;&gt;43&lt;/span&gt;.288918 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+8.885757&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_boot: &lt;span class=&#34;m&#34;&gt;44&lt;/span&gt;.630088 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+1.34117&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_kernel: &lt;span class=&#34;m&#34;&gt;123&lt;/span&gt;.442344 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+78.812256&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_user: &lt;span class=&#34;m&#34;&gt;245&lt;/span&gt;.408296 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+121.965952&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+Min
+ qemu_init_end: &lt;span class=&#34;m&#34;&gt;31&lt;/span&gt;.469355
+ fw_start: &lt;span class=&#34;m&#34;&gt;31&lt;/span&gt;.652297 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.182942&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ fw_do_boot: &lt;span class=&#34;m&#34;&gt;40&lt;/span&gt;.39972 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+8.747423&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_boot: &lt;span class=&#34;m&#34;&gt;41&lt;/span&gt;.749684 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+1.349964&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_kernel: &lt;span class=&#34;m&#34;&gt;122&lt;/span&gt;.160835 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+80.411151&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_user: &lt;span class=&#34;m&#34;&gt;241&lt;/span&gt;.910863 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+119.750028&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+
+Max
+ qemu_init_end: &lt;span class=&#34;m&#34;&gt;36&lt;/span&gt;.683444
+ fw_start: &lt;span class=&#34;m&#34;&gt;36&lt;/span&gt;.870878 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.187434&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ fw_do_boot: &lt;span class=&#34;m&#34;&gt;46&lt;/span&gt;.268925 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+9.398047&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_boot: &lt;span class=&#34;m&#34;&gt;47&lt;/span&gt;.614155 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+1.34523&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_kernel: &lt;span class=&#34;m&#34;&gt;124&lt;/span&gt;.805012 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+77.190857&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+ linux_start_user: &lt;span class=&#34;m&#34;&gt;242&lt;/span&gt;.882716 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+118.077704&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -50,7 +276,105 @@ boot phase by the different components:&lt;/p&gt;
       <guid>https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/</guid>
       <description>&lt;p&gt;&lt;strong&gt;QEMU 4.0&lt;/strong&gt; is now able to boot directly into the &lt;strong&gt;uncompressed Linux x86_64 kernel binary&lt;/strong&gt; with minimal firmware involvement using the &lt;strong&gt;PVH entry point&lt;/strong&gt; defined in the &lt;a href=&#34;https://xenbits.xen.org/docs/unstable/misc/pvh.html&#34;&gt;x86/HVM direct boot ABI&lt;/a&gt;. (&lt;code&gt;CONFIG_PVH=y&lt;/code&gt; must be enabled in the Linux config file).&lt;/p&gt;
 
-&lt;p&gt;The x86/HVM direct boot ABI was initially developed for Xen guests, but with &lt;a href=&#34;#patches&#34;&gt;latest changes in both QEMU and Linux&lt;/a&gt;, QEMU is able to use that same entry point for booting KVM guests.&lt;/p&gt;</description>
+&lt;p&gt;The x86/HVM direct boot ABI was initially developed for Xen guests, but with &lt;a href=&#34;#patches&#34;&gt;latest changes in both QEMU and Linux&lt;/a&gt;, QEMU is able to use that same entry point for booting KVM guests.&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;QEMU &amp;gt;= 4.0&lt;/li&gt;
+&lt;li&gt;Linux kernel &amp;gt;= 4.21
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CONFIG_PVH=y&lt;/code&gt; enabled&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;vmlinux&lt;/code&gt; uncompressed image&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;how-to-use&#34;&gt;How to use&lt;/h2&gt;
+
+&lt;p&gt;To boot the PVH kernel image, you can use the &lt;code&gt;-kernel&lt;/code&gt; parameter specifying the path to the &lt;code&gt;vmlinux&lt;/code&gt; image.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;qemu-system-x86_64 -machine q35,accel=kvm \
+    -kernel /path/to/vmlinux \
+    -drive file=/path/to/rootfs.ext2,if=virtio,format=raw \
+    -append &amp;#39;root=/dev/vda console=ttyS0&amp;#39; -vga none -display none \
+    -serial mon:stdio&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;-initrd&lt;/code&gt; and &lt;code&gt;-append&lt;/code&gt; parameters are also supported as for compressed images.&lt;/p&gt;
+
+&lt;h3 id=&#34;details&#34;&gt;Details&lt;/h3&gt;
+
+&lt;p&gt;QEMU will automatically recognize if the &lt;code&gt;vmlinux&lt;/code&gt; image has the PVH entry point and it will use SeaBIOS with the new &lt;code&gt;pvh.bin&lt;/code&gt; optionrom to load the uncompressed image into the guest VM.&lt;/p&gt;
+
+&lt;p&gt;As an alternative, &lt;a href=&#34;https://github.com/bonzini/qboot&#34;&gt;qboot&lt;/a&gt; can be used to load the PVH image.&lt;/p&gt;
+
+&lt;h3 id=&#34;performance&#34;&gt;Performance&lt;/h3&gt;
+
+&lt;p&gt;Perf script and patches used to measure boot time: &lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time&#34;&gt;https://github.com/stefano-garzarella/qemu-boot-time&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;The following values are expressed in milliseconds [ms]&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;QEMU (q35 machine) + SeaBIOS + bzImage&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;qemu_init_end&lt;/code&gt;: 36.072056&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_kernel&lt;/code&gt;: 114.669522 (+78.597466)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_user&lt;/code&gt;: 191.748567 (+77.079045)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;QEMU (q35 machine) + SeaBIOS + vmlinux(PVH)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;qemu_init_end&lt;/code&gt;: 51.588200&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_kernel&lt;/code&gt;: 62.124665 (+10.536465)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_user&lt;/code&gt;: 139.460582 (+77.335917)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;QEMU (q35 machine) + qboot + bzImage&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;qemu_init_end: 36.443638&lt;/li&gt;
+&lt;li&gt;linux_start_kernel: 106.73115 (+70.287512)&lt;/li&gt;
+&lt;li&gt;linux_start_user: 184.575531 (+77.844381)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;QEMU (q35 machine) + qboot + vmlinux(PVH)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;qemu_init_end: 51.877656&lt;/li&gt;
+&lt;li&gt;linux_start_kernel: 56.710735 (+4.833079)&lt;/li&gt;
+&lt;li&gt;linux_start_user: 133.808972 (+77.098237)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Tracepoints:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;qemu_init_end&lt;/code&gt;: first kvm_entry (i.e. QEMU initialization has finished)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_kernel&lt;/code&gt;: first entry of the Linux kernel (&lt;code&gt;start_kernel()&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;linux_start_user&lt;/code&gt;: before starting the init process&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;patches&#34;&gt;Patches&lt;/h2&gt;
+
+&lt;p&gt;Linux patches merged upstream in Linux 4.21:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://lkml.org/lkml/2018/12/14/1330&#34;&gt;https://lkml.org/lkml/2018/12/14/1330&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;QEMU patches merged upstream in QEMU 4.0:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mail-archive.com/qemu-devel@nongnu.org/msg587312.html&#34;&gt;https://www.mail-archive.com/qemu-devel@nongnu.org/msg587312.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.mail-archive.com/qemu-devel@nongnu.org/msg588561.html&#34;&gt;https://www.mail-archive.com/qemu-devel@nongnu.org/msg588561.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;qboot patches merged upstream:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/bonzini/qboot/pull/17&#34;&gt;https://github.com/bonzini/qboot/pull/17&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/bonzini/qboot/pull/18&#34;&gt;https://github.com/bonzini/qboot/pull/18&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -70,7 +394,62 @@ machines and the host they are running on.&lt;/p&gt;
 &lt;p&gt;To test VSOCK sockets (only Linux), you must use the new option &lt;code&gt;--vsock&lt;/code&gt; on
 both server and client.
 Other iperf3 options (e.g. &lt;code&gt;-t, -l, -P, -R, --bidir&lt;/code&gt;) are well supported by
-VSOCK tests.&lt;/p&gt;</description>
+VSOCK tests.&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Linux host kernel &amp;gt;= 4.8&lt;/li&gt;
+&lt;li&gt;Linux guest kernel &amp;gt;= 4.8&lt;/li&gt;
+&lt;li&gt;QEMU &amp;gt;= 2.8&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;build-iperf3-vsock-from-source&#34;&gt;Build iperf3-vsock from source&lt;/h2&gt;
+
+&lt;h3 id=&#34;clone-repository&#34;&gt;Clone repository&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;git clone https://github.com/stefano-garzarella/iperf-vsock
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; iperf-vsock&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;building&#34;&gt;Building&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir build
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; build
+../configure
+make&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;(Note: If configure fails, try running &lt;code&gt;./bootstrap.sh&lt;/code&gt; first)&lt;/p&gt;
+
+&lt;h2 id=&#34;example-with-fedora-30-host-and-guest&#34;&gt;Example with Fedora 30 (host and guest):&lt;/h2&gt;
+
+&lt;h3 id=&#34;host-start-the-vm&#34;&gt;Host: start the VM&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
+sudo modprobe vhost_vsock
+sudo qemu-system-x86_64 -m 1G -smp &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; -cpu host -M &lt;span class=&#34;nv&#34;&gt;accel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm	&lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;     -drive &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;virtio,file&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/fedora.img,format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2     &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;     -device vhost-vsock-pci,guest-cid&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;guest-start-iperf-server&#34;&gt;Guest: start iperf server&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# SELinux can block you, so you can write a policy or temporally disable it&lt;/span&gt;
+sudo setenforce &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
+iperf-vsock/build/src/iperf3 --vsock -s&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;host-start-iperf-client&#34;&gt;Host: start iperf client&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;iperf-vsock/build/src/iperf3 --vsock -c &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&#34;output&#34;&gt;Output&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;Connecting to host &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;, port &lt;span class=&#34;m&#34;&gt;5201&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; port &lt;span class=&#34;m&#34;&gt;4008596529&lt;/span&gt; connected to &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; port &lt;span class=&#34;m&#34;&gt;5201&lt;/span&gt;
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ID&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Interval           Transfer     Bitrate
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.00-1.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.30 GBytes  &lt;span class=&#34;m&#34;&gt;11&lt;/span&gt;.2 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.00-2.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.67 GBytes  &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;.3 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;.00-3.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.57 GBytes  &lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;.5 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;.00-4.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.49 GBytes  &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;.8 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;.00-5.00   sec   &lt;span class=&#34;m&#34;&gt;971&lt;/span&gt; MBytes  &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;.15 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;.00-6.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.01 GBytes  &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;.71 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;.00-7.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.44 GBytes  &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;.3 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt;.00-8.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.62 GBytes  &lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;.9 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;.00-9.00   sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.61 GBytes  &lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;.8 Gbits/sec
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;9&lt;/span&gt;.00-10.00  sec  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.63 GBytes  &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;.0 Gbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ID&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Interval           Transfer     Bitrate
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.00-10.00  sec  &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;.3 GBytes  &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;.3 Gbits/sec                  sender
+&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.00-10.00  sec  &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;.3 GBytes  &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;.3 Gbits/sec                  receiver
+
+iperf Done.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
   </channel>

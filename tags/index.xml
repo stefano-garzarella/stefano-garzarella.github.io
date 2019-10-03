@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on sgarzare&#39;s blog</title>
@@ -9,7 +8,7 @@
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Sat, 24 Aug 2019 15:03:30 +0200</lastBuildDate>
     
-	<atom:link href="https://stefano-garzarella.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://stefano-garzarella.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
