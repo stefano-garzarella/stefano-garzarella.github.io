@@ -6,10 +6,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Sat, 24 Aug 2019 15:03:30 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 09 Nov 2019 18:45:25 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</title>
+      <link>https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/</link>
+      <pubDate>Sat, 09 Nov 2019 18:45:25 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://static.sched.com/hosted_files/kvmforum2019/50/KVMForum_2019_virtio_vsock_Andra_Paraschiv_Stefano_Garzarella_v1.3.pdf&#34;&gt;Slides&lt;/a&gt; and
+&lt;a href=&#34;https://youtu.be/LFqz-VZPhFE&#34;&gt;recording&lt;/a&gt; are available for the &amp;ldquo;&lt;a href=&#34;https://sched.co/TmwK&#34;&gt;virtio-vsock in QEMU,
+Firecracker and Linux: Status, Performance and Challenges&lt;/a&gt;&amp;ldquo;
+talk that Andra Paraschiv and I presented at
+&lt;a href=&#34;https://events19.linuxfoundation.org/events/kvm-forum-2019/&#34;&gt;KVM Forum 2019&lt;/a&gt;.
+This was the 13th edition of the KVM Forum conference. It took place in Lyon,
+France in October 2019.&lt;/p&gt;
+
+&lt;p&gt;We talked about the current status and future works of VSOCK drivers in Linux
+and how Firecracker and QEMU provides the virtio-vsock device.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>How to measure the boot time of a Linux VM with QEMU/KVM</title>

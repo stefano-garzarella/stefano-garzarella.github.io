@@ -6,10 +6,269 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Thu, 22 Aug 2019 17:52:06 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 09 Nov 2019 18:45:25 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/tags/vsock/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</title>
+      <link>https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/</link>
+      <pubDate>Sat, 09 Nov 2019 18:45:25 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://static.sched.com/hosted_files/kvmforum2019/50/KVMForum_2019_virtio_vsock_Andra_Paraschiv_Stefano_Garzarella_v1.3.pdf&#34;&gt;Slides&lt;/a&gt; and
+&lt;a href=&#34;https://youtu.be/LFqz-VZPhFE&#34;&gt;recording&lt;/a&gt; are available for the &amp;ldquo;&lt;a href=&#34;https://sched.co/TmwK&#34;&gt;virtio-vsock in QEMU,
+Firecracker and Linux: Status, Performance and Challenges&lt;/a&gt;&amp;ldquo;
+talk that Andra Paraschiv and I presented at
+&lt;a href=&#34;https://events19.linuxfoundation.org/events/kvm-forum-2019/&#34;&gt;KVM Forum 2019&lt;/a&gt;.
+This was the 13th edition of the KVM Forum conference. It took place in Lyon,
+France in October 2019.&lt;/p&gt;
+
+&lt;p&gt;We talked about the current status and future works of VSOCK drivers in Linux
+and how Firecracker and QEMU provides the virtio-vsock device.&lt;/p&gt;
+
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;Initially, Andra gave an overview of VSOCK, she described the state of the art,
+and the key features:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;it is very simple to configure, the host assigns an unique CID (Context-ID) to
+each guest, and no configuration is needed inside the guest;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;it provides AF_VSOCK address family, allowing user space application in the
+host and guest to communicate using standard POSIX Socket API (e.g.
+bind, listen, accept, connect, send, recv, etc.)&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Andra also described common use cases for VSOCK, such as guest agents
+(clipboard sharing, remote console, etc.), network applications using
+SOCK_STREAM, and services provided by the hypervisor to the guests.&lt;/p&gt;
+
+&lt;p&gt;Going into the implementation details, Andra explained how the device in the
+guest communicates with the vhost backend in the host, exchanging data and
+events (i.e. ioeventfd, irqfd).&lt;/p&gt;
+
+&lt;h3 id=&#34;firecracker&#34;&gt;Firecracker&lt;/h3&gt;
+
+&lt;p&gt;Focusing on Firecracker, Andra gave a brief overview on this new VMM (Virtual
+Machine Monitor) written in Rust and she explained why, in the v0.18.0 release,
+they switched from the experimental vhost-vsock implementation to a vhost-less
+solution:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;focus on security impact&lt;/li&gt;
+&lt;li&gt;less dependency on host kernel features&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This change required a device emulation in Firecracker, that implements
+virtio-vsock device model over MMIO. The device is exposed in the host using
+UDS (Unix Domain Sockets).&lt;/p&gt;
+
+&lt;p&gt;Andra described how Firecracker maps the VSOCK ports on the &lt;code&gt;uds_path&lt;/code&gt; specified
+in the VM configuration:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Host-Initiated Connections&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Guest: create an AF_VSOCK socket and &lt;code&gt;listen()&lt;/code&gt; on PORT&lt;/li&gt;
+&lt;li&gt;Host: &lt;code&gt;connect()&lt;/code&gt; to AF_UNIX at &lt;code&gt;uds_path&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Host: &lt;code&gt;send()&lt;/code&gt; &amp;ldquo;CONNECT PORT\n&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Guest: &lt;code&gt;accept()&lt;/code&gt; the new connection&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Guest-Initiated Connections&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Host: create and &lt;code&gt;listen()&lt;/code&gt; on an AF_UNIX socket at &lt;code&gt;uds_path_PORT&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Guest: create an AF_VSOCK socket and &lt;code&gt;connect()&lt;/code&gt; to &lt;code&gt;HOST_CID&lt;/code&gt; and &lt;code&gt;PORT&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Host: &lt;code&gt;accept()&lt;/code&gt; the new connection&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Finally, she showed the performance of this solution, running
+&lt;a href=&#34;https://github.com/stefano-garzarella/iperf-vsock&#34;&gt;iperf-vsock&lt;/a&gt; benchmark,
+varying the size of the buffer used in Firecracker to transfer packets
+between the virtio-vsock device and the UNIX domain socket. The throughput
+on the guest to host path reaches 10 Gbps.&lt;/p&gt;
+
+&lt;h3 id=&#34;qemu&#34;&gt;QEMU&lt;/h3&gt;
+
+&lt;p&gt;In the second part of the talk, I described the QEMU implementation.
+QEMU provides the virtio-vsock device using the vhost-vsock kernel module.&lt;/p&gt;
+
+&lt;p&gt;The vsock device in QEMU handles only:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;configuration
+
+&lt;ul&gt;
+&lt;li&gt;user or management tool can configure the guest CID&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;live-migration
+
+&lt;ul&gt;
+&lt;li&gt;connected SOCK_STREAM sockets become disconnected.
+Applications must handle a connection reset error and should reconnect.&lt;/li&gt;
+&lt;li&gt;guest CID can be not available in the new host because can be
+assigned to another VM. In this case the guest is notified about the
+CID change.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The vhost-vsock kernel module handles the communication with the guest,
+providing in-kernel virtio device emulation, to have very high performance and
+to interface directly to the host socket layer.
+In this way, also host application can directly use POSIX Socket API to
+communicate with the guest. So, guest and host applications can be switched
+between them, changing only the destination CID.&lt;/p&gt;
+
+&lt;h3 id=&#34;virtio-vsock-linux-drivers&#34;&gt;virtio-vsock Linux drivers&lt;/h3&gt;
+
+&lt;p&gt;After that, I told the story of VSOCK in the Linux tree, started in 2013
+when the first implementation was merged, and the changes in the last year.&lt;/p&gt;
+
+&lt;p&gt;These changes mainly regard fixes, but for the virtio/vhost transports we also
+improved the performance with two simple changes released with Linux v5.4:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;reducing the number of credit update messages exchanged&lt;/li&gt;
+&lt;li&gt;increasing the size of packets queued in the virtio-vsock device from 4 KB up
+to 64 KB, the maximum packet size handled by virtio-vsock devices.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With these changes we are able to reach ~40 Gbps in the Guest -&amp;gt; Host path,
+because the guest can now send up to 64 KB packets directly to the host;
+for the Host -&amp;gt; Guest path, we reached ~25 Gbps, because the host is still
+using 4 KB buffer preallocated by the guest.&lt;/p&gt;
+
+&lt;h3 id=&#34;tools-and-languages-that-support-vsock&#34;&gt;Tools and languages that support VSOCK&lt;/h3&gt;
+
+&lt;p&gt;In the last few years, several applications, tools, and languages started to
+support VSOCK and I listed them to update the audience:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Tools:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;wireshark &amp;gt;= 2.40 [2017-07-19]&lt;/li&gt;
+&lt;li&gt;iproute2 &amp;gt;= 4.15 [2018-01-28]
+
+&lt;ul&gt;
+&lt;li&gt;ss&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;tcpdump
+
+&lt;ul&gt;
+&lt;li&gt;merged in master [2019-04-16]&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;nmap &amp;gt;= 7.80 [2019-08-10]
+
+&lt;ul&gt;
+&lt;li&gt;ncat&lt;/li&gt;
+&lt;li&gt;nbd&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;nbdkit &amp;gt;= 1.15.5 [2019-10-19]&lt;/li&gt;
+&lt;li&gt;libnbd &amp;gt;= 1.1.6 [2019-10-19]&lt;/li&gt;
+&lt;li&gt;iperf-vsock
+
+&lt;ul&gt;
+&lt;li&gt;iperf3 fork&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Languages:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;C
+
+&lt;ul&gt;
+&lt;li&gt;glibc &amp;gt;= 2.18 [2013-08-10]&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Python
+
+&lt;ul&gt;
+&lt;li&gt;python &amp;gt;= 3.7 alpha 1 [2017-09-19]&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Golang
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mdlayher/vsock&#34;&gt;https://github.com/mdlayher/vsock&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Rust
+
+&lt;ul&gt;
+&lt;li&gt;libc crate &amp;gt;= 0.2.59 [2019-07-08]
+
+&lt;ul&gt;
+&lt;li&gt;struct sockaddr_vm&lt;/li&gt;
+&lt;li&gt;VMADDR_* macros&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;nix crate &amp;gt;= 0.15.0 [2019-08-10]
+
+&lt;ul&gt;
+&lt;li&gt;VSOCK supported in the socket API (nix::sys::socket)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;next-steps&#34;&gt;Next steps&lt;/h3&gt;
+
+&lt;p&gt;Concluding, I went through the next challenges that we are going to face:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;multi-transport&lt;/strong&gt; to use VSOCK in a nested VM environment. because we are
+limited by the fact that the current implementation can handle only one
+transport loaded at run time, so, we can&amp;rsquo;t load virtio_transport and
+vhost_transport together in the L1 guest.
+I already sent some patches upstream
+[&lt;a href=&#34;https://patchwork.ozlabs.org/cover/1168442/&#34;&gt;RFC&lt;/a&gt;,
+&lt;a href=&#34;https://patchwork.ozlabs.org/cover/1181986/&#34;&gt;v1&lt;/a&gt;],
+but they are still in progress.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;network namespace support&lt;/strong&gt; to create independent addressing domains with
+VSOCK socket. This could be useful for partitioning VMs in different
+domains or, in a nested VM environment, to isolate host applications
+from guest applications bound to the same port.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;virtio-net as a transport for the virtio-vsock&lt;/strong&gt; to avoid to re-implement
+features already done in virtio-net, such as mergeable buffers,
+page allocation, small packet handling.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;from-the-audience&#34;&gt;From the audience&lt;/h4&gt;
+
+&lt;p&gt;Other points to be addressed came from the comments we received from the
+audience:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;loopback device&lt;/strong&gt; could be very useful for developers to test applications
+that use VSOCK socket. The current implementation support loopback only
+in the guest, but it would be better to support it also in the host, adding
+&lt;code&gt;VMADDR_CID_LOCAL&lt;/code&gt; special address.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;VM to VM communication&lt;/strong&gt; was asked by several people. Introducing it in the
+VSOCK core could complicate the protocol, the addressing and could require
+some sort of firewall.
+For now we do not have in mind to do it, but I developed a simple user
+space application to solve this issue:
+&lt;a href=&#34;https://github.com/stefano-garzarella/vsock-bridge&#34;&gt;vsock-bridge&lt;/a&gt;.
+In order to improve the performance of this solution, we will consider
+the possibility to add &lt;code&gt;sendfile(2)&lt;/code&gt; or
+&lt;a href=&#34;https://www.kernel.org/doc/html/v4.15/networking/msg_zerocopy.html&#34;&gt;MSG_ZEROCOPY&lt;/a&gt;
+support to the AF_VSOCK core.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;virtio-vsock windows drivers&lt;/strong&gt; is not planned to be addressed, but contributions
+are welcome. Other virtio windows drivers are available in the
+&lt;a href=&#34;https://github.com/virtio-win/kvm-guest-drivers-windows&#34;&gt;vm-guest-drivers-windows&lt;/a&gt;
+repository.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Stay tuned!&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>iperf3-vsock: how to measure VSOCK performance</title>
