@@ -11,22 +11,20 @@
   <meta name="description" content="The stefano-garzarella/qemu-boot-time
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
 to measure the boot time of a Linux VM with QEMU/KVM.
-
 Using I/O writes, we can trace events to measure the time consumed during the
 boot phase by the different components:
 
-
 firmware
-
 
 SeaBIOS
 qboot
 
+
 optionrom
 
-
 linuxboot [bzImage]
-pvh [vmlinux &#43; PVH entry point]
+[pvh [vmlinux &#43; PVH entry point]] ( /posts/2019-08-23-qemu-linux-kernel-pvh/)
+
 
 Linux kernel
 ">
@@ -78,9 +76,9 @@ Linux kernel
     "name" : "Stefano Garzarella"
   },
   "headline": "How to measure the boot time of a Linux VM with QEMU\/KVM",
-  "description" : "The stefano-garzarella\/qemu-boot-time repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches to measure the boot time of a Linux VM with QEMU\/KVM.\nUsing I\/O writes, we can trace events to measure the time consumed during the boot phase by the different components:\n firmware  SeaBIOS qboot  optionrom  linuxboot [bzImage] pvh [vmlinux \x2b PVH entry point]  Linux kernel ",
+  "description" : "The stefano-garzarella\/qemu-boot-time repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches to measure the boot time of a Linux VM with QEMU\/KVM.\nUsing I\/O writes, we can trace events to measure the time consumed during the boot phase by the different components:\n firmware  SeaBIOS qboot   optionrom  linuxboot [bzImage] [pvh [vmlinux \x2b PVH entry point]] ( \/posts\/2019-08-23-qemu-linux-kernel-pvh\/)   Linux kernel ",
   "inLanguage" : "en",
-  "wordCount":  882 ,
+  "wordCount":  884 ,
   "datePublished" : "2019-08-24T15:03:30",
   "dateModified" : "2019-08-24T15:03:30",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -103,22 +101,20 @@ Linux kernel
 <meta property="og:description" content="The stefano-garzarella/qemu-boot-time
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
 to measure the boot time of a Linux VM with QEMU/KVM.
-
 Using I/O writes, we can trace events to measure the time consumed during the
 boot phase by the different components:
 
-
 firmware
-
 
 SeaBIOS
 qboot
 
+
 optionrom
 
-
 linuxboot [bzImage]
-pvh [vmlinux &#43; PVH entry point]
+[pvh [vmlinux &#43; PVH entry point]] ( /posts/2019-08-23-qemu-linux-kernel-pvh/)
+
 
 Linux kernel
 ">
@@ -131,14 +127,13 @@ Linux kernel
   <meta name="twitter:description" content="The stefano-garzarella/qemu-boot-time
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
 to measure the boot time of a Linux VM with QEMU/KVM.
-
 Using I/O writes, we can trace …">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.58.3" />
+  <meta name="generator" content="Hugo 0.63.2" />
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -336,97 +331,83 @@ if (!doNotTrack) {
         <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
 repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
 to measure the boot time of a Linux VM with QEMU/KVM.</p>
-
 <p>Using I/O writes, we can trace events to measure the time consumed during the
 boot phase by the different components:</p>
-
 <ul>
 <li>firmware
-
 <ul>
 <li>SeaBIOS</li>
 <li>qboot</li>
-</ul></li>
+</ul>
+</li>
 <li>optionrom
-
 <ul>
 <li>linuxboot [bzImage]</li>
-<li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">pvh [vmlinux + PVH entry point]</a></li>
-</ul></li>
+<li>[pvh [vmlinux + PVH entry point]] ( /posts/2019-08-23-qemu-linux-kernel-pvh/)</li>
+</ul>
+</li>
 <li>Linux kernel</li>
 </ul>
-
 <p>We extended the I/O port addresses and values defined in
 <a href="https://github.com/bonzini/qboot/blob/master/benchmark.h">qboot/benchmark.h</a>
 adding
 <a href="https://github.com/stefano-garzarella/qemu-boot-time/blob/master/benchmark.h">new trace points to trace the kernel boot time</a>.</p>
-
 <p>In the repository you can find
 <a href="https://github.com/stefano-garzarella/qemu-boot-time#patches">patches for Linux, QEMU, and SeaBIOS</a> to add the I/O writes in the components involved during the boot,
 and a <a href="https://github.com/stefano-garzarella/qemu-boot-time/blob/master/perf-script/qemu-perf-script.py">Python perf-script</a> useful to process the data recorded through <code>perf</code>
 using perf-script’s built-in Python interpreter.</p>
-
 <h2 id="trace-points">Trace points</h2>
-
 <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time/blob/master/benchmark.h">benchmark.h</a>
 file contains the following trace points used in the <a href="https://github.com/stefano-garzarella/qemu-boot-time/tree/master/patches">patches</a>:</p>
-
 <ul>
 <li>QEMU
-
 <ul>
 <li><code>qemu_init_end</code>: first kvm_entry (i.e. QEMU initialized has finished)</li>
-</ul></li>
+</ul>
+</li>
 <li>Firmware (SeaBIOS + optionrom or qboot)
-
 <ul>
 <li><code>fw_start</code>: first entry of the firmware</li>
 <li><code>fw_do_boot</code>: after the firmware initialization (e.g. PCI setup, etc.)</li>
 <li><code>linux_start_boot</code>: before the jump to the Linux kernel</li>
 <li><code>linux_start_pvhboot</code>: before the jump to the Linux PVH kernel</li>
-</ul></li>
+</ul>
+</li>
 <li>Linux Kernel
-
 <ul>
 <li><code>linux_start_kernel</code>: first entry of the Linux kernel</li>
 <li><code>linux_start_user</code>: before starting the init process</li>
-</ul></li>
 </ul>
-
+</li>
+</ul>
 <h3 id="custom-trace-points">Custom trace points</h3>
-
 <p>If you want to add new trace points, you can simply add an I/O write to
 <code>LINUX_EXIT_PORT</code> or <code>FW_EXIT_PORT</code> I/O port with a value (&gt; 7) that
 identifies the trace point:</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">outb</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">LINUX_EXIT_PORT</span><span class="p">);</span></code></pre></div>
-<p>The <code>perf script</code> output will contain <code>Exit point 10</code> line that identifies your
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">outb</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">LINUX_EXIT_PORT</span><span class="p">)</span><span class="p">;</span>
+</code></pre></div><p>The <code>perf script</code> output will contain <code>Exit point 10</code> line that identifies your
 custom trace point:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"> qemu_init_end: <span class="m">143</span>.770419
- fw_start: <span class="m">143</span>.964328 <span class="o">(</span>+0.193909<span class="o">)</span>
- fw_do_boot: <span class="m">164</span>.71107 <span class="o">(</span>+20.746742<span class="o">)</span>
- Exit point <span class="m">10</span>: <span class="m">165</span>.396804 <span class="o">(</span>+0.685734<span class="o">)</span>
- linux_start_kernel: <span class="m">165</span>.979486 <span class="o">(</span>+0.582682<span class="o">)</span>
- linux_start_user: <span class="m">272</span>.178335 <span class="o">(</span>+106.198849<span class="o">)</span></code></pre></div>
-<h2 id="how-to-use">How to use</h2>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"> qemu_init_end: 143.770419
+ fw_start: 143.964328 <span class="o">(</span>+0.193909<span class="o">)</span>
+ fw_do_boot: 164.71107 <span class="o">(</span>+20.746742<span class="o">)</span>
+ Exit point 10: 165.396804 <span class="o">(</span>+0.685734<span class="o">)</span>
+ linux_start_kernel: 165.979486 <span class="o">(</span>+0.582682<span class="o">)</span>
+ linux_start_user: 272.178335 <span class="o">(</span>+106.198849<span class="o">)</span>
+</code></pre></div><h2 id="how-to-use">How to use</h2>
 <h3 id="clone-qemu-boot-time-repository">Clone qemu-boot-time repository</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">REPOS</span><span class="o">=</span><span class="s2">&#34;~/repos&#34;</span>
 <span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>
-git clone https://github.com/stefano-garzarella/qemu-boot-time.git</code></pre></div>
-<h3 id="apply-patches-to-linux-qemu-and-seabios">Apply patches to Linux, QEMU and SeaBIOS</h3>
-
+git clone https://github.com/stefano-garzarella/qemu-boot-time.git
+</code></pre></div><h3 id="apply-patches-to-linux-qemu-and-seabios">Apply patches to Linux, QEMU and SeaBIOS</h3>
 <p>Trace points are printed only if they are recorded, so you can enable few of
 them, patching only the components that you are interested in.</p>
-
 <h4 id="linux">Linux</h4>
-
 <p>Apply the <code>patches/linux.patch</code> to your Linux kernel in order to trace kernel
 events</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/linux
 git checkout -b benchmark
-git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/patches/linux.patch</code></pre></div>
-<h4 id="qemu">QEMU</h4>
-
+git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/patches/linux.patch
+</code></pre></div><h4 id="qemu">QEMU</h4>
 <p>Apply the <code>patches/qemu.patch</code> to your QEMU in order to trace optionrom
 events</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu
@@ -436,12 +417,10 @@ git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}
 mkdir build-benchmark
 <span class="nb">cd</span> build-benchmark
 ../configure --target-list<span class="o">=</span>x86_64-softmmu ...
-make</code></pre></div>
-<p>You can use <code>qemu-system-x86_64 -L ${REPOS}/qemu/build-benchmark/pc-bios/optionrom/ ...</code>
+make
+</code></pre></div><p>You can use <code>qemu-system-x86_64 -L ${REPOS}/qemu/build-benchmark/pc-bios/optionrom/ ...</code>
 to use the optionrom patched.</p>
-
 <h4 id="seabios">SeaBIOS</h4>
-
 <p>Apply the <code>patches/seabios.patch</code> to your SeaBIOS in order to trace bios
 events</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/seabios
@@ -450,35 +429,30 @@ git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}
 
 make clean distclean
 cp <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu/roms/config.seabios-256k .config
-make oldnoconfig</code></pre></div>
-<p>You can use <code>qemu-system-x86_64 -bios ${REPOS}/seabios/out/bios.bin ...</code> to use
+make oldnoconfig
+</code></pre></div><p>You can use <code>qemu-system-x86_64 -bios ${REPOS}/seabios/out/bios.bin ...</code> to use
 the SeaBIOS image patched.</p>
-
 <h4 id="qboot">qboot</h4>
-
 <p>qboot already defines trace points, we just need to compile it defining
 <code>BENCHMARK_HACK</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qboot
 make clean
-<span class="nv">BIOS_CFLAGS</span><span class="o">=</span><span class="s2">&#34;-DBENCHMARK_HACK=1&#34;</span> make</code></pre></div>
-<p>You can use <code>qemu-system-x86_64 -bios ${REPOS}/qboot/bios.bin ...</code> to use the
+<span class="nv">BIOS_CFLAGS</span><span class="o">=</span><span class="s2">&#34;-DBENCHMARK_HACK=1&#34;</span> make
+</code></pre></div><p>You can use <code>qemu-system-x86_64 -bios ${REPOS}/qboot/bios.bin ...</code> to use the
 qboot image.</p>
-
 <h3 id="enable-kvm-events">Enable KVM events</h3>
-
 <p>The following steps allow <code>perf record</code> to get the kvm trace events:</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">echo</span> <span class="m">1</span> &gt; /sys/kernel/debug/tracing/events/kvm/enable
 <span class="nb">echo</span> -1 &gt; /proc/sys/kernel/perf_event_paranoid
 mount -o remount,mode<span class="o">=</span><span class="m">755</span> /sys/kernel/debug
-mount -o remount,mode<span class="o">=</span><span class="m">755</span> /sys/kernel/debug/tracing</code></pre></div>
-<h3 id="record-the-trace-events">Record the trace events</h3>
-
+mount -o remount,mode<span class="o">=</span><span class="m">755</span> /sys/kernel/debug/tracing
+</code></pre></div><h3 id="record-the-trace-events">Record the trace events</h3>
 <p>Start perf record to get the trace events</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">PERF_DATA</span><span class="o">=</span><span class="s2">&#34;qemu_perf.data&#34;</span>
 perf record -a -e kvm:kvm_entry -e kvm:kvm_pio -e sched:sched_process_exec <span class="se">\
 </span><span class="se"></span>            -o <span class="nv">$PERF_DATA</span> <span class="p">&amp;</span>
-<span class="nv">PERF_PID</span><span class="o">=</span><span class="nv">$!</span></code></pre></div>
-<p>You can run QEMU multiple times to get also some statistics (Avg/Min/Max)</p>
+<span class="nv">PERF_PID</span><span class="o">=</span><span class="nv">$!</span>
+</code></pre></div><p>You can run QEMU multiple times to get also some statistics (Avg/Min/Max)</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se">\
 </span><span class="se"></span>                   -bios seabios/out/bios.bin <span class="se">\
 </span><span class="se"></span>                   -L qemu/build-benchmark/pc-bios/optionrom/ <span class="se">\
@@ -490,98 +464,98 @@ qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se
 qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se">\
 </span><span class="se"></span>                   -bios seabios/out/bios.bin <span class="se">\
 </span><span class="se"></span>                   -L qemu/build-benchmark/pc-bios/optionrom/ <span class="se">\
-</span><span class="se"></span>                   -kernel linux/bzImage ...</code></pre></div>
-<p>Stop perf record</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">kill</span> <span class="nv">$PERF_PID</span></code></pre></div>
-<h3 id="process-the-trace-recorded-using-the-qemu-perf-script-py">Process the trace recorded using the qemu-perf-script.py</h3>
-
+</span><span class="se"></span>                   -kernel linux/bzImage ...
+</code></pre></div><p>Stop perf record</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">kill</span> <span class="nv">$PERF_PID</span>
+</code></pre></div><h3 id="process-the-trace-recorded-using-the-qemu-perf-scriptpy">Process the trace recorded using the qemu-perf-script.py</h3>
 <p>Note: times printed in milliseconds</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">perf script -s <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/perf-script/qemu-perf-script.py -i <span class="nv">$PERF_DATA</span>
 
 in trace_begin
-sched__sched_process_exec     <span class="m">1</span> <span class="m">55061</span>.435418353   <span class="m">289738</span> qemu-system-x86
-kvm__kvm_entry           <span class="m">1</span> <span class="m">55061</span>.466887708   <span class="m">289741</span> qemu-system-x86
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.467070650   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
+sched__sched_process_exec     <span class="m">1</span> 55061.435418353   <span class="m">289738</span> qemu-system-x86
+kvm__kvm_entry           <span class="m">1</span> 55061.466887708   <span class="m">289741</span> qemu-system-x86
+kvm__kvm_pio             <span class="m">1</span> 55061.467070650   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
 
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.475818073   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
+kvm__kvm_pio             <span class="m">1</span> 55061.475818073   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
 
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.477168037   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
+kvm__kvm_pio             <span class="m">1</span> 55061.477168037   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
 
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.558779540   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
+kvm__kvm_pio             <span class="m">1</span> 55061.558779540   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
 
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55061</span>.686849663   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
+kvm__kvm_pio             <span class="m">1</span> 55061.686849663   <span class="m">289741</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
 
-sched__sched_process_exec     <span class="m">4</span> <span class="m">55067</span>.461869075   <span class="m">289793</span> qemu-system-x86
-kvm__kvm_entry           <span class="m">4</span> <span class="m">55067</span>.496402472   <span class="m">289796</span> qemu-system-x86
-kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.496555385   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
+sched__sched_process_exec     <span class="m">4</span> 55067.461869075   <span class="m">289793</span> qemu-system-x86
+kvm__kvm_entry           <span class="m">4</span> 55067.496402472   <span class="m">289796</span> qemu-system-x86
+kvm__kvm_pio             <span class="m">4</span> 55067.496555385   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
 
-kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.505067184   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
+kvm__kvm_pio             <span class="m">4</span> 55067.505067184   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
 
-kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.506395502   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
+kvm__kvm_pio             <span class="m">4</span> 55067.506395502   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
 
-kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.584029910   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
+kvm__kvm_pio             <span class="m">4</span> 55067.584029910   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
 
-kvm__kvm_pio             <span class="m">4</span> <span class="m">55067</span>.704751791   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
+kvm__kvm_pio             <span class="m">4</span> 55067.704751791   <span class="m">289796</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
 
-sched__sched_process_exec     <span class="m">0</span> <span class="m">55070</span>.073823767   <span class="m">289827</span> qemu-system-x86
-kvm__kvm_entry           <span class="m">0</span> <span class="m">55070</span>.110507211   <span class="m">289830</span> qemu-system-x86
-kvm__kvm_pio             <span class="m">0</span> <span class="m">55070</span>.110694645   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
+sched__sched_process_exec     <span class="m">0</span> 55070.073823767   <span class="m">289827</span> qemu-system-x86
+kvm__kvm_entry           <span class="m">0</span> 55070.110507211   <span class="m">289830</span> qemu-system-x86
+kvm__kvm_pio             <span class="m">0</span> 55070.110694645   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">1</span>
 
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55070</span>.120092692   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
+kvm__kvm_pio             <span class="m">1</span> 55070.120092692   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf5, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">4</span>
 
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55070</span>.121437922   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
+kvm__kvm_pio             <span class="m">1</span> 55070.121437922   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">3</span>
 
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55070</span>.198628779   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
+kvm__kvm_pio             <span class="m">1</span> 55070.198628779   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">5</span>
 
-kvm__kvm_pio             <span class="m">1</span> <span class="m">55070</span>.315734630   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span><span class="m">1</span>, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span><span class="m">1</span>, <span class="nv">count</span><span class="o">=</span><span class="m">1</span>, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
+kvm__kvm_pio             <span class="m">1</span> 55070.315734630   <span class="m">289830</span> qemu-system-x86      <span class="nv">rw</span><span class="o">=</span>1, <span class="nv">port</span><span class="o">=</span>0xf4, <span class="nv">size</span><span class="o">=</span>1, <span class="nv">count</span><span class="o">=</span>1, <span class="nv">val</span><span class="o">=</span><span class="m">6</span>
 
 in trace_end
 Trace qemu-system-x86
-<span class="m">1</span><span class="o">)</span> pid <span class="m">289738</span>
- qemu_init_end: <span class="m">31</span>.469355
- fw_start: <span class="m">31</span>.652297 <span class="o">(</span>+0.182942<span class="o">)</span>
- fw_do_boot: <span class="m">40</span>.39972 <span class="o">(</span>+8.747423<span class="o">)</span>
- linux_start_boot: <span class="m">41</span>.749684 <span class="o">(</span>+1.349964<span class="o">)</span>
- linux_start_kernel: <span class="m">123</span>.361187 <span class="o">(</span>+81.611503<span class="o">)</span>
- linux_start_user: <span class="m">251</span>.43131 <span class="o">(</span>+128.070123<span class="o">)</span>
-<span class="m">2</span><span class="o">)</span> pid <span class="m">289793</span>
- qemu_init_end: <span class="m">34</span>.533397
- fw_start: <span class="m">34</span>.68631 <span class="o">(</span>+0.152913<span class="o">)</span>
- fw_do_boot: <span class="m">43</span>.198109 <span class="o">(</span>+8.511799<span class="o">)</span>
- linux_start_boot: <span class="m">44</span>.526427 <span class="o">(</span>+1.328318<span class="o">)</span>
- linux_start_kernel: <span class="m">122</span>.160835 <span class="o">(</span>+77.634408<span class="o">)</span>
- linux_start_user: <span class="m">242</span>.882716 <span class="o">(</span>+120.721881<span class="o">)</span>
-<span class="m">3</span><span class="o">)</span> pid <span class="m">289827</span>
- qemu_init_end: <span class="m">36</span>.683444
- fw_start: <span class="m">36</span>.870878 <span class="o">(</span>+0.187434<span class="o">)</span>
- fw_do_boot: <span class="m">46</span>.268925 <span class="o">(</span>+9.398047<span class="o">)</span>
- linux_start_boot: <span class="m">47</span>.614155 <span class="o">(</span>+1.34523<span class="o">)</span>
- linux_start_kernel: <span class="m">124</span>.805012 <span class="o">(</span>+77.190857<span class="o">)</span>
- linux_start_user: <span class="m">241</span>.910863 <span class="o">(</span>+117.105851<span class="o">)</span>
+1<span class="o">)</span> pid <span class="m">289738</span>
+ qemu_init_end: 31.469355
+ fw_start: 31.652297 <span class="o">(</span>+0.182942<span class="o">)</span>
+ fw_do_boot: 40.39972 <span class="o">(</span>+8.747423<span class="o">)</span>
+ linux_start_boot: 41.749684 <span class="o">(</span>+1.349964<span class="o">)</span>
+ linux_start_kernel: 123.361187 <span class="o">(</span>+81.611503<span class="o">)</span>
+ linux_start_user: 251.43131 <span class="o">(</span>+128.070123<span class="o">)</span>
+2<span class="o">)</span> pid <span class="m">289793</span>
+ qemu_init_end: 34.533397
+ fw_start: 34.68631 <span class="o">(</span>+0.152913<span class="o">)</span>
+ fw_do_boot: 43.198109 <span class="o">(</span>+8.511799<span class="o">)</span>
+ linux_start_boot: 44.526427 <span class="o">(</span>+1.328318<span class="o">)</span>
+ linux_start_kernel: 122.160835 <span class="o">(</span>+77.634408<span class="o">)</span>
+ linux_start_user: 242.882716 <span class="o">(</span>+120.721881<span class="o">)</span>
+3<span class="o">)</span> pid <span class="m">289827</span>
+ qemu_init_end: 36.683444
+ fw_start: 36.870878 <span class="o">(</span>+0.187434<span class="o">)</span>
+ fw_do_boot: 46.268925 <span class="o">(</span>+9.398047<span class="o">)</span>
+ linux_start_boot: 47.614155 <span class="o">(</span>+1.34523<span class="o">)</span>
+ linux_start_kernel: 124.805012 <span class="o">(</span>+77.190857<span class="o">)</span>
+ linux_start_user: 241.910863 <span class="o">(</span>+117.105851<span class="o">)</span>
 
 Avg
- qemu_init_end: <span class="m">34</span>.228732
- fw_start: <span class="m">34</span>.403161 <span class="o">(</span>+0.174429<span class="o">)</span>
- fw_do_boot: <span class="m">43</span>.288918 <span class="o">(</span>+8.885757<span class="o">)</span>
- linux_start_boot: <span class="m">44</span>.630088 <span class="o">(</span>+1.34117<span class="o">)</span>
- linux_start_kernel: <span class="m">123</span>.442344 <span class="o">(</span>+78.812256<span class="o">)</span>
- linux_start_user: <span class="m">245</span>.408296 <span class="o">(</span>+121.965952<span class="o">)</span>
+ qemu_init_end: 34.228732
+ fw_start: 34.403161 <span class="o">(</span>+0.174429<span class="o">)</span>
+ fw_do_boot: 43.288918 <span class="o">(</span>+8.885757<span class="o">)</span>
+ linux_start_boot: 44.630088 <span class="o">(</span>+1.34117<span class="o">)</span>
+ linux_start_kernel: 123.442344 <span class="o">(</span>+78.812256<span class="o">)</span>
+ linux_start_user: 245.408296 <span class="o">(</span>+121.965952<span class="o">)</span>
 
 Min
- qemu_init_end: <span class="m">31</span>.469355
- fw_start: <span class="m">31</span>.652297 <span class="o">(</span>+0.182942<span class="o">)</span>
- fw_do_boot: <span class="m">40</span>.39972 <span class="o">(</span>+8.747423<span class="o">)</span>
- linux_start_boot: <span class="m">41</span>.749684 <span class="o">(</span>+1.349964<span class="o">)</span>
- linux_start_kernel: <span class="m">122</span>.160835 <span class="o">(</span>+80.411151<span class="o">)</span>
- linux_start_user: <span class="m">241</span>.910863 <span class="o">(</span>+119.750028<span class="o">)</span>
+ qemu_init_end: 31.469355
+ fw_start: 31.652297 <span class="o">(</span>+0.182942<span class="o">)</span>
+ fw_do_boot: 40.39972 <span class="o">(</span>+8.747423<span class="o">)</span>
+ linux_start_boot: 41.749684 <span class="o">(</span>+1.349964<span class="o">)</span>
+ linux_start_kernel: 122.160835 <span class="o">(</span>+80.411151<span class="o">)</span>
+ linux_start_user: 241.910863 <span class="o">(</span>+119.750028<span class="o">)</span>
 
 Max
- qemu_init_end: <span class="m">36</span>.683444
- fw_start: <span class="m">36</span>.870878 <span class="o">(</span>+0.187434<span class="o">)</span>
- fw_do_boot: <span class="m">46</span>.268925 <span class="o">(</span>+9.398047<span class="o">)</span>
- linux_start_boot: <span class="m">47</span>.614155 <span class="o">(</span>+1.34523<span class="o">)</span>
- linux_start_kernel: <span class="m">124</span>.805012 <span class="o">(</span>+77.190857<span class="o">)</span>
- linux_start_user: <span class="m">242</span>.882716 <span class="o">(</span>+118.077704<span class="o">)</span></code></pre></div>
+ qemu_init_end: 36.683444
+ fw_start: 36.870878 <span class="o">(</span>+0.187434<span class="o">)</span>
+ fw_do_boot: 46.268925 <span class="o">(</span>+9.398047<span class="o">)</span>
+ linux_start_boot: 47.614155 <span class="o">(</span>+1.34523<span class="o">)</span>
+ linux_start_kernel: 124.805012 <span class="o">(</span>+77.190857<span class="o">)</span>
+ linux_start_user: 242.882716 <span class="o">(</span>+118.077704<span class="o">)</span>
+</code></pre></div>
 
         
           <div class="blog-tags">
@@ -798,7 +772,7 @@ Max
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.58.3</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.63.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>

@@ -12,10 +12,8 @@
 contains few patches to add the support of VSOCK address family to iperf3.
 In this way iperf3 can be used to measure the performance between guest and
 host using VSOCK sockets.
-
 The VSOCK address family facilitates communication between virtual
 machines and the host they are running on.
-
 To test VSOCK sockets (only Linux), you must use the new option --vsock on
 both server and client.
 Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by
@@ -94,10 +92,8 @@ VSOCK tests.">
 contains few patches to add the support of VSOCK address family to iperf3.
 In this way iperf3 can be used to measure the performance between guest and
 host using VSOCK sockets.
-
 The VSOCK address family facilitates communication between virtual
 machines and the host they are running on.
-
 To test VSOCK sockets (only Linux), you must use the new option --vsock on
 both server and client.
 Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by
@@ -117,7 +113,7 @@ host using VSOCK …">
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.58.3" />
+  <meta name="generator" content="Hugo 0.63.2" />
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -316,69 +312,62 @@ if (!doNotTrack) {
 contains few patches to add the support of VSOCK address family to <code>iperf3</code>.
 In this way <code>iperf3</code> can be used to measure the performance between guest and
 host using VSOCK sockets.</p>
-
 <p>The VSOCK address family facilitates communication between virtual
 machines and the host they are running on.</p>
-
 <p>To test VSOCK sockets (only Linux), you must use the new option <code>--vsock</code> on
 both server and client.
 Other iperf3 options (e.g. <code>-t, -l, -P, -R, --bidir</code>) are well supported by
 VSOCK tests.</p>
-
 <h2 id="prerequisites">Prerequisites</h2>
-
 <ul>
 <li>Linux host kernel &gt;= 4.8</li>
 <li>Linux guest kernel &gt;= 4.8</li>
 <li>QEMU &gt;= 2.8</li>
 </ul>
-
 <h2 id="build-iperf3-vsock-from-source">Build iperf3-vsock from source</h2>
-
 <h3 id="clone-repository">Clone repository</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">git clone https://github.com/stefano-garzarella/iperf-vsock
-<span class="nb">cd</span> iperf-vsock</code></pre></div>
-<h3 id="building">Building</h3>
+<span class="nb">cd</span> iperf-vsock
+</code></pre></div><h3 id="building">Building</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">mkdir build
 <span class="nb">cd</span> build
 ../configure
-make</code></pre></div>
-<p>(Note: If configure fails, try running <code>./bootstrap.sh</code> first)</p>
-
+make
+</code></pre></div><p>(Note: If configure fails, try running <code>./bootstrap.sh</code> first)</p>
 <h2 id="example-with-fedora-30-host-and-guest">Example with Fedora 30 (host and guest):</h2>
-
 <h3 id="host-start-the-vm">Host: start the VM</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">GUEST_CID</span><span class="o">=</span><span class="m">3</span>
 sudo modprobe vhost_vsock
 sudo qemu-system-x86_64 -m 1G -smp <span class="m">2</span> -cpu host -M <span class="nv">accel</span><span class="o">=</span>kvm	<span class="se">\
 </span><span class="se"></span>     -drive <span class="k">if</span><span class="o">=</span>virtio,file<span class="o">=</span>/path/to/fedora.img,format<span class="o">=</span>qcow2     <span class="se">\
-</span><span class="se"></span>     -device vhost-vsock-pci,guest-cid<span class="o">=</span><span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span></code></pre></div>
-<h3 id="guest-start-iperf-server">Guest: start iperf server</h3>
+</span><span class="se"></span>     -device vhost-vsock-pci,guest-cid<span class="o">=</span><span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span>
+</code></pre></div><h3 id="guest-start-iperf-server">Guest: start iperf server</h3>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># SELinux can block you, so you can write a policy or temporally disable it</span>
 sudo setenforce <span class="m">0</span>
-iperf-vsock/build/src/iperf3 --vsock -s</code></pre></div>
-<h3 id="host-start-iperf-client">Host: start iperf client</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">iperf-vsock/build/src/iperf3 --vsock -c <span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span></code></pre></div>
-<h3 id="output">Output</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">Connecting to host <span class="m">3</span>, port <span class="m">5201</span>
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span> <span class="nb">local</span> <span class="m">2</span> port <span class="m">4008596529</span> connected to <span class="m">3</span> port <span class="m">5201</span>
+iperf-vsock/build/src/iperf3 --vsock -s
+</code></pre></div><h3 id="host-start-iperf-client">Host: start iperf client</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">iperf-vsock/build/src/iperf3 --vsock -c <span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span>
+</code></pre></div><h3 id="output">Output</h3>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">Connecting to host 3, port <span class="m">5201</span>
+<span class="o">[</span>  5<span class="o">]</span> <span class="nb">local</span> <span class="m">2</span> port <span class="m">4008596529</span> connected to <span class="m">3</span> port <span class="m">5201</span>
 <span class="o">[</span> ID<span class="o">]</span> Interval           Transfer     Bitrate
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">0</span>.00-1.00   sec  <span class="m">1</span>.30 GBytes  <span class="m">11</span>.2 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">1</span>.00-2.00   sec  <span class="m">1</span>.67 GBytes  <span class="m">14</span>.3 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">2</span>.00-3.00   sec  <span class="m">1</span>.57 GBytes  <span class="m">13</span>.5 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">3</span>.00-4.00   sec  <span class="m">1</span>.49 GBytes  <span class="m">12</span>.8 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">4</span>.00-5.00   sec   <span class="m">971</span> MBytes  <span class="m">8</span>.15 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">5</span>.00-6.00   sec  <span class="m">1</span>.01 GBytes  <span class="m">8</span>.71 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">6</span>.00-7.00   sec  <span class="m">1</span>.44 GBytes  <span class="m">12</span>.3 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">7</span>.00-8.00   sec  <span class="m">1</span>.62 GBytes  <span class="m">13</span>.9 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">8</span>.00-9.00   sec  <span class="m">1</span>.61 GBytes  <span class="m">13</span>.8 Gbits/sec
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">9</span>.00-10.00  sec  <span class="m">1</span>.63 GBytes  <span class="m">14</span>.0 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   0.00-1.00   sec  1.30 GBytes  11.2 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   1.00-2.00   sec  1.67 GBytes  14.3 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   2.00-3.00   sec  1.57 GBytes  13.5 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   3.00-4.00   sec  1.49 GBytes  12.8 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   4.00-5.00   sec   <span class="m">971</span> MBytes  8.15 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   5.00-6.00   sec  1.01 GBytes  8.71 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   6.00-7.00   sec  1.44 GBytes  12.3 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   7.00-8.00   sec  1.62 GBytes  13.9 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   8.00-9.00   sec  1.61 GBytes  13.8 Gbits/sec
+<span class="o">[</span>  5<span class="o">]</span>   9.00-10.00  sec  1.63 GBytes  14.0 Gbits/sec
 - - - - - - - - - - - - - - - - - - - - - - - - -
 <span class="o">[</span> ID<span class="o">]</span> Interval           Transfer     Bitrate
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">0</span>.00-10.00  sec  <span class="m">14</span>.3 GBytes  <span class="m">12</span>.3 Gbits/sec                  sender
-<span class="o">[</span>  <span class="m">5</span><span class="o">]</span>   <span class="m">0</span>.00-10.00  sec  <span class="m">14</span>.3 GBytes  <span class="m">12</span>.3 Gbits/sec                  receiver
+<span class="o">[</span>  5<span class="o">]</span>   0.00-10.00  sec  14.3 GBytes  12.3 Gbits/sec                  sender
+<span class="o">[</span>  5<span class="o">]</span>   0.00-10.00  sec  14.3 GBytes  12.3 Gbits/sec                  receiver
 
-iperf Done.</code></pre></div>
+iperf Done.
+</code></pre></div>
 
         
           <div class="blog-tags">
@@ -593,7 +582,7 @@ iperf Done.</code></pre></div>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.58.3</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.63.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
