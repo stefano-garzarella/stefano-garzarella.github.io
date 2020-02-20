@@ -240,7 +240,7 @@ if (!doNotTrack) {
         <div class="posts-list">
           
             <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/posts/2019-11-25-qemu-kernel-initrd-mmapped/">
+    <a href="https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/">
         <h2 class="post-title">QEMU 4.2 mmap(2)s kernel and initrd</h2>
         
         
@@ -254,10 +254,10 @@ if (!doNotTrack) {
   <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/12/22
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;357&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;439&nbsp;words
   
   
     
@@ -271,15 +271,15 @@ if (!doNotTrack) {
     </p>
     <div class="post-entry">
         
-        <p>In order to save memory and boot time, <strong>QEMU 4.2</strong> is able to mmap(2)
-the kernel and initrd specified with <code>-kernel</code> and <code>-initrd</code> parameters.
+        <p>In order to save memory and boot time, <strong>QEMU 4.2</strong> and later versions are able to
+mmap(2) the kernel and initrd specified with <code>-kernel</code> and <code>-initrd</code> parameters.
 This approach allows us to avoid reading and copying them into a buffer,
-saving memory and time.
-In this way, the pages that contain kernel and initrd are shared between
-multiple QEMU instances using the same kernel and initrd images.</p>
-<p>This feature is automatically used for ELF kernels (e.g. x86_64 vmlinux ELF
-image with <a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">PVH entry point</a>).</p>
-        <a href="https://stefano-garzarella.github.io/posts/2019-11-25-qemu-kernel-initrd-mmapped/" class="post-read-more">[Read More]</a>
+saving memory and time.</p>
+<p>The memory pages that contain kernel and initrd are shared between
+multiple VMs using the same kernel and initrd images.
+So, when many VMs are launched we can save memory by sharing pages, and save
+time by avoiding reading them each time from the disk.</p>
+        <a href="https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/" class="post-read-more">[Read More]</a>
         
     </div>
 

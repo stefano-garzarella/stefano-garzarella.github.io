@@ -13,26 +13,33 @@
     
     <item>
       <title>QEMU 4.2 mmap(2)s kernel and initrd</title>
-      <link>https://stefano-garzarella.github.io/posts/2019-11-25-qemu-kernel-initrd-mmapped/</link>
+      <link>https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/</link>
       <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/posts/2019-11-25-qemu-kernel-initrd-mmapped/</guid>
-      <description>&lt;p&gt;In order to save memory and boot time, &lt;strong&gt;QEMU 4.2&lt;/strong&gt; is able to mmap(2)
-the kernel and initrd specified with &lt;code&gt;-kernel&lt;/code&gt; and &lt;code&gt;-initrd&lt;/code&gt; parameters.
+      <guid>https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/</guid>
+      <description>&lt;p&gt;In order to save memory and boot time, &lt;strong&gt;QEMU 4.2&lt;/strong&gt; and later versions are able to
+mmap(2) the kernel and initrd specified with &lt;code&gt;-kernel&lt;/code&gt; and &lt;code&gt;-initrd&lt;/code&gt; parameters.
 This approach allows us to avoid reading and copying them into a buffer,
-saving memory and time.
-In this way, the pages that contain kernel and initrd are shared between
-multiple QEMU instances using the same kernel and initrd images.&lt;/p&gt;
-&lt;p&gt;This feature is automatically used for ELF kernels (e.g. x86_64 vmlinux ELF
-image with &lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/&#34;&gt;PVH entry point&lt;/a&gt;).&lt;/p&gt;
+saving memory and time.&lt;/p&gt;
+&lt;p&gt;The memory pages that contain kernel and initrd are shared between
+multiple VMs using the same kernel and initrd images.
+So, when many VMs are launched we can save memory by sharing pages, and save
+time by avoiding reading them each time from the disk.&lt;/p&gt;
+&lt;p&gt;This feature is automatically used for some targets with ELF kernels
+(e.g. x86_64 vmlinux ELF image with
+&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/&#34;&gt;PVH entry point&lt;/a&gt;),
+but it is not available with compressed kernel images (e.g. bzImage).&lt;/p&gt;
 &lt;h2 id=&#34;patches&#34;&gt;Patches&lt;/h2&gt;
-&lt;p&gt;The &lt;a href=&#34;https://patchew.org/QEMU/20190724143105.307042-1-sgarzare@redhat.com/&#34;&gt;patches&lt;/a&gt;
-that implement this feature are merged upstream and released with QEMU 4.2.&lt;/p&gt;
+&lt;p&gt;The
+&lt;a href=&#34;https://patchew.org/QEMU/20190724143105.307042-1-sgarzare@redhat.com/&#34;&gt;patches&lt;/a&gt;
+that implement this feature are merged upstream and released with
+&lt;a href=&#34;https://wiki.qemu.org/ChangeLog/4.2#Miscellaneous&#34;&gt;QEMU 4.2&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The main change was to map kernel and initrd into the memory, instead of
 reading them, using &lt;code&gt;g_mapped_file_*()&lt;/code&gt; APIs.&lt;/p&gt;
 &lt;h2 id=&#34;benchmarks&#34;&gt;Benchmarks&lt;/h2&gt;
 &lt;p&gt;We measured the memory footprint and the boot time using a standard QEMU
-build (&lt;code&gt;qemu-system-x86_64&lt;/code&gt;) with a &lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/&#34;&gt;PVH kernel&lt;/a&gt;
+build (&lt;code&gt;qemu-system-x86_64&lt;/code&gt;) with a
+&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/&#34;&gt;PVH kernel&lt;/a&gt;
 and initrd (cpio):&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Initrd size: 3.0M&lt;/li&gt;
@@ -46,7 +53,8 @@ and initrd (cpio):&lt;/p&gt;
 &lt;p&gt;Julio Montes did a very good analysis and he posted the results here:
 &lt;a href=&#34;https://www.mail-archive.com/qemu-devel@nongnu.org/msg633168.html&#34;&gt;https://www.mail-archive.com/qemu-devel@nongnu.org/msg633168.html&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&#34;memory-footprint&#34;&gt;Memory footprint&lt;/h3&gt;
-&lt;p&gt;We used &lt;a href=&#34;https://www.selenic.com/smem/&#34;&gt;smem&lt;/a&gt; to measure &lt;a href=&#34;https://www.golinuxcloud.com/check-memory-usage-per-process-linux/&#34;&gt;USS and PSS&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;We used &lt;a href=&#34;https://www.selenic.com/smem/&#34;&gt;smem&lt;/a&gt; to measure
+&lt;a href=&#34;https://www.golinuxcloud.com/check-memory-usage-per-process-linux/&#34;&gt;USS and PSS&lt;/a&gt;:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;USS (Unique Set Size): amount of memory that is committed to physical memory
 and is unique to a process; it is not shared with any other. It is the
@@ -57,7 +65,7 @@ mapped.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ smem -k &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;PID\|&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;pidof qemu-system-x86_64&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
   PID User     Command                         Swap      USS      PSS      RSS
-&lt;span class=&#34;m&#34;&gt;24833&lt;/span&gt; qemu     /usr/bin/qemu-system-x86_64        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    71.6M    74.3M    106.2
+&lt;span class=&#34;m&#34;&gt;24833&lt;/span&gt; qemu     /usr/bin/qemu-system-x86_64        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    71.6M    74.3M    105.2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is the memory footprint analysis, increasing the number of QEMU instances:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;                           Memory footprint &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;MB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
      QEMU             before                 after
@@ -68,7 +76,10 @@ mapped.&lt;/li&gt;
       &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;            94.0    96.2          71.8    76.9
      &lt;span class=&#34;m&#34;&gt;16&lt;/span&gt;            93.9    95.1          71.6    74.3
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;boot-time&#34;&gt;Boot time&lt;/h3&gt;
-&lt;p&gt;We measured the boot time using the &lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time&#34;&gt;qemu-boot-time&lt;/a&gt; scripts described in this &lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/&#34;&gt;post&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We measured the boot time using the
+&lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time&#34;&gt;qemu-boot-time&lt;/a&gt;
+scripts described in this
+&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/&#34;&gt;post&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This is the boot time analysis:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;                                   Boot &lt;span class=&#34;nb&#34;&gt;time&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ms&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
                           before                  after
@@ -76,7 +87,11 @@ mapped.&lt;/li&gt;
  qemu_init_end:           63.85                   55.91
  linux_start_kernel:      82.11 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+18.26&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;          74.51 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+18.60&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
  linux_start_user:       169.94 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+87.83&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;         159.06 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+84.56&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h2&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h2&gt;
+&lt;p&gt;Mapping into memory the kernel and initrd images allowed us to save about 20 MB
+of memory when multiple VMs are started and allowed us to speed up the boot by
+about 10 milliseconds.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; both gains are strictly related to images size.&lt;/p&gt;</description>
     </item>
     
   </channel>

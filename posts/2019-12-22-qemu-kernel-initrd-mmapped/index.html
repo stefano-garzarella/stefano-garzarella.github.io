@@ -7,8 +7,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>Overview of all pages with the tag #boot - sgarzare&#39;s blog</title>
-  <meta name="description" content="Overview of all pages with the tag #boot, such as: QEMU 4.2 mmap(2)s kernel and initrd">
+  <title>QEMU 4.2 mmap(2)s kernel and initrd - sgarzare&#39;s blog</title>
+  <meta name="description" content="In order to save memory and boot time, QEMU 4.2 and later versions are able to
+mmap(2) the kernel and initrd specified with -kernel and -initrd parameters.
+This approach allows us to avoid reading and copying them into a buffer,
+saving memory and time.
+The memory pages that contain kernel and initrd are shared between
+multiple VMs using the same kernel and initrd images.
+So, when many VMs are launched we can save memory by sharing pages, and save
+time by avoiding reading them each time from the disk.">
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -29,14 +36,73 @@
   
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/stefano-garzarella.github.io",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2019-12-22-qemu-kernel-initrd-mmapped\/",
+          "name": "Q e m u 4.2 mmap(2)s kernel and initrd"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Stefano Garzarella"
+  },
+  "headline": "QEMU 4.2 mmap(2)s kernel and initrd",
+  "description" : "In order to save memory and boot time, QEMU 4.2 and later versions are able to mmap(2) the kernel and initrd specified with -kernel and -initrd parameters. This approach allows us to avoid reading and copying them into a buffer, saving memory and time.\nThe memory pages that contain kernel and initrd are shared between multiple VMs using the same kernel and initrd images. So, when many VMs are launched we can save memory by sharing pages, and save time by avoiding reading them each time from the disk.\n",
+  "inLanguage" : "en",
+  "wordCount":  439 ,
+  "datePublished" : "2019-12-22T17:46:44",
+  "dateModified" : "2019-12-22T17:46:44",
+  "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
+  "keywords" : [ "linux\x22, qemu, boot, microvm" ],
+  "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2019-12-22-qemu-kernel-initrd-mmapped\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/stefano-garzarella.github.io",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
 
-<meta property="og:title" content="boot" />
+<meta property="og:title" content="QEMU 4.2 mmap(2)s kernel and initrd" />
+<meta property="og:description" content="In order to save memory and boot time, QEMU 4.2 and later versions are able to
+mmap(2) the kernel and initrd specified with -kernel and -initrd parameters.
+This approach allows us to avoid reading and copying them into a buffer,
+saving memory and time.
+The memory pages that contain kernel and initrd are shared between
+multiple VMs using the same kernel and initrd images.
+So, when many VMs are launched we can save memory by sharing pages, and save
+time by avoiding reading them each time from the disk.">
 <meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-<meta property="og:url" content="https://stefano-garzarella.github.io/tags/boot/" />
+<meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
-  <meta name="twitter:title" content="boot" />
+  <meta name="twitter:title" content="QEMU 4.2 mmap(2)s kernel and initrd" />
+  <meta name="twitter:description" content="In order to save memory and boot time, QEMU 4.2 and later versions are able to
+mmap(2) the kernel and initrd specified with -kernel and -initrd parameters.
+This approach allows us to avoid reading and …">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@sgarzarella" />
@@ -215,9 +281,9 @@ if (!doNotTrack) {
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="tags-heading">
+            <div class="posts-heading">
               
-                <h1>boot</h1>
+                <h1>QEMU 4.2 mmap(2)s kernel and initrd</h1>
               
               
                 <hr class="small">
@@ -233,44 +299,10 @@ if (!doNotTrack) {
 
 
     
-  <div class="container" role="main">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-        <div class="posts-list">
-          
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/">
-        <h2 class="post-title">QEMU 4.2 mmap(2)s kernel and initrd</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/12/22
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;439&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
         <p>In order to save memory and boot time, <strong>QEMU 4.2</strong> and later versions are able to
 mmap(2) the kernel and initrd specified with <code>-kernel</code> and <code>-initrd</code> parameters.
 This approach allows us to avoid reading and copying them into a buffer,
@@ -279,153 +311,203 @@ saving memory and time.</p>
 multiple VMs using the same kernel and initrd images.
 So, when many VMs are launched we can save memory by sharing pages, and save
 time by avoiding reading them each time from the disk.</p>
-        <a href="https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux&#34;</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/microvm/">microvm</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/">
-        <h2 class="post-title">How to measure the boot time of a Linux VM with QEMU/KVM</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/24
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;882&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
-repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU/KVM.</p>
-<p>Using I/O writes, we can trace events to measure the time consumed during the
-boot phase by the different components:</p>
+<p>This feature is automatically used for some targets with ELF kernels
+(e.g. x86_64 vmlinux ELF image with
+<a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">PVH entry point</a>),
+but it is not available with compressed kernel images (e.g. bzImage).</p>
+<h2 id="patches">Patches</h2>
+<p>The
+<a href="https://patchew.org/QEMU/20190724143105.307042-1-sgarzare@redhat.com/">patches</a>
+that implement this feature are merged upstream and released with
+<a href="https://wiki.qemu.org/ChangeLog/4.2#Miscellaneous">QEMU 4.2</a>.</p>
+<p>The main change was to map kernel and initrd into the memory, instead of
+reading them, using <code>g_mapped_file_*()</code> APIs.</p>
+<h2 id="benchmarks">Benchmarks</h2>
+<p>We measured the memory footprint and the boot time using a standard QEMU
+build (<code>qemu-system-x86_64</code>) with a
+<a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">PVH kernel</a>
+and initrd (cpio):</p>
 <ul>
-<li>firmware
+<li>Initrd size: 3.0M</li>
+<li>Kernel (vmlinux)
 <ul>
-<li>SeaBIOS</li>
-<li>qboot</li>
+<li>image size: 28M</li>
+<li>sections size [<code>size -A -d vmlinux</code>]:  18.9M</li>
 </ul>
 </li>
-<li>optionrom
+</ul>
+<p>Julio Montes did a very good analysis and he posted the results here:
+<a href="https://www.mail-archive.com/qemu-devel@nongnu.org/msg633168.html">https://www.mail-archive.com/qemu-devel@nongnu.org/msg633168.html</a></p>
+<h3 id="memory-footprint">Memory footprint</h3>
+<p>We used <a href="https://www.selenic.com/smem/">smem</a> to measure
+<a href="https://www.golinuxcloud.com/check-memory-usage-per-process-linux/">USS and PSS</a>:</p>
 <ul>
-<li>linuxboot [bzImage]</li>
-<li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">pvh [vmlinux + PVH entry point]</a></li>
+<li>USS (Unique Set Size): amount of memory that is committed to physical memory
+and is unique to a process; it is not shared with any other. It is the
+amount of memory that would be freed if the process were to terminate.</li>
+<li>PSS (Proportional Set Size): This splits the accounting of shared pages that
+are committed to physical memory between all the processes that have them
+mapped.</li>
 </ul>
-</li>
-<li>Linux kernel</li>
-</ul>
-        <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" class="post-read-more">[Read More]</a>
-        
-    </div>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ smem -k <span class="p">|</span> grep <span class="s2">&#34;</span><span class="s2">PID\|</span><span class="k">$(</span>pidof qemu-system-x86_64<span class="k">)</span><span class="s2">&#34;</span>
+  PID User     Command                         Swap      USS      PSS      RSS
+<span class="m">24833</span> qemu     /usr/bin/qemu-system-x86_64        <span class="m">0</span>    71.6M    74.3M    105.2
+</code></pre></div><p>This is the memory footprint analysis, increasing the number of QEMU instances:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">                           Memory footprint <span class="o">[</span>MB<span class="o">]</span>
+     QEMU             before                 after
+ <span class="c1"># instances        USS     PSS           USS     PSS</span>
+      <span class="m">1</span>           102.0   105.8         102.3   106.2
+      <span class="m">2</span>            94.6   101.2          72.3    90.1
+      <span class="m">4</span>            94.1    98.0          72.0    81.5
+      <span class="m">8</span>            94.0    96.2          71.8    76.9
+     <span class="m">16</span>            93.9    95.1          71.6    74.3
+</code></pre></div><h3 id="boot-time">Boot time</h3>
+<p>We measured the boot time using the
+<a href="https://github.com/stefano-garzarella/qemu-boot-time">qemu-boot-time</a>
+scripts described in this
+<a href="/posts/2019-08-24-qemu-linux-boot-time/">post</a>.</p>
+<p>This is the boot time analysis:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">                                   Boot <span class="nb">time</span> <span class="o">[</span>ms<span class="o">]</span>
+                          before                  after
+ <span class="c1"># trace points</span>
+ qemu_init_end:           63.85                   55.91
+ linux_start_kernel:      82.11 <span class="o">(</span>+18.26<span class="o">)</span>          74.51 <span class="o">(</span>+18.60<span class="o">)</span>
+ linux_start_user:       169.94 <span class="o">(</span>+87.83<span class="o">)</span>         159.06 <span class="o">(</span>+84.56<span class="o">)</span>
+</code></pre></div><h2 id="conclusions">Conclusions</h2>
+<p>Mapping into memory the kernel and initrd images allowed us to save about 20 MB
+of memory when multiple VMs are started and allowed us to speed up the boot by
+about 10 milliseconds.</p>
+<p><strong>Note:</strong> both gains are strictly related to images size.</p>
 
-    
-    <div class="blog-tags">
         
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+          <div class="blog-tags">
+            
+              <a href="https://stefano-garzarella.github.io/tags/linux/">linux&#34;</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/microvm/">microvm</a>&nbsp;
+            
+          </div>
         
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-        
-    </div>
-    
 
-</article>
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-12-22-qemu-kernel-initrd-mmapped%2f&amp;text=QEMU%204.2%20mmap%282%29s%20kernel%20and%20initrd&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-12-22-qemu-kernel-initrd-mmapped%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-12-22-qemu-kernel-initrd-mmapped%2f&amp;title=QEMU%204.2%20mmap%282%29s%20kernel%20and%20initrd" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-12-22-qemu-kernel-initrd-mmapped%2f&amp;title=QEMU%204.2%20mmap%282%29s%20kernel%20and%20initrd" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-12-22-qemu-kernel-initrd-mmapped%2f&amp;title=QEMU%204.2%20mmap%282%29s%20kernel%20and%20initrd" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-12-22-qemu-kernel-initrd-mmapped%2f&amp;description=QEMU%204.2%20mmap%282%29s%20kernel%20and%20initrd" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
           
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/">
-        <h2 class="post-title">QEMU 4.0 boots uncompressed Linux x86_64 kernel</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/23
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;311&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p><strong>QEMU 4.0</strong> is now able to boot directly into the <strong>uncompressed Linux x86_64 kernel binary</strong> with minimal firmware involvement using the <strong>PVH entry point</strong> defined in the <a href="https://xenbits.xen.org/docs/unstable/misc/pvh.html">x86/HVM direct boot ABI</a>. (<code>CONFIG_PVH=y</code> must be enabled in the Linux config file).</p>
-<p>The x86/HVM direct boot ABI was initially developed for Xen guests, but with <a href="#patches">latest changes in both QEMU and Linux</a>, QEMU is able to use that same entry point for booting KVM guests.</p>
-        <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-        
-    </div>
-    
-
-</article>
+            
           
-        </div>
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/posts/2019-11-08-kvmforum-2019-vsock/">KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</a></li>
+                
+                    <li><a href="/posts/2019-08-24-qemu-linux-boot-time/">How to measure the boot time of a Linux VM with QEMU/KVM</a></li>
+                
+                    <li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">QEMU 4.0 boots uncompressed Linux x86_64 kernel</a></li>
+                
+                    <li><a href="/posts/2019-08-22-vsock-iperf3/">iperf3-vsock: how to measure VSOCK performance</a></li>
+                
+              </ul>
+
+          
         
-      </div>
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/" data-toggle="tooltip" data-placement="top" title="KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">                  
+            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped">comments</span></button>
+            <div id="disqus_thread"></div>
+
+            <script type="text/javascript">
+              var disqus_config = function () {
+              this.page.url = 'https:\/\/stefano-garzarella.github.io\/posts\/2019-12-22-qemu-kernel-initrd-mmapped';
+            };
+
+          </script>
+          </div>
+          
+        
+        
+      
+
     </div>
   </div>
+</div>
 
       
 <footer>
@@ -484,7 +566,7 @@ boot phase by the different components:</p>
               </li>
           
           <li>
-            <a href="/tags/boot/index.xml" title="RSS">
+            <a href="" title="RSS">
               <span class="fa-stack fa-lg">
                 <i class="fas fa-circle fa-stack-2x"></i>
                 <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
