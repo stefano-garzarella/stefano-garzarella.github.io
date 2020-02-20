@@ -6,10 +6,46 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Sat, 09 Nov 2019 18:45:25 +0100</lastBuildDate>
+    <lastBuildDate>Sun, 22 Dec 2019 17:46:44 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>boot</title>
+      <link>https://stefano-garzarella.github.io/tags/boot/</link>
+      <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/boot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>https://stefano-garzarella.github.io/tags/linux/</link>
+      <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>microvm</title>
+      <link>https://stefano-garzarella.github.io/tags/microvm/</link>
+      <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/microvm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>qemu</title>
+      <link>https://stefano-garzarella.github.io/tags/qemu/</link>
+      <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/qemu/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>conference</title>
@@ -21,29 +57,11 @@
     </item>
     
     <item>
-      <title>linux</title>
-      <link>https://stefano-garzarella.github.io/tags/linux/</link>
-      <pubDate>Sat, 09 Nov 2019 18:45:25 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/linux/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>net</title>
       <link>https://stefano-garzarella.github.io/tags/net/</link>
       <pubDate>Sat, 09 Nov 2019 18:45:25 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/tags/net/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>qemu</title>
-      <link>https://stefano-garzarella.github.io/tags/qemu/</link>
-      <pubDate>Sat, 09 Nov 2019 18:45:25 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/qemu/</guid>
       <description></description>
     </item>
     
@@ -62,15 +80,6 @@
       <pubDate>Sat, 09 Nov 2019 18:45:25 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/tags/vsock/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>boot</title>
-      <link>https://stefano-garzarella.github.io/tags/boot/</link>
-      <pubDate>Sat, 24 Aug 2019 15:03:30 +0200</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/boot/</guid>
       <description></description>
     </item>
     

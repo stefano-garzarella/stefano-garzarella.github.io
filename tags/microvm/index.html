@@ -7,7 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>Posts - sgarzare&#39;s blog</title>
+  <title>Overview of all pages with the tag #microvm - sgarzare&#39;s blog</title>
+  <meta name="description" content="Overview of all pages with the tag #microvm, such as: QEMU 4.2 mmap(2)s kernel and initrd">
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -29,13 +30,13 @@
 }
 </script>
 
-<meta property="og:title" content="Posts" />
+<meta property="og:title" content="microvm" />
 <meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-<meta property="og:url" content="https://stefano-garzarella.github.io/posts/" />
+<meta property="og:url" content="https://stefano-garzarella.github.io/tags/microvm/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
-  <meta name="twitter:title" content="Posts" />
+  <meta name="twitter:title" content="microvm" />
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@sgarzarella" />
@@ -214,9 +215,9 @@ if (!doNotTrack) {
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="posts-heading">
+            <div class="tags-heading">
               
-                <h1>Posts</h1>
+                <h1>microvm</h1>
               
               
                 <hr class="small">
@@ -298,259 +299,6 @@ image with <a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">PVH entry point</a
 
 </article>
           
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/">
-        <h2 class="post-title">KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</h2>
-        
-        <h3 class="post-subtitle">
-            Status, Performance and Challenges
-        </h3>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/11/09
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;6&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1068&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p><a href="https://static.sched.com/hosted_files/kvmforum2019/50/KVMForum_2019_virtio_vsock_Andra_Paraschiv_Stefano_Garzarella_v1.3.pdf">Slides</a> and
-<a href="https://youtu.be/LFqz-VZPhFE">recording</a> are available for the &ldquo;<a href="https://sched.co/TmwK">virtio-vsock in QEMU,
-Firecracker and Linux: Status, Performance and Challenges</a>&rdquo;
-talk that Andra Paraschiv and I presented at
-<a href="https://events19.linuxfoundation.org/events/kvm-forum-2019/">KVM Forum 2019</a>.
-This was the 13th edition of the KVM Forum conference. It took place in Lyon,
-France in October 2019.</p>
-<p>We talked about the current status and future works of VSOCK drivers in Linux
-and how Firecracker and QEMU provides the virtio-vsock device.</p>
-        <a href="https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/">
-        <h2 class="post-title">How to measure the boot time of a Linux VM with QEMU/KVM</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/24
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;882&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
-repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU/KVM.</p>
-<p>Using I/O writes, we can trace events to measure the time consumed during the
-boot phase by the different components:</p>
-<ul>
-<li>firmware
-<ul>
-<li>SeaBIOS</li>
-<li>qboot</li>
-</ul>
-</li>
-<li>optionrom
-<ul>
-<li>linuxboot [bzImage]</li>
-<li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">pvh [vmlinux + PVH entry point]</a></li>
-</ul>
-</li>
-<li>Linux kernel</li>
-</ul>
-        <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/">
-        <h2 class="post-title">QEMU 4.0 boots uncompressed Linux x86_64 kernel</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/23
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;311&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p><strong>QEMU 4.0</strong> is now able to boot directly into the <strong>uncompressed Linux x86_64 kernel binary</strong> with minimal firmware involvement using the <strong>PVH entry point</strong> defined in the <a href="https://xenbits.xen.org/docs/unstable/misc/pvh.html">x86/HVM direct boot ABI</a>. (<code>CONFIG_PVH=y</code> must be enabled in the Linux config file).</p>
-<p>The x86/HVM direct boot ABI was initially developed for Xen guests, but with <a href="#patches">latest changes in both QEMU and Linux</a>, QEMU is able to use that same entry point for booting KVM guests.</p>
-        <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/">
-        <h2 class="post-title">iperf3-vsock: how to measure VSOCK performance</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/22
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;340&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p>The <a href="https://github.com/stefano-garzarella/iperf-vsock">iperf-vsock</a> repository
-contains few patches to add the support of VSOCK address family to <code>iperf3</code>.
-In this way <code>iperf3</code> can be used to measure the performance between guest and
-host using VSOCK sockets.</p>
-<p>The VSOCK address family facilitates communication between virtual
-machines and the host they are running on.</p>
-<p>To test VSOCK sockets (only Linux), you must use the new option <code>--vsock</code> on
-both server and client.
-Other iperf3 options (e.g. <code>-t, -l, -P, -R, --bidir</code>) are well supported by
-VSOCK tests.</p>
-        <a href="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
         </div>
         
       </div>
@@ -614,7 +362,7 @@ VSOCK tests.</p>
               </li>
           
           <li>
-            <a href="/posts/index.xml" title="RSS">
+            <a href="/tags/microvm/index.xml" title="RSS">
               <span class="fa-stack fa-lg">
                 <i class="fas fa-circle fa-stack-2x"></i>
                 <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
