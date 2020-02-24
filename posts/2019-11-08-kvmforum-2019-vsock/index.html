@@ -59,7 +59,7 @@
   "headline": "KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux",
   "description" : "Slides and recording are available for the \x26ldquo;virtio-vsock in QEMU, Firecracker and Linux: Status, Performance and Challenges\x26rdquo; talk that Andra Paraschiv and I presented at KVM Forum 2019. This was the 13th edition of the KVM Forum conference. It took place in Lyon, France in October 2019.\nWe talked about the current status and future works of VSOCK drivers in Linux and how Firecracker and QEMU provides the virtio-vsock device.\n",
   "inLanguage" : "en",
-  "wordCount":  1068 ,
+  "wordCount":  1063 ,
   "datePublished" : "2019-11-09T18:45:25",
   "dateModified" : "2019-11-09T18:45:25",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -407,16 +407,28 @@ support VSOCK and I listed them to update the audience:</p>
 <ul>
 <li>wireshark &gt;= 2.40 [2017-07-19]</li>
 <li>iproute2 &gt;= 4.15 [2018-01-28]
-* ss</li>
+<ul>
+<li>ss</li>
+</ul>
+</li>
 <li>tcpdump
-* merged in master [2019-04-16]</li>
+<ul>
+<li>merged in master [2019-04-16]</li>
+</ul>
+</li>
 <li>nmap &gt;= 7.80 [2019-08-10]
-* ncat
-* nbd</li>
+<ul>
+<li>ncat</li>
+<li>nbd</li>
+</ul>
+</li>
 <li>nbdkit &gt;= 1.15.5 [2019-10-19]</li>
 <li>libnbd &gt;= 1.1.6 [2019-10-19]</li>
 <li>iperf-vsock
-* iperf3 fork</li>
+<ul>
+<li>iperf3 fork</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
