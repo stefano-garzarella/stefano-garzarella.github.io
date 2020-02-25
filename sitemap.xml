@@ -3,12 +3,57 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://stefano-garzarella.github.io/tags/boot/</loc>
-    <lastmod>2019-12-22T17:46:44+01:00</lastmod>
+    <loc>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/conference/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/tags/linux/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/net/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/posts/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/qemu/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/talk/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/vsock/</loc>
+    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/boot/</loc>
     <lastmod>2019-12-22T17:46:44+01:00</lastmod>
   </url>
   
@@ -18,52 +63,12 @@
   </url>
   
   <url>
-    <loc>https://stefano-garzarella.github.io/posts/</loc>
-    <lastmod>2019-12-22T17:46:44+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://stefano-garzarella.github.io/tags/qemu/</loc>
-    <lastmod>2019-12-22T17:46:44+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/</loc>
     <lastmod>2019-12-22T17:46:44+01:00</lastmod>
   </url>
   
   <url>
-    <loc>https://stefano-garzarella.github.io/</loc>
-    <lastmod>2019-12-22T17:46:44+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://stefano-garzarella.github.io/tags/</loc>
-    <lastmod>2019-12-22T17:46:44+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://stefano-garzarella.github.io/tags/conference/</loc>
-    <lastmod>2019-11-09T18:45:25+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/</loc>
-    <lastmod>2019-11-09T18:45:25+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://stefano-garzarella.github.io/tags/net/</loc>
-    <lastmod>2019-11-09T18:45:25+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://stefano-garzarella.github.io/tags/talk/</loc>
-    <lastmod>2019-11-09T18:45:25+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://stefano-garzarella.github.io/tags/vsock/</loc>
     <lastmod>2019-11-09T18:45:25+01:00</lastmod>
   </url>
   

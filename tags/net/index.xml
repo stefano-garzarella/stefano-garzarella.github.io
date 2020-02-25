@@ -6,10 +6,137 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Sat, 09 Nov 2019 18:45:25 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 25 Feb 2020 20:30:21 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/tags/net/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AF_VSOCK: nested VMs and loopback support available</title>
+      <link>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</link>
+      <pubDate>Tue, 25 Feb 2020 20:30:21 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</guid>
+      <description>&lt;p&gt;During the last
+&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/&#34;&gt;KVM Forum 2019&lt;/a&gt;,
+we discussed some next steps and several requests came from the audience.&lt;/p&gt;
+&lt;p&gt;In the last months, we worked on that and recent Linux releases contain
+interesting new features that we will describe in this blog post:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#nested-vms&#34;&gt;Nested VMs support&lt;/a&gt;, available in Linux 5.5&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#local-communication&#34;&gt;Local communication support&lt;/a&gt;, available in Linux 5.6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;devconfcz-2020&#34;&gt;DevConf.CZ 2020&lt;/h2&gt;
+&lt;p&gt;These updates and an introduction to AF_VSOCK ware presented at
+&lt;strong&gt;DevConf.CZ 2020&lt;/strong&gt; during the
+&amp;ldquo;&lt;a href=&#34;https://devconfcz2020a.sched.com/event/YOwb/vsock-vm-host-socket-with-minimal-configuration&#34;&gt;VSOCK: VM↔host socket with minimal configuration&lt;/a&gt;&amp;rdquo; talk.
+Slides available &lt;a href=&#34;https://static.sched.com/hosted_files/devconfcz2020a/b1/DevConf.CZ_2020_vsock_v1.1.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;nested-vms&#34;&gt;Nested VMs&lt;/h2&gt;
+&lt;p&gt;Before Linux 5.5, the AF_VSOCK core supported only one transport loaded at
+run time. That was a limit for nested VMs, because we need multiple transports
+loaded together.&lt;/p&gt;
+&lt;h3 id=&#34;types-of-transport&#34;&gt;Types of transport&lt;/h3&gt;
+&lt;p&gt;Under the AF_VSOCK core, that provides the socket interface to the user space
+applications, we have several transports that implement the communication
+channel between guest and host.&lt;/p&gt;
+
+&lt;link rel=&#34;stylesheet&#34; href=&#34;https://stefano-garzarella.github.io/css/hugo-easy-gallery.css&#34; /&gt;
+&lt;div class=&#34;box&#34; style=&#34;max-width:300px&#34;&gt;
+  &lt;figure  itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+    &lt;div class=&#34;img&#34;&gt;
+      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;https://stefano-garzarella.github.io/img/2020-02-20-vsock-nested-vms-loopback/vsock_transports.png&#34; alt=&#34;/img/2020-02-20-vsock-nested-vms-loopback/vsock_transports.png&#34;/&gt;
+    &lt;/div&gt;
+    &lt;a href=&#34;https://stefano-garzarella.github.io/img/2020-02-20-vsock-nested-vms-loopback/vsock_transports.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+      &lt;figcaption&gt;&lt;h4&gt;vsock transports&lt;/h4&gt;
+      &lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;These transports depend on the hypervisor and we can put them in two groups:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;H2G&lt;/strong&gt; (host to guest) transports: they run in the host and
+usually they provide the device emulation; currently we have &lt;em&gt;vhost&lt;/em&gt; and &lt;em&gt;vmci&lt;/em&gt;
+transports.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;G2H&lt;/strong&gt; (guest to host) transports: they run in the guest and usually they are
+device drivers; currently we have &lt;em&gt;virtio, vmci,&lt;/em&gt; and &lt;em&gt;hyperv&lt;/em&gt; transports.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;multi-transports&#34;&gt;Multi-transports&lt;/h3&gt;
+&lt;p&gt;In a nested VM environment, we need to load both G2H and H2G transports
+together in the L1 guest, for this reason, we implemented the multi-transports
+support to use vsock through &lt;strong&gt;nested VMs&lt;/strong&gt;.&lt;/p&gt;
+
+
+&lt;div class=&#34;box&#34; style=&#34;max-width:300px&#34;&gt;
+  &lt;figure  itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+    &lt;div class=&#34;img&#34;&gt;
+      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;https://stefano-garzarella.github.io/img/2020-02-20-vsock-nested-vms-loopback/vsock_nested_vms.png&#34; alt=&#34;/img/2020-02-20-vsock-nested-vms-loopback/vsock_nested_vms.png&#34;/&gt;
+    &lt;/div&gt;
+    &lt;a href=&#34;https://stefano-garzarella.github.io/img/2020-02-20-vsock-nested-vms-loopback/vsock_nested_vms.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+      &lt;figcaption&gt;&lt;h4&gt;vsock and nested VMs&lt;/h4&gt;
+      &lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Starting from Linux 5.5, the AF_VSOCK can handle two types of transports
+loaded together at runtime:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;H2G&lt;/strong&gt; transport, to communicate with the guest&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;G2H&lt;/strong&gt; transport, to communicate with the host.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So in the QEMU/KVM environment, the L1 guest will load both &lt;em&gt;virtio-transport&lt;/em&gt;,
+to communicate with L0, and &lt;em&gt;vhost-transport&lt;/em&gt; to communicate with L2.&lt;/p&gt;
+&lt;h2 id=&#34;local-communication&#34;&gt;Local Communication&lt;/h2&gt;
+&lt;p&gt;Another feature recently added is the possibility to communicate locally on
+the same host.
+This feature, suggested by &lt;a href=&#34;https://rwmj.wordpress.com/&#34;&gt;Richard WM Jones&lt;/a&gt;,
+can be very useful for testing and debugging applications that use AF_VSOCK
+without running VMs.&lt;/p&gt;
+&lt;p&gt;Linux 5.6 introduces a new transport called &lt;em&gt;vsock-loopback&lt;/em&gt;, and a new well
+know CID for local communication: &lt;strong&gt;VMADDR_CID_LOCAL (1)&lt;/strong&gt;.
+It’s a special CID to direct packets to the same host that generated them.&lt;/p&gt;
+
+
+&lt;div class=&#34;box&#34; style=&#34;max-width:300px&#34;&gt;
+  &lt;figure  itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
+    &lt;div class=&#34;img&#34;&gt;
+      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;https://stefano-garzarella.github.io/img/2020-02-20-vsock-nested-vms-loopback/vsock_loopback.png&#34; alt=&#34;/img/2020-02-20-vsock-nested-vms-loopback/vsock_loopback.png&#34;/&gt;
+    &lt;/div&gt;
+    &lt;a href=&#34;https://stefano-garzarella.github.io/img/2020-02-20-vsock-nested-vms-loopback/vsock_loopback.png&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
+      &lt;figcaption&gt;&lt;h4&gt;vsock loopback&lt;/h4&gt;
+      &lt;/figcaption&gt;
+  &lt;/figure&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Other CIDs can be used for the same purpose, but it&amp;rsquo;s preferable to use
+VMADDR_CID_LOCAL:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Local Guest CID
+&lt;ul&gt;
+&lt;li&gt;if G2H is loaded (e.g. running in a VM)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;VMADDR_CID_HOST (2)
+&lt;ul&gt;
+&lt;li&gt;if H2G is loaded and G2H is not loaded (e.g. running on L0).
+If G2H is also loaded, then VMADDR_CID_HOST is used to reach the host&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Richard recently used the vsock local communication to implement a &lt;a href=&#34;https://github.com/libguestfs/nbdkit/commit/5e4745641bb4676f607fdb3f8750dbf6e9516877&#34;&gt;regression
+test&lt;/a&gt;
+test for &lt;a href=&#34;https://rwmj.wordpress.com/2019/10/21/nbd-over-af_vsock/&#34;&gt;nbdkit/libnbd vsock support&lt;/a&gt;, using the new &lt;a href=&#34;https://github.com/libguestfs/nbdkit/commit/01ce88f56f93afd577a8e3b2cc28d825693c8db2&#34;&gt;VMADDR_CID_LOCAL&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Listening on port 1234 using ncat(1)&lt;/span&gt;
+l0$ nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;# Connecting to the local host using VMADDR_CID_LOCAL (1)&lt;/span&gt;
+l0$ nc --vsock &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;patches&#34;&gt;Patches&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://patchwork.ozlabs.org/cover/1194660/&#34;&gt;[PATCH net-next v2 00/15] vsock: add multi-transports support&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://patchwork.ozlabs.org/cover/1207012/&#34;&gt;[PATCH net-next v2 0/6] vsock: add local transport support&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
     
     <item>
       <title>KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</title>

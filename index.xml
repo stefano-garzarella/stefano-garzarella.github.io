@@ -6,10 +6,32 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Sun, 22 Dec 2019 17:46:44 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 25 Feb 2020 20:30:21 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AF_VSOCK: nested VMs and loopback support available</title>
+      <link>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</link>
+      <pubDate>Tue, 25 Feb 2020 20:30:21 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</guid>
+      <description>&lt;p&gt;During the last
+&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/&#34;&gt;KVM Forum 2019&lt;/a&gt;,
+we discussed some next steps and several requests came from the audience.&lt;/p&gt;
+&lt;p&gt;In the last months, we worked on that and recent Linux releases contain
+interesting new features that we will describe in this blog post:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#nested-vms&#34;&gt;Nested VMs support&lt;/a&gt;, available in Linux 5.5&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#local-communication&#34;&gt;Local communication support&lt;/a&gt;, available in Linux 5.6&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;devconfcz-2020&#34;&gt;DevConf.CZ 2020&lt;/h2&gt;
+&lt;p&gt;These updates and an introduction to AF_VSOCK ware presented at
+&lt;strong&gt;DevConf.CZ 2020&lt;/strong&gt; during the
+&amp;ldquo;&lt;a href=&#34;https://devconfcz2020a.sched.com/event/YOwb/vsock-vm-host-socket-with-minimal-configuration&#34;&gt;VSOCK: VM↔host socket with minimal configuration&lt;/a&gt;&amp;rdquo; talk.
+Slides available &lt;a href=&#34;https://static.sched.com/hosted_files/devconfcz2020a/b1/DevConf.CZ_2020_vsock_v1.1.pdf&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>QEMU 4.2 mmap(2)s kernel and initrd</title>
