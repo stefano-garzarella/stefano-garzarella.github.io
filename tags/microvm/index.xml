@@ -63,7 +63,7 @@ amount of memory that would be freed if the process were to terminate.&lt;/li&gt
 are committed to physical memory between all the processes that have them
 mapped.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ smem -k &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;PID\|&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;pidof qemu-system-x86_64&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ smem -k &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;PID\|&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;pidof qemu-system-x86_64&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
   PID User     Command                         Swap      USS      PSS      RSS
 &lt;span class=&#34;m&#34;&gt;24833&lt;/span&gt; qemu     /usr/bin/qemu-system-x86_64        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    71.6M    74.3M    105.2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is the memory footprint analysis, increasing the number of QEMU instances:&lt;/p&gt;
