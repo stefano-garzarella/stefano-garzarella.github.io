@@ -239,6 +239,93 @@ if (!doNotTrack) {
         <div class="posts-list">
           
             <article class="post-preview">
+    <a href="https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/">
+        <h2 class="post-title">SOCAT now supports AF_VSOCK</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2021/01/22
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;640&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p><a href="http://www.dest-unreach.org/isocat/">SOCAT</a>
+is a CLI utility which enables the concatenation
+of two sockets together.
+It establishes two bidirectional byte streams and transfers data between them.</p>
+<p><code>socat</code> supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.)
+to construct the streams. The latest version <strong>1.7.4</strong>, released earlier this
+year [2021-01-04], supports also AF_VSOCK addresses:</p>
+<ul>
+<li>
+<p><a href="http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_LISTEN">VSOCK-LISTEN</a>:<code>&lt;port&gt;</code></p>
+<ul>
+<li>Listen on <code>port</code> and accepts a VSOCK connection.</li>
+</ul>
+</li>
+<li>
+<p><a href="http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_CONNECT">VSOCK-CONNECT</a>:<code>&lt;cid&gt;:&lt;port&gt;</code></p>
+<ul>
+<li>Establishes a VSOCK stream connection to the specified <code>cid</code> and <code>port</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="fosdem-2021">FOSDEM 2021</h2>
+<p>If you are interested on VSOCK, I&rsquo;ll talk witn Andra Paraschiv (AWS) about it
+at FOSDEM 2021.
+The talk is titled
+<a href="https://fosdem.org/2021/schedule/event/vai_virtio_vsock">Leveraging virtio-vsock in the cloud and containers</a>
+and it&rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).</p>
+<p>We will show cool VSOCK use cases and some demos about developing, debugging,
+and measuring the VSOCK performance, including <code>socat</code> demos.</p>
+        <a href="https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/socat/">socat</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
     <a href="https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/">
         <h2 class="post-title">AF_VSOCK: nested VMs and loopback support available</h2>
         
@@ -462,7 +549,7 @@ and how Firecracker and QEMU provides the virtio-vsock device.</p>
 
           &nbsp;&bull;&nbsp;&copy;
           
-            2020
+            2021
           
 
           

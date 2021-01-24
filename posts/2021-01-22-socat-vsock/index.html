@@ -7,17 +7,36 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>iperf3-vsock: how to measure VSOCK performance - sgarzare&#39;s blog</title>
-  <meta name="description" content="The iperf-vsock repository
-contains few patches to add the support of VSOCK address family to iperf3.
-In this way iperf3 can be used to measure the performance between guest and
-host using VSOCK sockets.
-The VSOCK address family facilitates communication between virtual
-machines and the host they are running on.
-To test VSOCK sockets (only Linux), you must use the new option --vsock on
-both server and client.
-Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by
-VSOCK tests.">
+  <title>SOCAT now supports AF_VSOCK - sgarzare&#39;s blog</title>
+  <meta name="description" content="SOCAT
+is a CLI utility which enables the concatenation
+of two sockets together.
+It establishes two bidirectional byte streams and transfers data between them.
+socat supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.)
+to construct the streams. The latest version 1.7.4, released earlier this
+year [2021-01-04], supports also AF_VSOCK addresses:
+
+
+VSOCK-LISTEN:&lt;port&gt;
+
+Listen on port and accepts a VSOCK connection.
+
+
+
+VSOCK-CONNECT:&lt;cid&gt;:&lt;port&gt;
+
+Establishes a VSOCK stream connection to the specified cid and port.
+
+
+
+FOSDEM 2021
+If you are interested on VSOCK, I&rsquo;ll talk witn Andra Paraschiv (AWS) about it
+at FOSDEM 2021.
+The talk is titled
+Leveraging virtio-vsock in the cloud and containers
+and it&rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).
+We will show cool VSOCK use cases and some demos about developing, debugging,
+and measuring the VSOCK performance, including socat demos.">
   <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -53,8 +72,8 @@ VSOCK tests.">
         "@type": "ListItem",
         "position": 3,
         "item": {
-          "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-22-vsock-iperf3\/",
-          "name": "Iperf3 vsock how to measure v s o c k performance"
+          "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2021-01-22-socat-vsock\/",
+          "name": "S o c a t now supports a f v s o c k"
         }
     }]
 }
@@ -65,15 +84,15 @@ VSOCK tests.">
   "author": {
     "name" : "Stefano Garzarella"
   },
-  "headline": "iperf3-vsock: how to measure VSOCK performance",
-  "description" : "The iperf-vsock repository contains few patches to add the support of VSOCK address family to iperf3. In this way iperf3 can be used to measure the performance between guest and host using VSOCK sockets.\nThe VSOCK address family facilitates communication between virtual machines and the host they are running on.\nTo test VSOCK sockets (only Linux), you must use the new option --vsock on both server and client. Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by VSOCK tests.\n",
+  "headline": "SOCAT now supports AF_VSOCK",
+  "description" : "SOCAT is a CLI utility which enables the concatenation of two sockets together. It establishes two bidirectional byte streams and transfers data between them.\nsocat supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.) to construct the streams. The latest version 1.7.4, released earlier this year [2021-01-04], supports also AF_VSOCK addresses:\n  VSOCK-LISTEN:\u0026lt;port\u0026gt;\n Listen on port and accepts a VSOCK connection.    VSOCK-CONNECT:\u0026lt;cid\u0026gt;:\u0026lt;port\u0026gt;\n Establishes a VSOCK stream connection to the specified cid and port.    FOSDEM 2021 If you are interested on VSOCK, I\u0026rsquo;ll talk witn Andra Paraschiv (AWS) about it at FOSDEM 2021. The talk is titled Leveraging virtio-vsock in the cloud and containers and it\u0026rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).\nWe will show cool VSOCK use cases and some demos about developing, debugging, and measuring the VSOCK performance, including socat demos.\n",
   "inLanguage" : "en",
-  "wordCount":  340 ,
-  "datePublished" : "2019-08-22T17:52:06",
-  "dateModified" : "2019-08-22T17:52:06",
+  "wordCount":  640 ,
+  "datePublished" : "2021-01-22T15:16:04",
+  "dateModified" : "2021-01-22T15:16:04",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
-  "keywords" : [ "vsock, linux, qemu, net" ],
-  "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-22-vsock-iperf3\/",
+  "keywords" : [ "vsock, linux, qemu, net, conference, talk, socat" ],
+  "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2021-01-22-socat-vsock\/",
   "publisher" : {
     "@type": "Organization",
     "name" : "https:\/\/stefano-garzarella.github.io",
@@ -87,27 +106,47 @@ VSOCK tests.">
 }
 </script>
 
-<meta property="og:title" content="iperf3-vsock: how to measure VSOCK performance" />
-<meta property="og:description" content="The iperf-vsock repository
-contains few patches to add the support of VSOCK address family to iperf3.
-In this way iperf3 can be used to measure the performance between guest and
-host using VSOCK sockets.
-The VSOCK address family facilitates communication between virtual
-machines and the host they are running on.
-To test VSOCK sockets (only Linux), you must use the new option --vsock on
-both server and client.
-Other iperf3 options (e.g. -t, -l, -P, -R, --bidir) are well supported by
-VSOCK tests.">
+<meta property="og:title" content="SOCAT now supports AF_VSOCK" />
+<meta property="og:description" content="SOCAT
+is a CLI utility which enables the concatenation
+of two sockets together.
+It establishes two bidirectional byte streams and transfers data between them.
+socat supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.)
+to construct the streams. The latest version 1.7.4, released earlier this
+year [2021-01-04], supports also AF_VSOCK addresses:
+
+
+VSOCK-LISTEN:&lt;port&gt;
+
+Listen on port and accepts a VSOCK connection.
+
+
+
+VSOCK-CONNECT:&lt;cid&gt;:&lt;port&gt;
+
+Establishes a VSOCK stream connection to the specified cid and port.
+
+
+
+FOSDEM 2021
+If you are interested on VSOCK, I&rsquo;ll talk witn Andra Paraschiv (AWS) about it
+at FOSDEM 2021.
+The talk is titled
+Leveraging virtio-vsock in the cloud and containers
+and it&rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).
+We will show cool VSOCK use cases and some demos about developing, debugging,
+and measuring the VSOCK performance, including socat demos.">
 <meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-<meta property="og:url" content="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/" />
+<meta property="og:url" content="https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
-  <meta name="twitter:title" content="iperf3-vsock: how to measure VSOCK performance" />
-  <meta name="twitter:description" content="The iperf-vsock repository
-contains few patches to add the support of VSOCK address family to iperf3.
-In this way iperf3 can be used to measure the performance between guest and
-host using VSOCK …">
+  <meta name="twitter:title" content="SOCAT now supports AF_VSOCK" />
+  <meta name="twitter:description" content="SOCAT
+is a CLI utility which enables the concatenation
+of two sockets together.
+It establishes two bidirectional byte streams and transfers data between them.
+socat supports several address types …">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@sgarzarella" />
@@ -288,7 +327,7 @@ if (!doNotTrack) {
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="posts-heading">
               
-                <h1>iperf3-vsock: how to measure VSOCK performance</h1>
+                <h1>SOCAT now supports AF_VSOCK</h1>
               
               
                 <hr class="small">
@@ -308,66 +347,103 @@ if (!doNotTrack) {
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        <p>The <a href="https://github.com/stefano-garzarella/iperf-vsock">iperf-vsock</a> repository
-contains few patches to add the support of VSOCK address family to <code>iperf3</code>.
-In this way <code>iperf3</code> can be used to measure the performance between guest and
-host using VSOCK sockets.</p>
-<p>The VSOCK address family facilitates communication between virtual
-machines and the host they are running on.</p>
-<p>To test VSOCK sockets (only Linux), you must use the new option <code>--vsock</code> on
-both server and client.
-Other iperf3 options (e.g. <code>-t, -l, -P, -R, --bidir</code>) are well supported by
-VSOCK tests.</p>
-<h2 id="prerequisites">Prerequisites</h2>
+        <p><a href="http://www.dest-unreach.org/isocat/">SOCAT</a>
+is a CLI utility which enables the concatenation
+of two sockets together.
+It establishes two bidirectional byte streams and transfers data between them.</p>
+<p><code>socat</code> supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.)
+to construct the streams. The latest version <strong>1.7.4</strong>, released earlier this
+year [2021-01-04], supports also AF_VSOCK addresses:</p>
 <ul>
-<li>Linux host kernel &gt;= 4.8</li>
-<li>Linux guest kernel &gt;= 4.8</li>
-<li>QEMU &gt;= 2.8</li>
+<li>
+<p><a href="http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_LISTEN">VSOCK-LISTEN</a>:<code>&lt;port&gt;</code></p>
+<ul>
+<li>Listen on <code>port</code> and accepts a VSOCK connection.</li>
 </ul>
-<h2 id="build-iperf3-vsock-from-source">Build iperf3-vsock from source</h2>
-<h3 id="clone-repository">Clone repository</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">git clone https://github.com/stefano-garzarella/iperf-vsock
-<span class="nb">cd</span> iperf-vsock
-</code></pre></div><h3 id="building">Building</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">mkdir build
-<span class="nb">cd</span> build
-../configure
-make
-</code></pre></div><p>(Note: If configure fails, try running <code>./bootstrap.sh</code> first)</p>
-<h2 id="example-with-fedora-30-host-and-guest">Example with Fedora 30 (host and guest):</h2>
-<h3 id="host-start-the-vm">Host: start the VM</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">GUEST_CID</span><span class="o">=</span><span class="m">3</span>
-sudo modprobe vhost_vsock
-sudo qemu-system-x86_64 -m 1G -smp <span class="m">2</span> -cpu host -M <span class="nv">accel</span><span class="o">=</span>kvm	<span class="se">\
-</span><span class="se"></span>     -drive <span class="k">if</span><span class="o">=</span>virtio,file<span class="o">=</span>/path/to/fedora.img,format<span class="o">=</span>qcow2     <span class="se">\
-</span><span class="se"></span>     -device vhost-vsock-pci,guest-cid<span class="o">=</span><span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span>
-</code></pre></div><h3 id="guest-start-iperf-server">Guest: start iperf server</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># SELinux can block you, so you can write a policy or temporally disable it</span>
-sudo setenforce <span class="m">0</span>
-iperf-vsock/build/src/iperf3 --vsock -s
-</code></pre></div><h3 id="host-start-iperf-client">Host: start iperf client</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">iperf-vsock/build/src/iperf3 --vsock -c <span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span>
-</code></pre></div><h3 id="output">Output</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">Connecting to host 3, port <span class="m">5201</span>
-<span class="o">[</span>  5<span class="o">]</span> <span class="nb">local</span> <span class="m">2</span> port <span class="m">4008596529</span> connected to <span class="m">3</span> port <span class="m">5201</span>
-<span class="o">[</span> ID<span class="o">]</span> Interval           Transfer     Bitrate
-<span class="o">[</span>  5<span class="o">]</span>   0.00-1.00   sec  1.30 GBytes  11.2 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   1.00-2.00   sec  1.67 GBytes  14.3 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   2.00-3.00   sec  1.57 GBytes  13.5 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   3.00-4.00   sec  1.49 GBytes  12.8 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   4.00-5.00   sec   <span class="m">971</span> MBytes  8.15 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   5.00-6.00   sec  1.01 GBytes  8.71 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   6.00-7.00   sec  1.44 GBytes  12.3 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   7.00-8.00   sec  1.62 GBytes  13.9 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   8.00-9.00   sec  1.61 GBytes  13.8 Gbits/sec
-<span class="o">[</span>  5<span class="o">]</span>   9.00-10.00  sec  1.63 GBytes  14.0 Gbits/sec
-- - - - - - - - - - - - - - - - - - - - - - - - -
-<span class="o">[</span> ID<span class="o">]</span> Interval           Transfer     Bitrate
-<span class="o">[</span>  5<span class="o">]</span>   0.00-10.00  sec  14.3 GBytes  12.3 Gbits/sec                  sender
-<span class="o">[</span>  5<span class="o">]</span>   0.00-10.00  sec  14.3 GBytes  12.3 Gbits/sec                  receiver
+</li>
+<li>
+<p><a href="http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_CONNECT">VSOCK-CONNECT</a>:<code>&lt;cid&gt;:&lt;port&gt;</code></p>
+<ul>
+<li>Establishes a VSOCK stream connection to the specified <code>cid</code> and <code>port</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="fosdem-2021">FOSDEM 2021</h2>
+<p>If you are interested on VSOCK, I&rsquo;ll talk witn Andra Paraschiv (AWS) about it
+at FOSDEM 2021.
+The talk is titled
+<a href="https://fosdem.org/2021/schedule/event/vai_virtio_vsock">Leveraging virtio-vsock in the cloud and containers</a>
+and it&rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).</p>
+<p>We will show cool VSOCK use cases and some demos about developing, debugging,
+and measuring the VSOCK performance, including <code>socat</code> demos.</p>
+<h2 id="examples">Examples</h2>
+<p><code>socat</code> could be very useful for concatenating and redirecting sockets.
+In this section we will see some examples.</p>
+<p>All examples below refer to a guest with <code>CID 42</code> that we created using
+<a href="https://libguestfs.org/virt-builder.1.html">virt-builder</a>
+and
+<a href="https://virt-manager.org/">virt-install</a>
+.</p>
+<h3 id="vm-setup">VM setup</h3>
+<p><code>virt-builder</code> is able to download the installer and create the disk image
+with Fedora 33 or other distros.
+It is also able to set the root password and inject the ssh public key,
+simplifying the creation of guest disk image:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">VM_IMAGE</span><span class="o">=</span><span class="s2">&#34;vsockguest_f33.qcow2&#34;</span>
 
-iperf Done.
-</code></pre></div>
+host$ virt-builder --root-password<span class="o">=</span>password:mypassword <span class="se">\
+</span><span class="se"></span>        --ssh-inject root:file:/home/user/.ssh/id_rsa.pub <span class="se">\
+</span><span class="se"></span>        --output<span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span> <span class="se">\
+</span><span class="se"></span>        --format<span class="o">=</span>qcow2 --size 10G --selinux-relabel <span class="se">\
+</span><span class="se"></span>        --update fedora-33
+</code></pre></div><p>Once the disk image is ready, we create our VM with <code>virt-install</code>.
+We can specify the VM settings like the number of vCPUs, the amount of RAM,
+and the <code>CID</code> assigned to the VM [42]:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virt-install --name vsockguest <span class="se">\
+</span><span class="se"></span>        --ram <span class="m">2048</span> --vcpus <span class="m">2</span> --os-variant fedora33 <span class="se">\
+</span><span class="se"></span>        --import --disk <span class="nv">path</span><span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span>,bus<span class="o">=</span>virtio <span class="se">\
+</span><span class="se"></span>        --graphics none --vsock cid.address<span class="o">=</span><span class="m">42</span>
+</code></pre></div><p>After the creation of the VM, we will remain attached to the console and
+we can detach from it by pressing <code>ctrl-]</code>.</p>
+<p>We can reattach to the console in this way:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virsh console vsockguest
+</code></pre></div><p>If the VM is turned off, we can boot it and attach directly to the console
+in this way:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virsh start --console vsockguest
+</code></pre></div><h3 id="ncat-like">ncat like</h3>
+<p>It&rsquo;s possible to use <code>socat</code> like <code>ncat</code>, transferring <code>stdin</code> and <code>stdout</code> via VSOCK.</p>
+<h4 id="guest-listening">Guest listening</h4>
+<p>In this example we start <code>socat</code> in the guest listening on port <code>1234</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat - VSOCK-LISTEN:1234
+</code></pre></div><p>Then we connect from the host using the <code>CID 42</code> assigned to the VM:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat - VSOCK-CONNECT:42:1234
+</code></pre></div><p>At this point we can exchange characters between guest and host, since <code>stdin</code>
+and <code>stdout</code> are linked through the VSOCK socket.</p>
+<h4 id="host-listening">Host listening</h4>
+<p>In this example we do the opposite, starting <code>socat</code> in the host listening
+on port <code>1234</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat - VSOCK-LISTEN:1234
+</code></pre></div><p>Then, in the guest, we connect to the host using the <em>well defined</em> <code>CID 2</code>.
+It&rsquo;s always used to reach the host:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat - VSOCK-CONNECT:2:1234
+</code></pre></div><h3 id="ssh-over-vsock">ssh over VSOCK</h3>
+<p>The coolest feature of <code>socat</code> is to concatenate sockets of different address
+families, so in this example we redirect ssh traffic through VSOCK socket
+exposed by the VM.</p>
+<p>This example could be useful if the VM doesn&rsquo;t have any NIC attached and
+we want to provide some network connectivity, like the ssh access.</p>
+<p>First of all, in the guest we start <code>socat</code> linking the VSOCK socket listening on
+port 22, to a TCP socket which will connect to the local TCP port 22 where the
+ssh server is listening:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
+</code></pre></div><p>On the host we link a TCP socket listening on a port of our choice (e.g. 4321)
+to the guest port 22 just opened using VSOCK:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
+</code></pre></div><p>Finally from the host we can connect to the guest using ssh on the local port
+4321, where <code>socat</code> is listening:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ ssh -p <span class="m">4321</span> root@localhost
+</code></pre></div><p><code>socat</code> redirects all the traffic between the sockets and allow us to use ssh over
+VSOCK to reach the guest.</p>
 
         
           <div class="blog-tags">
@@ -379,6 +455,12 @@ iperf Done.
               <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
             
               <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/socat/">socat</a>&nbsp;
             
           </div>
         
@@ -393,42 +475,42 @@ iperf Done.
     <ul class="share">
       
       <li>
-        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;text=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2021-01-22-socat-vsock%2f&amp;text=SOCAT%20now%20supports%20AF_VSOCK&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f" target="_blank" title="Share on Facebook">
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2021-01-22-socat-vsock%2f" target="_blank" title="Share on Facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;title=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance" target="_blank" title="Share on Reddit">
+        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2021-01-22-socat-vsock%2f&amp;title=SOCAT%20now%20supports%20AF_VSOCK" target="_blank" title="Share on Reddit">
           <i class="fab fa-reddit"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;title=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance" target="_blank" title="Share on LinkedIn">
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2021-01-22-socat-vsock%2f&amp;title=SOCAT%20now%20supports%20AF_VSOCK" target="_blank" title="Share on LinkedIn">
           <i class="fab fa-linkedin"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;title=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance" target="_blank" title="Share on StumbleUpon">
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2021-01-22-socat-vsock%2f&amp;title=SOCAT%20now%20supports%20AF_VSOCK" target="_blank" title="Share on StumbleUpon">
           <i class="fab fa-stumbleupon"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2019-08-22-vsock-iperf3%2f&amp;description=iperf3-vsock%3a%20how%20to%20measure%20VSOCK%20performance" target="_blank" title="Share on Pinterest">
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2021-01-22-socat-vsock%2f&amp;description=SOCAT%20now%20supports%20AF_VSOCK" target="_blank" title="Share on Pinterest">
           <i class="fab fa-pinterest"></i>
         </a>
       </li>
@@ -450,8 +532,6 @@ iperf Done.
                   <ul>
                 
                 
-                    <li><a href="/posts/2021-01-22-socat-vsock/">SOCAT now supports AF_VSOCK</a></li>
-                
                     <li><a href="/posts/2020-02-20-vsock-nested-vms-loopback/">AF_VSOCK: nested VMs and loopback support available</a></li>
                 
                     <li><a href="/posts/2019-12-22-qemu-kernel-initrd-mmapped/">QEMU 4.2 mmap(2)s kernel and initrd</a></li>
@@ -459,6 +539,8 @@ iperf Done.
                     <li><a href="/posts/2019-11-08-kvmforum-2019-vsock/">KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</a></li>
                 
                     <li><a href="/posts/2019-08-24-qemu-linux-boot-time/">How to measure the boot time of a Linux VM with QEMU/KVM</a></li>
+                
+                    <li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">QEMU 4.0 boots uncompressed Linux x86_64 kernel</a></li>
                 
               </ul>
 
@@ -469,10 +551,10 @@ iperf Done.
       
         <ul class="pager blog-pager">
           
-          
-            <li class="next">
-              <a href="https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/" data-toggle="tooltip" data-placement="top" title="QEMU 4.0 boots uncompressed Linux x86_64 kernel">Next Post &rarr;</a>
+            <li class="previous">
+              <a href="https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/" data-toggle="tooltip" data-placement="top" title="AF_VSOCK: nested VMs and loopback support available">&larr; Previous Post</a>
             </li>
+          
           
         </ul>
       
@@ -482,12 +564,12 @@ iperf Done.
         
           
           <div class="disqus-comments">                  
-            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3">comments</span></button>
+            <button id="show-comments" class="btn btn-default" type="button">Show <span class="disqus-comment-count" data-disqus-url="https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock">comments</span></button>
             <div id="disqus_thread"></div>
 
             <script type="text/javascript">
               var disqus_config = function () {
-              this.page.url = 'https:\/\/stefano-garzarella.github.io\/posts\/2019-08-22-vsock-iperf3';
+              this.page.url = 'https:\/\/stefano-garzarella.github.io\/posts\/2021-01-22-socat-vsock';
             };
 
           </script>

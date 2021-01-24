@@ -3,52 +3,62 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://stefano-garzarella.github.io/tags/conference/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/tags/linux/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/tags/net/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/posts/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/tags/qemu/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/tags/socat/</loc>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/</loc>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/tags/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/tags/talk/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url>
   
   <url>
     <loc>https://stefano-garzarella.github.io/tags/vsock/</loc>
+    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</loc>
     <lastmod>2020-02-25T20:30:21+01:00</lastmod>
   </url>
   

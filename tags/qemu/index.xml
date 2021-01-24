@@ -6,10 +6,115 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Tue, 25 Feb 2020 20:30:21 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 22 Jan 2021 15:16:04 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/tags/qemu/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SOCAT now supports AF_VSOCK</title>
+      <link>https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/</link>
+      <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://www.dest-unreach.org/isocat/&#34;&gt;SOCAT&lt;/a&gt;
+is a CLI utility which enables the concatenation
+of two sockets together.
+It establishes two bidirectional byte streams and transfers data between them.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;socat&lt;/code&gt; supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.)
+to construct the streams. The latest version &lt;strong&gt;1.7.4&lt;/strong&gt;, released earlier this
+year [2021-01-04], supports also AF_VSOCK addresses:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_LISTEN&#34;&gt;VSOCK-LISTEN&lt;/a&gt;:&lt;code&gt;&amp;lt;port&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Listen on &lt;code&gt;port&lt;/code&gt; and accepts a VSOCK connection.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_CONNECT&#34;&gt;VSOCK-CONNECT&lt;/a&gt;:&lt;code&gt;&amp;lt;cid&amp;gt;:&amp;lt;port&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Establishes a VSOCK stream connection to the specified &lt;code&gt;cid&lt;/code&gt; and &lt;code&gt;port&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;fosdem-2021&#34;&gt;FOSDEM 2021&lt;/h2&gt;
+&lt;p&gt;If you are interested on VSOCK, I&amp;rsquo;ll talk witn Andra Paraschiv (AWS) about it
+at FOSDEM 2021.
+The talk is titled
+&lt;a href=&#34;https://fosdem.org/2021/schedule/event/vai_virtio_vsock&#34;&gt;Leveraging virtio-vsock in the cloud and containers&lt;/a&gt;
+and it&amp;rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).&lt;/p&gt;
+&lt;p&gt;We will show cool VSOCK use cases and some demos about developing, debugging,
+and measuring the VSOCK performance, including &lt;code&gt;socat&lt;/code&gt; demos.&lt;/p&gt;
+&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;socat&lt;/code&gt; could be very useful for concatenating and redirecting sockets.
+In this section we will see some examples.&lt;/p&gt;
+&lt;p&gt;All examples below refer to a guest with &lt;code&gt;CID 42&lt;/code&gt; that we created using
+&lt;a href=&#34;https://libguestfs.org/virt-builder.1.html&#34;&gt;virt-builder&lt;/a&gt;
+and
+&lt;a href=&#34;https://virt-manager.org/&#34;&gt;virt-install&lt;/a&gt;
+.&lt;/p&gt;
+&lt;h3 id=&#34;vm-setup&#34;&gt;VM setup&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;virt-builder&lt;/code&gt; is able to download the installer and create the disk image
+with Fedora 33 or other distros.
+It is also able to set the root password and inject the ssh public key,
+simplifying the creation of guest disk image:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;VM_IMAGE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;vsockguest_f33.qcow2&amp;#34;&lt;/span&gt;
+
+host$ virt-builder --root-password&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;password:mypassword &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --ssh-inject root:file:/home/user/.ssh/id_rsa.pub &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --output&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;VM_IMAGE&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2 --size 10G --selinux-relabel &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --update fedora-33
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once the disk image is ready, we create our VM with &lt;code&gt;virt-install&lt;/code&gt;.
+We can specify the VM settings like the number of vCPUs, the amount of RAM,
+and the &lt;code&gt;CID&lt;/code&gt; assigned to the VM [42]:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virt-install --name vsockguest &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --ram &lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt; --vcpus &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; --os-variant fedora33 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --import --disk &lt;span class=&#34;nv&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;VM_IMAGE&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;,bus&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;virtio &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --graphics none --vsock cid.address&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;42&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After the creation of the VM, we will remain attached to the console and
+we can detach from it by pressing &lt;code&gt;ctrl-]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We can reattach to the console in this way:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virsh console vsockguest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If the VM is turned off, we can boot it and attach directly to the console
+in this way:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virsh start --console vsockguest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;ncat-like&#34;&gt;ncat like&lt;/h3&gt;
+&lt;p&gt;It&amp;rsquo;s possible to use &lt;code&gt;socat&lt;/code&gt; like &lt;code&gt;ncat&lt;/code&gt;, transferring &lt;code&gt;stdin&lt;/code&gt; and &lt;code&gt;stdout&lt;/code&gt; via VSOCK.&lt;/p&gt;
+&lt;h4 id=&#34;guest-listening&#34;&gt;Guest listening&lt;/h4&gt;
+&lt;p&gt;In this example we start &lt;code&gt;socat&lt;/code&gt; in the guest listening on port &lt;code&gt;1234&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat - VSOCK-LISTEN:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then we connect from the host using the &lt;code&gt;CID 42&lt;/code&gt; assigned to the VM:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat - VSOCK-CONNECT:42:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point we can exchange characters between guest and host, since &lt;code&gt;stdin&lt;/code&gt;
+and &lt;code&gt;stdout&lt;/code&gt; are linked through the VSOCK socket.&lt;/p&gt;
+&lt;h4 id=&#34;host-listening&#34;&gt;Host listening&lt;/h4&gt;
+&lt;p&gt;In this example we do the opposite, starting &lt;code&gt;socat&lt;/code&gt; in the host listening
+on port &lt;code&gt;1234&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat - VSOCK-LISTEN:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then, in the guest, we connect to the host using the &lt;em&gt;well defined&lt;/em&gt; &lt;code&gt;CID 2&lt;/code&gt;.
+It&amp;rsquo;s always used to reach the host:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat - VSOCK-CONNECT:2:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;ssh-over-vsock&#34;&gt;ssh over VSOCK&lt;/h3&gt;
+&lt;p&gt;The coolest feature of &lt;code&gt;socat&lt;/code&gt; is to concatenate sockets of different address
+families, so in this example we redirect ssh traffic through VSOCK socket
+exposed by the VM.&lt;/p&gt;
+&lt;p&gt;This example could be useful if the VM doesn&amp;rsquo;t have any NIC attached and
+we want to provide some network connectivity, like the ssh access.&lt;/p&gt;
+&lt;p&gt;First of all, in the guest we start &lt;code&gt;socat&lt;/code&gt; linking the VSOCK socket listening on
+port 22, to a TCP socket which will connect to the local TCP port 22 where the
+ssh server is listening:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;On the host we link a TCP socket listening on a port of our choice (e.g. 4321)
+to the guest port 22 just opened using VSOCK:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally from the host we can connect to the guest using ssh on the local port
+4321, where &lt;code&gt;socat&lt;/code&gt; is listening:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ ssh -p &lt;span class=&#34;m&#34;&gt;4321&lt;/span&gt; root@localhost
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;socat&lt;/code&gt; redirects all the traffic between the sockets and allow us to use ssh over
+VSOCK to reach the guest.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>AF_VSOCK: nested VMs and loopback support available</title>
