@@ -133,7 +133,7 @@ Using I/O writes, we can trace …">
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.88.1" />
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -384,10 +384,10 @@ file contains the following trace points used in the <a href="https://github.com
 <p>If you want to add new trace points, you can simply add an I/O write to
 <code>LINUX_EXIT_PORT</code> or <code>FW_EXIT_PORT</code> I/O port with a value (&gt; 7) that
 identifies the trace point:</p>
-<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">    <span class="n">outb</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">LINUX_EXIT_PORT</span><span class="p">);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c">    <span class="n">outb</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">LINUX_EXIT_PORT</span><span class="p">);</span>
 </code></pre></div><p>The <code>perf script</code> output will contain <code>Exit point 10</code> line that identifies your
 custom trace point:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"> qemu_init_end: 143.770419
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"> qemu_init_end: 143.770419
  fw_start: 143.964328 <span class="o">(</span>+0.193909<span class="o">)</span>
  fw_do_boot: 164.71107 <span class="o">(</span>+20.746742<span class="o">)</span>
  Exit point 10: 165.396804 <span class="o">(</span>+0.685734<span class="o">)</span>
@@ -395,7 +395,7 @@ custom trace point:</p>
  linux_start_user: 272.178335 <span class="o">(</span>+106.198849<span class="o">)</span>
 </code></pre></div><h2 id="how-to-use">How to use</h2>
 <h3 id="clone-qemu-boot-time-repository">Clone qemu-boot-time repository</h3>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">REPOS</span><span class="o">=</span><span class="s2">&#34;~/repos&#34;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">REPOS</span><span class="o">=</span><span class="s2">&#34;~/repos&#34;</span>
 <span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>
 git clone https://github.com/stefano-garzarella/qemu-boot-time.git
 </code></pre></div><h3 id="apply-patches-to-linux-qemu-and-seabios">Apply patches to Linux, QEMU and SeaBIOS</h3>
@@ -404,13 +404,13 @@ them, patching only the components that you are interested in.</p>
 <h4 id="linux">Linux</h4>
 <p>Apply the <code>patches/linux.patch</code> to your Linux kernel in order to trace kernel
 events</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/linux
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/linux
 git checkout -b benchmark
 git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/patches/linux.patch
 </code></pre></div><h4 id="qemu">QEMU</h4>
 <p>Apply the <code>patches/qemu.patch</code> to your QEMU in order to trace optionrom
 events</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu
 git checkout -b benchmark
 git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/patches/qemu.patch
 
@@ -423,7 +423,7 @@ to use the optionrom patched.</p>
 <h4 id="seabios">SeaBIOS</h4>
 <p>Apply the <code>patches/seabios.patch</code> to your SeaBIOS in order to trace bios
 events</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/seabios
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/seabios
 git checkout -b benchmark
 git am <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/patches/seabios.patch
 
@@ -435,25 +435,25 @@ the SeaBIOS image patched.</p>
 <h4 id="qboot">qboot</h4>
 <p>qboot already defines trace points, we just need to compile it defining
 <code>BENCHMARK_HACK</code></p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qboot
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qboot
 make clean
 <span class="nv">BIOS_CFLAGS</span><span class="o">=</span><span class="s2">&#34;-DBENCHMARK_HACK=1&#34;</span> make
 </code></pre></div><p>You can use <code>qemu-system-x86_64 -bios ${REPOS}/qboot/bios.bin ...</code> to use the
 qboot image.</p>
 <h3 id="enable-kvm-events">Enable KVM events</h3>
 <p>The following steps allow <code>perf record</code> to get the kvm trace events:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">echo</span> <span class="m">1</span> &gt; /sys/kernel/debug/tracing/events/kvm/enable
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">echo</span> <span class="m">1</span> &gt; /sys/kernel/debug/tracing/events/kvm/enable
 <span class="nb">echo</span> -1 &gt; /proc/sys/kernel/perf_event_paranoid
 mount -o remount,mode<span class="o">=</span><span class="m">755</span> /sys/kernel/debug
 mount -o remount,mode<span class="o">=</span><span class="m">755</span> /sys/kernel/debug/tracing
 </code></pre></div><h3 id="record-the-trace-events">Record the trace events</h3>
 <p>Start perf record to get the trace events</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">PERF_DATA</span><span class="o">=</span><span class="s2">&#34;qemu_perf.data&#34;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">PERF_DATA</span><span class="o">=</span><span class="s2">&#34;qemu_perf.data&#34;</span>
 perf record -a -e kvm:kvm_entry -e kvm:kvm_pio -e sched:sched_process_exec <span class="se">\
 </span><span class="se"></span>            -o <span class="nv">$PERF_DATA</span> <span class="p">&amp;</span>
 <span class="nv">PERF_PID</span><span class="o">=</span><span class="nv">$!</span>
 </code></pre></div><p>You can run QEMU multiple times to get also some statistics (Avg/Min/Max)</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se">\
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se">\
 </span><span class="se"></span>                   -bios seabios/out/bios.bin <span class="se">\
 </span><span class="se"></span>                   -L qemu/build-benchmark/pc-bios/optionrom/ <span class="se">\
 </span><span class="se"></span>                   -kernel linux/bzImage ...
@@ -466,10 +466,10 @@ qemu-system-x86_64 -machine q35,accel<span class="o">=</span>kvm <span class="se
 </span><span class="se"></span>                   -L qemu/build-benchmark/pc-bios/optionrom/ <span class="se">\
 </span><span class="se"></span>                   -kernel linux/bzImage ...
 </code></pre></div><p>Stop perf record</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">kill</span> <span class="nv">$PERF_PID</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">kill</span> <span class="nv">$PERF_PID</span>
 </code></pre></div><h3 id="process-the-trace-recorded-using-the-qemu-perf-scriptpy">Process the trace recorded using the qemu-perf-script.py</h3>
 <p>Note: times printed in milliseconds</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">perf script -s <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/perf-script/qemu-perf-script.py -i <span class="nv">$PERF_DATA</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">perf script -s <span class="si">${</span><span class="nv">REPOS</span><span class="si">}</span>/qemu-boot-time/perf-script/qemu-perf-script.py -i <span class="nv">$PERF_DATA</span>
 
 in trace_begin
 sched__sched_process_exec     <span class="m">1</span> 55061.435418353   <span class="m">289738</span> qemu-system-x86
@@ -776,7 +776,7 @@ Max
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.83.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.88.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>

@@ -63,11 +63,11 @@ amount of memory that would be freed if the process were to terminate.&lt;/li&gt
 are committed to physical memory between all the processes that have them
 mapped.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ smem -k &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;PID\|&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;pidof qemu-system-x86_64&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ smem -k &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;PID\|&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;pidof qemu-system-x86_64&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
   PID User     Command                         Swap      USS      PSS      RSS
 &lt;span class=&#34;m&#34;&gt;24833&lt;/span&gt; qemu     /usr/bin/qemu-system-x86_64        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    71.6M    74.3M    105.2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is the memory footprint analysis, increasing the number of QEMU instances:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;                           Memory footprint &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;MB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;                           Memory footprint &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;MB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
      QEMU             before                 after
  &lt;span class=&#34;c1&#34;&gt;# instances        USS     PSS           USS     PSS&lt;/span&gt;
       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;           102.0   105.8         102.3   106.2
@@ -81,7 +81,7 @@ mapped.&lt;/li&gt;
 scripts described in this
 &lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/&#34;&gt;post&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This is the boot time analysis:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;                                   Boot &lt;span class=&#34;nb&#34;&gt;time&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ms&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;                                   Boot &lt;span class=&#34;nb&#34;&gt;time&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ms&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
                           before                  after
  &lt;span class=&#34;c1&#34;&gt;# trace points&lt;/span&gt;
  qemu_init_end:           63.85                   55.91
@@ -156,10 +156,10 @@ file contains the following trace points used in the &lt;a href=&#34;https://git
 &lt;p&gt;If you want to add new trace points, you can simply add an I/O write to
 &lt;code&gt;LINUX_EXIT_PORT&lt;/code&gt; or &lt;code&gt;FW_EXIT_PORT&lt;/code&gt; I/O port with a value (&amp;gt; 7) that
 identifies the trace point:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;    &lt;span class=&#34;n&#34;&gt;outb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LINUX_EXIT_PORT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;    &lt;span class=&#34;n&#34;&gt;outb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LINUX_EXIT_PORT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;code&gt;perf script&lt;/code&gt; output will contain &lt;code&gt;Exit point 10&lt;/code&gt; line that identifies your
 custom trace point:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt; qemu_init_end: 143.770419
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt; qemu_init_end: 143.770419
  fw_start: 143.964328 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.193909&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
  fw_do_boot: 164.71107 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+20.746742&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
  Exit point 10: 165.396804 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+0.685734&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
@@ -167,7 +167,7 @@ custom trace point:&lt;/p&gt;
  linux_start_user: 272.178335 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+106.198849&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;how-to-use&#34;&gt;How to use&lt;/h2&gt;
 &lt;h3 id=&#34;clone-qemu-boot-time-repository&#34;&gt;Clone qemu-boot-time repository&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;~/repos&amp;#34;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;~/repos&amp;#34;&lt;/span&gt;
 &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;
 git clone https://github.com/stefano-garzarella/qemu-boot-time.git
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;apply-patches-to-linux-qemu-and-seabios&#34;&gt;Apply patches to Linux, QEMU and SeaBIOS&lt;/h3&gt;
@@ -176,13 +176,13 @@ them, patching only the components that you are interested in.&lt;/p&gt;
 &lt;h4 id=&#34;linux&#34;&gt;Linux&lt;/h4&gt;
 &lt;p&gt;Apply the &lt;code&gt;patches/linux.patch&lt;/code&gt; to your Linux kernel in order to trace kernel
 events&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/linux
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/linux
 git checkout -b benchmark
 git am &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/patches/linux.patch
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;qemu&#34;&gt;QEMU&lt;/h4&gt;
 &lt;p&gt;Apply the &lt;code&gt;patches/qemu.patch&lt;/code&gt; to your QEMU in order to trace optionrom
 events&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu
 git checkout -b benchmark
 git am &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/patches/qemu.patch
 
@@ -195,7 +195,7 @@ to use the optionrom patched.&lt;/p&gt;
 &lt;h4 id=&#34;seabios&#34;&gt;SeaBIOS&lt;/h4&gt;
 &lt;p&gt;Apply the &lt;code&gt;patches/seabios.patch&lt;/code&gt; to your SeaBIOS in order to trace bios
 events&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/seabios
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/seabios
 git checkout -b benchmark
 git am &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/patches/seabios.patch
 
@@ -207,25 +207,25 @@ the SeaBIOS image patched.&lt;/p&gt;
 &lt;h4 id=&#34;qboot&#34;&gt;qboot&lt;/h4&gt;
 &lt;p&gt;qboot already defines trace points, we just need to compile it defining
 &lt;code&gt;BENCHMARK_HACK&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qboot
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qboot
 make clean
 &lt;span class=&#34;nv&#34;&gt;BIOS_CFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;-DBENCHMARK_HACK=1&amp;#34;&lt;/span&gt; make
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can use &lt;code&gt;qemu-system-x86_64 -bios ${REPOS}/qboot/bios.bin ...&lt;/code&gt; to use the
 qboot image.&lt;/p&gt;
 &lt;h3 id=&#34;enable-kvm-events&#34;&gt;Enable KVM events&lt;/h3&gt;
 &lt;p&gt;The following steps allow &lt;code&gt;perf record&lt;/code&gt; to get the kvm trace events:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &amp;gt; /sys/kernel/debug/tracing/events/kvm/enable
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &amp;gt; /sys/kernel/debug/tracing/events/kvm/enable
 &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; -1 &amp;gt; /proc/sys/kernel/perf_event_paranoid
 mount -o remount,mode&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;755&lt;/span&gt; /sys/kernel/debug
 mount -o remount,mode&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;755&lt;/span&gt; /sys/kernel/debug/tracing
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;record-the-trace-events&#34;&gt;Record the trace events&lt;/h3&gt;
 &lt;p&gt;Start perf record to get the trace events&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;PERF_DATA&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;qemu_perf.data&amp;#34;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;PERF_DATA&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;qemu_perf.data&amp;#34;&lt;/span&gt;
 perf record -a -e kvm:kvm_entry -e kvm:kvm_pio -e sched:sched_process_exec &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;            -o &lt;span class=&#34;nv&#34;&gt;$PERF_DATA&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
 &lt;span class=&#34;nv&#34;&gt;PERF_PID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$!&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can run QEMU multiple times to get also some statistics (Avg/Min/Max)&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;qemu-system-x86_64 -machine q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm &lt;span class=&#34;se&#34;&gt;\
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;qemu-system-x86_64 -machine q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -bios seabios/out/bios.bin &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -L qemu/build-benchmark/pc-bios/optionrom/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -kernel linux/bzImage ...
@@ -238,10 +238,10 @@ qemu-system-x86_64 -machine q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -L qemu/build-benchmark/pc-bios/optionrom/ &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;                   -kernel linux/bzImage ...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Stop perf record&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;kill&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$PERF_PID&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nb&#34;&gt;kill&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$PERF_PID&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;process-the-trace-recorded-using-the-qemu-perf-scriptpy&#34;&gt;Process the trace recorded using the qemu-perf-script.py&lt;/h3&gt;
 &lt;p&gt;Note: times printed in milliseconds&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;perf script -s &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/perf-script/qemu-perf-script.py -i &lt;span class=&#34;nv&#34;&gt;$PERF_DATA&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;perf script -s &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;REPOS&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/qemu-boot-time/perf-script/qemu-perf-script.py -i &lt;span class=&#34;nv&#34;&gt;$PERF_DATA&lt;/span&gt;
 
 in trace_begin
 sched__sched_process_exec     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; 55061.435418353   &lt;span class=&#34;m&#34;&gt;289738&lt;/span&gt; qemu-system-x86
@@ -350,7 +350,7 @@ Max
 &lt;/ul&gt;
 &lt;h2 id=&#34;how-to-use&#34;&gt;How to use&lt;/h2&gt;
 &lt;p&gt;To boot the PVH kernel image, you can use the &lt;code&gt;-kernel&lt;/code&gt; parameter specifying the path to the &lt;code&gt;vmlinux&lt;/code&gt; image.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;qemu-system-x86_64 -machine q35,accel=kvm \
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;qemu-system-x86_64 -machine q35,accel=kvm \
     -kernel /path/to/vmlinux \
     -drive file=/path/to/rootfs.ext2,if=virtio,format=raw \
     -append &amp;#39;root=/dev/vda console=ttyS0&amp;#39; -vga none -display none \
