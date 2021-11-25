@@ -377,11 +377,14 @@ support VSOCK and I listed them to update the audience:&lt;/p&gt;
 &lt;li&gt;nmap &amp;gt;= 7.80 [2019-08-10]
 &lt;ul&gt;
 &lt;li&gt;ncat&lt;/li&gt;
-&lt;li&gt;nbd&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;li&gt;nbd
+&lt;ul&gt;
 &lt;li&gt;nbdkit &amp;gt;= 1.15.5 [2019-10-19]&lt;/li&gt;
 &lt;li&gt;libnbd &amp;gt;= 1.1.6 [2019-10-19]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;li&gt;iperf-vsock
 &lt;ul&gt;
 &lt;li&gt;iperf3 fork&lt;/li&gt;
