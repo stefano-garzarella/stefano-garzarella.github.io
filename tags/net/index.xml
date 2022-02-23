@@ -59,7 +59,7 @@ and
 with Fedora 33 or other distros.
 It is also able to set the root password and inject the ssh public key,
 simplifying the creation of guest disk image:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;VM_IMAGE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;vsockguest_f33.qcow2&amp;#34;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;VM_IMAGE&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;vsockguest_f33.qcow2&amp;#34;&lt;/span&gt;
 
 host$ virt-builder --root-password&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;password:mypassword &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --ssh-inject root:file:/home/user/.ssh/id_rsa.pub &lt;span class=&#34;se&#34;&gt;\
@@ -69,33 +69,33 @@ host$ virt-builder --root-password&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;pa
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once the disk image is ready, we create our VM with &lt;code&gt;virt-install&lt;/code&gt;.
 We can specify the VM settings like the number of vCPUs, the amount of RAM,
 and the &lt;code&gt;CID&lt;/code&gt; assigned to the VM [42]:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virt-install --name vsockguest &lt;span class=&#34;se&#34;&gt;\
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virt-install --name vsockguest &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --ram &lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt; --vcpus &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; --os-variant fedora33 &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --import --disk &lt;span class=&#34;nv&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;VM_IMAGE&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;,bus&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;virtio &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;        --graphics none --vsock cid.address&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;42&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After the creation of the VM, we will remain attached to the console and
 we can detach from it by pressing &lt;code&gt;ctrl-]&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;We can reattach to the console in this way:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virsh console vsockguest
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virsh console vsockguest
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If the VM is turned off, we can boot it and attach directly to the console
 in this way:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virsh start --console vsockguest
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ virsh start --console vsockguest
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;ncat-like&#34;&gt;ncat like&lt;/h3&gt;
 &lt;p&gt;It&amp;rsquo;s possible to use &lt;code&gt;socat&lt;/code&gt; like &lt;code&gt;ncat&lt;/code&gt;, transferring &lt;code&gt;stdin&lt;/code&gt; and &lt;code&gt;stdout&lt;/code&gt; via VSOCK.&lt;/p&gt;
 &lt;h4 id=&#34;guest-listening&#34;&gt;Guest listening&lt;/h4&gt;
 &lt;p&gt;In this example we start &lt;code&gt;socat&lt;/code&gt; in the guest listening on port &lt;code&gt;1234&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat - VSOCK-LISTEN:1234
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat - VSOCK-LISTEN:1234
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then we connect from the host using the &lt;code&gt;CID 42&lt;/code&gt; assigned to the VM:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat - VSOCK-CONNECT:42:1234
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat - VSOCK-CONNECT:42:1234
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point we can exchange characters between guest and host, since &lt;code&gt;stdin&lt;/code&gt;
 and &lt;code&gt;stdout&lt;/code&gt; are linked through the VSOCK socket.&lt;/p&gt;
 &lt;h4 id=&#34;host-listening&#34;&gt;Host listening&lt;/h4&gt;
 &lt;p&gt;In this example we do the opposite, starting &lt;code&gt;socat&lt;/code&gt; in the host listening
 on port &lt;code&gt;1234&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat - VSOCK-LISTEN:1234
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat - VSOCK-LISTEN:1234
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then, in the guest, we connect to the host using the &lt;em&gt;well defined&lt;/em&gt; &lt;code&gt;CID 2&lt;/code&gt;.
 It&amp;rsquo;s always used to reach the host:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat - VSOCK-CONNECT:2:1234
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat - VSOCK-CONNECT:2:1234
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;ssh-over-vsock&#34;&gt;ssh over VSOCK&lt;/h3&gt;
 &lt;p&gt;The coolest feature of &lt;code&gt;socat&lt;/code&gt; is to concatenate sockets of different address
 families, so in this example we redirect ssh traffic through VSOCK socket
@@ -105,13 +105,13 @@ we want to provide some network connectivity, like the ssh access.&lt;/p&gt;
 &lt;p&gt;First of all, in the guest we start &lt;code&gt;socat&lt;/code&gt; linking the VSOCK socket listening on
 port 22, to a TCP socket which will connect to the local TCP port 22 where the
 ssh server is listening:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;On the host we link a TCP socket listening on a port of our choice (e.g. 4321)
 to the guest port 22 just opened using VSOCK:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally from the host we can connect to the guest using ssh on the local port
 4321, where &lt;code&gt;socat&lt;/code&gt; is listening:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ ssh -p &lt;span class=&#34;m&#34;&gt;4321&lt;/span&gt; root@localhost
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ ssh -p &lt;span class=&#34;m&#34;&gt;4321&lt;/span&gt; root@localhost
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;socat&lt;/code&gt; redirects all the traffic between the sockets and allow us to use ssh over
 VSOCK to reach the guest.&lt;/p&gt;</description>
     </item>
@@ -231,7 +231,7 @@ If G2H is also loaded, then VMADDR_CID_HOST is used to reach the host&lt;/li&gt;
 test&lt;/a&gt;
 test for &lt;a href=&#34;https://rwmj.wordpress.com/2019/10/21/nbd-over-af_vsock/&#34;&gt;nbdkit/libnbd vsock support&lt;/a&gt;, using the new &lt;a href=&#34;https://github.com/libguestfs/nbdkit/commit/01ce88f56f93afd577a8e3b2cc28d825693c8db2&#34;&gt;VMADDR_CID_LOCAL&lt;/a&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;example&#34;&gt;Example&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Listening on port 1234 using ncat(1)&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Listening on port 1234 using ncat(1)&lt;/span&gt;
 l0$ nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
 
 &lt;span class=&#34;c1&#34;&gt;# Connecting to the local host using VMADDR_CID_LOCAL (1)&lt;/span&gt;
@@ -509,29 +509,29 @@ VSOCK tests.&lt;/p&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;build-iperf3-vsock-from-source&#34;&gt;Build iperf3-vsock from source&lt;/h2&gt;
 &lt;h3 id=&#34;clone-repository&#34;&gt;Clone repository&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;git clone https://github.com/stefano-garzarella/iperf-vsock
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;git clone https://github.com/stefano-garzarella/iperf-vsock
 &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; iperf-vsock
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;building&#34;&gt;Building&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir build
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir build
 &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; build
 ../configure
 make
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;(Note: If configure fails, try running &lt;code&gt;./bootstrap.sh&lt;/code&gt; first)&lt;/p&gt;
 &lt;h2 id=&#34;example-with-fedora-30-host-and-guest&#34;&gt;Example with Fedora 30 (host and guest):&lt;/h2&gt;
 &lt;h3 id=&#34;host-start-the-vm&#34;&gt;Host: start the VM&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;
 sudo modprobe vhost_vsock
 sudo qemu-system-x86_64 -m 1G -smp &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; -cpu host -M &lt;span class=&#34;nv&#34;&gt;accel&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm	&lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;     -drive &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;virtio,file&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/fedora.img,format&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2     &lt;span class=&#34;se&#34;&gt;\
 &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;     -device vhost-vsock-pci,guest-cid&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;guest-start-iperf-server&#34;&gt;Guest: start iperf server&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# SELinux can block you, so you can write a policy or temporally disable it&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# SELinux can block you, so you can write a policy or temporally disable it&lt;/span&gt;
 sudo setenforce &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;
 iperf-vsock/build/src/iperf3 --vsock -s
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;host-start-iperf-client&#34;&gt;Host: start iperf client&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;iperf-vsock/build/src/iperf3 --vsock -c &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;iperf-vsock/build/src/iperf3 --vsock -c &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;GUEST_CID&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;output&#34;&gt;Output&lt;/h3&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;Connecting to host 3, port &lt;span class=&#34;m&#34;&gt;5201&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;Connecting to host 3, port &lt;span class=&#34;m&#34;&gt;5201&lt;/span&gt;
 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  5&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; port &lt;span class=&#34;m&#34;&gt;4008596529&lt;/span&gt; connected to &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; port &lt;span class=&#34;m&#34;&gt;5201&lt;/span&gt;
 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; ID&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Interval           Transfer     Bitrate
 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;  5&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;   0.00-1.00   sec  1.30 GBytes  11.2 Gbits/sec

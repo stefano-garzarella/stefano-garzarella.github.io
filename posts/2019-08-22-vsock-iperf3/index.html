@@ -54,7 +54,7 @@ VSOCK tests.">
         "position": 3,
         "item": {
           "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2019-08-22-vsock-iperf3\/",
-          "name": "Iperf3 vsock how to measure vsock performance"
+          "name": "Iperf3 vsock how to measure v s o c k performance"
         }
     }]
 }
@@ -113,7 +113,7 @@ host using VSOCK …">
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.89.0" />
+  <meta name="generator" content="Hugo 0.80.0" />
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -326,29 +326,29 @@ VSOCK tests.</p>
 </ul>
 <h2 id="build-iperf3-vsock-from-source">Build iperf3-vsock from source</h2>
 <h3 id="clone-repository">Clone repository</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">git clone https://github.com/stefano-garzarella/iperf-vsock
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">git clone https://github.com/stefano-garzarella/iperf-vsock
 <span class="nb">cd</span> iperf-vsock
 </code></pre></div><h3 id="building">Building</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">mkdir build
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">mkdir build
 <span class="nb">cd</span> build
 ../configure
 make
 </code></pre></div><p>(Note: If configure fails, try running <code>./bootstrap.sh</code> first)</p>
 <h2 id="example-with-fedora-30-host-and-guest">Example with Fedora 30 (host and guest):</h2>
 <h3 id="host-start-the-vm">Host: start the VM</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">GUEST_CID</span><span class="o">=</span><span class="m">3</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">GUEST_CID</span><span class="o">=</span><span class="m">3</span>
 sudo modprobe vhost_vsock
 sudo qemu-system-x86_64 -m 1G -smp <span class="m">2</span> -cpu host -M <span class="nv">accel</span><span class="o">=</span>kvm	<span class="se">\
 </span><span class="se"></span>     -drive <span class="k">if</span><span class="o">=</span>virtio,file<span class="o">=</span>/path/to/fedora.img,format<span class="o">=</span>qcow2     <span class="se">\
 </span><span class="se"></span>     -device vhost-vsock-pci,guest-cid<span class="o">=</span><span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span>
 </code></pre></div><h3 id="guest-start-iperf-server">Guest: start iperf server</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># SELinux can block you, so you can write a policy or temporally disable it</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># SELinux can block you, so you can write a policy or temporally disable it</span>
 sudo setenforce <span class="m">0</span>
 iperf-vsock/build/src/iperf3 --vsock -s
 </code></pre></div><h3 id="host-start-iperf-client">Host: start iperf client</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">iperf-vsock/build/src/iperf3 --vsock -c <span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">iperf-vsock/build/src/iperf3 --vsock -c <span class="si">${</span><span class="nv">GUEST_CID</span><span class="si">}</span>
 </code></pre></div><h3 id="output">Output</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">Connecting to host 3, port <span class="m">5201</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">Connecting to host 3, port <span class="m">5201</span>
 <span class="o">[</span>  5<span class="o">]</span> <span class="nb">local</span> <span class="m">2</span> port <span class="m">4008596529</span> connected to <span class="m">3</span> port <span class="m">5201</span>
 <span class="o">[</span> ID<span class="o">]</span> Interval           Transfer     Bitrate
 <span class="o">[</span>  5<span class="o">]</span>   0.00-1.00   sec  1.30 GBytes  11.2 Gbits/sec
@@ -586,7 +586,7 @@ iperf Done.
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.89.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.80.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>

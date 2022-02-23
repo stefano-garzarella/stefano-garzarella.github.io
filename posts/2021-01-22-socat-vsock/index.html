@@ -73,7 +73,7 @@ and measuring the VSOCK performance, including socat demos.">
         "position": 3,
         "item": {
           "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2021-01-22-socat-vsock\/",
-          "name": "Socat now supports af vsock"
+          "name": "S o cat now supports a f v s o c k"
         }
     }]
 }
@@ -152,7 +152,7 @@ socat supports several address types …">
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.89.0" />
+  <meta name="generator" content="Hugo 0.80.0" />
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -389,7 +389,7 @@ and
 with Fedora 33 or other distros.
 It is also able to set the root password and inject the ssh public key,
 simplifying the creation of guest disk image:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">VM_IMAGE</span><span class="o">=</span><span class="s2">&#34;vsockguest_f33.qcow2&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">VM_IMAGE</span><span class="o">=</span><span class="s2">&#34;vsockguest_f33.qcow2&#34;</span>
 
 host$ virt-builder --root-password<span class="o">=</span>password:mypassword <span class="se">\
 </span><span class="se"></span>        --ssh-inject root:file:/home/user/.ssh/id_rsa.pub <span class="se">\
@@ -399,33 +399,33 @@ host$ virt-builder --root-password<span class="o">=</span>password:mypassword <s
 </code></pre></div><p>Once the disk image is ready, we create our VM with <code>virt-install</code>.
 We can specify the VM settings like the number of vCPUs, the amount of RAM,
 and the <code>CID</code> assigned to the VM [42]:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">host$ virt-install --name vsockguest <span class="se">\
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virt-install --name vsockguest <span class="se">\
 </span><span class="se"></span>        --ram <span class="m">2048</span> --vcpus <span class="m">2</span> --os-variant fedora33 <span class="se">\
 </span><span class="se"></span>        --import --disk <span class="nv">path</span><span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span>,bus<span class="o">=</span>virtio <span class="se">\
 </span><span class="se"></span>        --graphics none --vsock cid.address<span class="o">=</span><span class="m">42</span>
 </code></pre></div><p>After the creation of the VM, we will remain attached to the console and
 we can detach from it by pressing <code>ctrl-]</code>.</p>
 <p>We can reattach to the console in this way:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">host$ virsh console vsockguest
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virsh console vsockguest
 </code></pre></div><p>If the VM is turned off, we can boot it and attach directly to the console
 in this way:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">host$ virsh start --console vsockguest
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virsh start --console vsockguest
 </code></pre></div><h3 id="ncat-like">ncat like</h3>
 <p>It&rsquo;s possible to use <code>socat</code> like <code>ncat</code>, transferring <code>stdin</code> and <code>stdout</code> via VSOCK.</p>
 <h4 id="guest-listening">Guest listening</h4>
 <p>In this example we start <code>socat</code> in the guest listening on port <code>1234</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">guest$ socat - VSOCK-LISTEN:1234
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat - VSOCK-LISTEN:1234
 </code></pre></div><p>Then we connect from the host using the <code>CID 42</code> assigned to the VM:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">host$ socat - VSOCK-CONNECT:42:1234
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat - VSOCK-CONNECT:42:1234
 </code></pre></div><p>At this point we can exchange characters between guest and host, since <code>stdin</code>
 and <code>stdout</code> are linked through the VSOCK socket.</p>
 <h4 id="host-listening">Host listening</h4>
 <p>In this example we do the opposite, starting <code>socat</code> in the host listening
 on port <code>1234</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">host$ socat - VSOCK-LISTEN:1234
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat - VSOCK-LISTEN:1234
 </code></pre></div><p>Then, in the guest, we connect to the host using the <em>well defined</em> <code>CID 2</code>.
 It&rsquo;s always used to reach the host:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">guest$ socat - VSOCK-CONNECT:2:1234
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat - VSOCK-CONNECT:2:1234
 </code></pre></div><h3 id="ssh-over-vsock">ssh over VSOCK</h3>
 <p>The coolest feature of <code>socat</code> is to concatenate sockets of different address
 families, so in this example we redirect ssh traffic through VSOCK socket
@@ -435,13 +435,13 @@ we want to provide some network connectivity, like the ssh access.</p>
 <p>First of all, in the guest we start <code>socat</code> linking the VSOCK socket listening on
 port 22, to a TCP socket which will connect to the local TCP port 22 where the
 ssh server is listening:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
 </code></pre></div><p>On the host we link a TCP socket listening on a port of our choice (e.g. 4321)
 to the guest port 22 just opened using VSOCK:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
 </code></pre></div><p>Finally from the host we can connect to the guest using ssh on the local port
 4321, where <code>socat</code> is listening:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">host$ ssh -p <span class="m">4321</span> root@localhost
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ ssh -p <span class="m">4321</span> root@localhost
 </code></pre></div><p><code>socat</code> redirects all the traffic between the sockets and allow us to use ssh over
 VSOCK to reach the guest.</p>
 
@@ -668,7 +668,7 @@ VSOCK to reach the guest.</p>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.89.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.80.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
