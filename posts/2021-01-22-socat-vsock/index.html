@@ -87,7 +87,7 @@ and measuring the VSOCK performance, including socat demos.">
   "headline": "SOCAT now supports AF_VSOCK",
   "description" : "SOCAT is a CLI utility which enables the concatenation of two sockets together. It establishes two bidirectional byte streams and transfers data between them.\nsocat supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.) to construct the streams. The latest version 1.7.4, released earlier this year [2021-01-04], supports also AF_VSOCK addresses:\n  VSOCK-LISTEN:\u0026lt;port\u0026gt;\n Listen on port and accepts a VSOCK connection.    VSOCK-CONNECT:\u0026lt;cid\u0026gt;:\u0026lt;port\u0026gt;\n Establishes a VSOCK stream connection to the specified cid and port.    FOSDEM 2021 If you are interested on VSOCK, I\u0026rsquo;ll talk witn Andra Paraschiv (AWS) about it at FOSDEM 2021. The talk is titled Leveraging virtio-vsock in the cloud and containers and it\u0026rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).\nWe will show cool VSOCK use cases and some demos about developing, debugging, and measuring the VSOCK performance, including socat demos.\n",
   "inLanguage" : "en",
-  "wordCount":  640 ,
+  "wordCount":  807 ,
   "datePublished" : "2021-01-22T15:16:04",
   "dateModified" : "2021-01-22T15:16:04",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -379,7 +379,7 @@ and measuring the VSOCK performance, including <code>socat</code> demos.</p>
 <h2 id="examples">Examples</h2>
 <p><code>socat</code> could be very useful for concatenating and redirecting sockets.
 In this section we will see some examples.</p>
-<p>All examples below refer to a guest with <code>CID 42</code> that we created using
+<p>Examples below refer to a guest with <code>CID 42</code> that we created using
 <a href="https://libguestfs.org/virt-builder.1.html">virt-builder</a>
 and
 <a href="https://virt-manager.org/">virt-install</a>
@@ -444,6 +444,25 @@ to the guest port 22 just opened using VSOCK:</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ ssh -p <span class="m">4321</span> root@localhost
 </code></pre></div><p><code>socat</code> redirects all the traffic between the sockets and allow us to use ssh over
 VSOCK to reach the guest.</p>
+<h3 id="connecting-sibling-vms">Connecting sibling VMs</h3>
+<p>Another scenario where socat can be very useful is connecting two sibling VMs
+running on the same host.</p>
+<p>Currently this is not supported by <code>vhost-vsock</code>, so we can use <code>socat</code> to
+concatenate the two VMs.</p>
+<p>Let&rsquo;s see an example: suppose we launch another VM with <code>CID = 24</code> on
+the same host. Now we want to use <code>ncat</code> in the VMs to communicate with each
+other.</p>
+<p>Guest 42 will listen on port 1234 and guest 24 will initiate the connection.
+But before we do this we need to set up the bridge in the host with <code>socat</code> to
+allow the two VMs to communicate:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat VSOCK-LISTEN:1234 VSOCK-CONNECT:42:1234
+</code></pre></div><p>At this point we can launch <code>ncat</code> in the VMs and communicate:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest_42$ nc --vsock -l <span class="m">1234</span>
+</code></pre></div><p>Note: as destination CID we have to use the host&rsquo;s well-known CID (2) because
+we neet to connect to the <code>socat</code> bridge running in the host, that will
+redirect packets correctly between the two machines:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest_24$ nc --vsock <span class="m">2</span> <span class="m">1234</span>
+</code></pre></div>
 
         
           <div class="blog-tags">

@@ -49,7 +49,7 @@ and measuring the VSOCK performance, including &lt;code&gt;socat&lt;/code&gt; de
 &lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;socat&lt;/code&gt; could be very useful for concatenating and redirecting sockets.
 In this section we will see some examples.&lt;/p&gt;
-&lt;p&gt;All examples below refer to a guest with &lt;code&gt;CID 42&lt;/code&gt; that we created using
+&lt;p&gt;Examples below refer to a guest with &lt;code&gt;CID 42&lt;/code&gt; that we created using
 &lt;a href=&#34;https://libguestfs.org/virt-builder.1.html&#34;&gt;virt-builder&lt;/a&gt;
 and
 &lt;a href=&#34;https://virt-manager.org/&#34;&gt;virt-install&lt;/a&gt;
@@ -113,7 +113,26 @@ to the guest port 22 just opened using VSOCK:&lt;/p&gt;
 4321, where &lt;code&gt;socat&lt;/code&gt; is listening:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ ssh -p &lt;span class=&#34;m&#34;&gt;4321&lt;/span&gt; root@localhost
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;socat&lt;/code&gt; redirects all the traffic between the sockets and allow us to use ssh over
-VSOCK to reach the guest.&lt;/p&gt;</description>
+VSOCK to reach the guest.&lt;/p&gt;
+&lt;h3 id=&#34;connecting-sibling-vms&#34;&gt;Connecting sibling VMs&lt;/h3&gt;
+&lt;p&gt;Another scenario where socat can be very useful is connecting two sibling VMs
+running on the same host.&lt;/p&gt;
+&lt;p&gt;Currently this is not supported by &lt;code&gt;vhost-vsock&lt;/code&gt;, so we can use &lt;code&gt;socat&lt;/code&gt; to
+concatenate the two VMs.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s see an example: suppose we launch another VM with &lt;code&gt;CID = 24&lt;/code&gt; on
+the same host. Now we want to use &lt;code&gt;ncat&lt;/code&gt; in the VMs to communicate with each
+other.&lt;/p&gt;
+&lt;p&gt;Guest 42 will listen on port 1234 and guest 24 will initiate the connection.
+But before we do this we need to set up the bridge in the host with &lt;code&gt;socat&lt;/code&gt; to
+allow the two VMs to communicate:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;host$ socat VSOCK-LISTEN:1234 VSOCK-CONNECT:42:1234
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point we can launch &lt;code&gt;ncat&lt;/code&gt; in the VMs and communicate:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest_42$ nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Note: as destination CID we have to use the host&amp;rsquo;s well-known CID (2) because
+we neet to connect to the &lt;code&gt;socat&lt;/code&gt; bridge running in the host, that will
+redirect packets correctly between the two machines:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest_24$ nc --vsock &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
