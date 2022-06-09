@@ -459,7 +459,7 @@ allow the two VMs to communicate:</p>
 </code></pre></div><p>At this point we can launch <code>ncat</code> in the VMs and communicate:</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest_42$ nc --vsock -l <span class="m">1234</span>
 </code></pre></div><p>Note: as destination CID we have to use the host&rsquo;s well-known CID (2) because
-we neet to connect to the <code>socat</code> bridge running in the host, that will
+we need to connect to the <code>socat</code> bridge running in the host, that will
 redirect packets correctly between the two machines:</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest_24$ nc --vsock <span class="m">2</span> <span class="m">1234</span>
 </code></pre></div>

@@ -129,7 +129,7 @@ allow the two VMs to communicate:&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point we can launch &lt;code&gt;ncat&lt;/code&gt; in the VMs and communicate:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest_42$ nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Note: as destination CID we have to use the host&amp;rsquo;s well-known CID (2) because
-we neet to connect to the &lt;code&gt;socat&lt;/code&gt; bridge running in the host, that will
+we need to connect to the &lt;code&gt;socat&lt;/code&gt; bridge running in the host, that will
 redirect packets correctly between the two machines:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;guest_24$ nc --vsock &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
