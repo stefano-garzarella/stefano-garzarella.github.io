@@ -4,6 +4,7 @@
     <link>https://stefano-garzarella.github.io/tags/microvm/</link>
     <description>Recent content in microvm on sgarzare&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Sun, 22 Dec 2019 17:46:44 +0100</lastBuildDate>
@@ -63,31 +64,31 @@ amount of memory that would be freed if the process were to terminate.&lt;/li&gt
 are committed to physical memory between all the processes that have them
 mapped.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;$ smem -k &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;PID\|&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;pidof qemu-system-x86_64&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
-  PID User     Command                         Swap      USS      PSS      RSS
-&lt;span class=&#34;m&#34;&gt;24833&lt;/span&gt; qemu     /usr/bin/qemu-system-x86_64        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    71.6M    74.3M    105.2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is the memory footprint analysis, increasing the number of QEMU instances:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;                           Memory footprint &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;MB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-     QEMU             before                 after
- &lt;span class=&#34;c1&#34;&gt;# instances        USS     PSS           USS     PSS&lt;/span&gt;
-      &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;           102.0   105.8         102.3   106.2
-      &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;            94.6   101.2          72.3    90.1
-      &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;            94.1    98.0          72.0    81.5
-      &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;            94.0    96.2          71.8    76.9
-     &lt;span class=&#34;m&#34;&gt;16&lt;/span&gt;            93.9    95.1          71.6    74.3
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;boot-time&#34;&gt;Boot time&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ smem -k &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;PID\|&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;pidof qemu-system-x86_64&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  PID User     Command                         Swap      USS      PSS      RSS
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;24833&lt;/span&gt; qemu     /usr/bin/qemu-system-x86_64        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    71.6M    74.3M    105.2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This is the memory footprint analysis, increasing the number of QEMU instances:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                           Memory footprint &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;MB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     QEMU             before                 after
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; &lt;span class=&#34;c1&#34;&gt;# instances        USS     PSS           USS     PSS&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;           102.0   105.8         102.3   106.2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;            94.6   101.2          72.3    90.1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;            94.1    98.0          72.0    81.5
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;      &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;            94.0    96.2          71.8    76.9
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;     &lt;span class=&#34;m&#34;&gt;16&lt;/span&gt;            93.9    95.1          71.6    74.3
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;boot-time&#34;&gt;Boot time&lt;/h3&gt;
 &lt;p&gt;We measured the boot time using the
 &lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time&#34;&gt;qemu-boot-time&lt;/a&gt;
 scripts described in this
 &lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/&#34;&gt;post&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;This is the boot time analysis:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;                                   Boot &lt;span class=&#34;nb&#34;&gt;time&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ms&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
-                          before                  after
- &lt;span class=&#34;c1&#34;&gt;# trace points&lt;/span&gt;
- qemu_init_end:           63.85                   55.91
- linux_start_kernel:      82.11 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+18.26&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;          74.51 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+18.60&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
- linux_start_user:       169.94 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+87.83&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;         159.06 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+84.56&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                   Boot &lt;span class=&#34;nb&#34;&gt;time&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ms&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                          before                  after
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; &lt;span class=&#34;c1&#34;&gt;# trace points&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; qemu_init_end:           63.85                   55.91
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; linux_start_kernel:      82.11 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+18.26&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;          74.51 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+18.60&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; linux_start_user:       169.94 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+87.83&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;         159.06 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;+84.56&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;conclusions&#34;&gt;Conclusions&lt;/h2&gt;
 &lt;p&gt;Mapping into memory the kernel and initrd images allowed us to save about 20 MB
 of memory when multiple VMs are started and allowed us to speed up the boot by
 about 10 milliseconds.&lt;/p&gt;

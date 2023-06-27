@@ -7,7 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>SOCAT now supports AF_VSOCK - sgarzare&#39;s blog</title>
+ 
+
+
+      <title>SOCAT now supports AF_VSOCK - Virtualization and networking blog</title>
+
   <meta name="description" content="SOCAT
 is a CLI utility which enables the concatenation
 of two sockets together.
@@ -73,7 +77,7 @@ and measuring the VSOCK performance, including socat demos.">
         "position": 3,
         "item": {
           "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2021-01-22-socat-vsock\/",
-          "name": "S o cat now supports a f v s o c k"
+          "name": "Socat now supports af vsock"
         }
     }]
 }
@@ -85,7 +89,7 @@ and measuring the VSOCK performance, including socat demos.">
     "name" : "Stefano Garzarella"
   },
   "headline": "SOCAT now supports AF_VSOCK",
-  "description" : "SOCAT is a CLI utility which enables the concatenation of two sockets together. It establishes two bidirectional byte streams and transfers data between them.\nsocat supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.) to construct the streams. The latest version 1.7.4, released earlier this year [2021-01-04], supports also AF_VSOCK addresses:\n  VSOCK-LISTEN:\u0026lt;port\u0026gt;\n Listen on port and accepts a VSOCK connection.    VSOCK-CONNECT:\u0026lt;cid\u0026gt;:\u0026lt;port\u0026gt;\n Establishes a VSOCK stream connection to the specified cid and port.    FOSDEM 2021 If you are interested on VSOCK, I\u0026rsquo;ll talk witn Andra Paraschiv (AWS) about it at FOSDEM 2021. The talk is titled Leveraging virtio-vsock in the cloud and containers and it\u0026rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).\nWe will show cool VSOCK use cases and some demos about developing, debugging, and measuring the VSOCK performance, including socat demos.\n",
+  "description" : "SOCAT is a CLI utility which enables the concatenation of two sockets together. It establishes two bidirectional byte streams and transfers data between them.\nsocat supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.) to construct the streams. The latest version 1.7.4, released earlier this year [2021-01-04], supports also AF_VSOCK addresses:\nVSOCK-LISTEN:\u0026lt;port\u0026gt;\nListen on port and accepts a VSOCK connection. VSOCK-CONNECT:\u0026lt;cid\u0026gt;:\u0026lt;port\u0026gt;\nEstablishes a VSOCK stream connection to the specified cid and port. FOSDEM 2021 If you are interested on VSOCK, I\u0026rsquo;ll talk witn Andra Paraschiv (AWS) about it at FOSDEM 2021. The talk is titled Leveraging virtio-vsock in the cloud and containers and it\u0026rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).\nWe will show cool VSOCK use cases and some demos about developing, debugging, and measuring the VSOCK performance, including socat demos.\n",
   "inLanguage" : "en",
   "wordCount":  807 ,
   "datePublished" : "2021-01-22T15:16:04",
@@ -148,31 +152,30 @@ of two sockets together.
 It establishes two bidirectional byte streams and transfers data between them.
 socat supports several address types …">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@sgarzarella" />
   <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.80.0" />
-  <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <meta name="generator" content="Hugo 0.114.1">
+  <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
   <link rel="stylesheet" href="https://stefano-garzarella.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
 
-
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 	ga('create', 'UA-146409373-1', 'auto');
 	
 	ga('send', 'pageview');
 }
 </script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
@@ -321,6 +324,7 @@ if (!doNotTrack) {
 
   <header class="header-section ">
     
+    
     <div class="intro-header no-img">
       <div class="container">
         <div class="row">
@@ -339,6 +343,7 @@ if (!doNotTrack) {
         </div>
       </div>
     </div>
+  
   </header>
 
 
@@ -389,44 +394,44 @@ and
 with Fedora 33 or other distros.
 It is also able to set the root password and inject the ssh public key,
 simplifying the creation of guest disk image:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">VM_IMAGE</span><span class="o">=</span><span class="s2">&#34;vsockguest_f33.qcow2&#34;</span>
-
-host$ virt-builder --root-password<span class="o">=</span>password:mypassword <span class="se">\
-</span><span class="se"></span>        --ssh-inject root:file:/home/user/.ssh/id_rsa.pub <span class="se">\
-</span><span class="se"></span>        --output<span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span> <span class="se">\
-</span><span class="se"></span>        --format<span class="o">=</span>qcow2 --size 10G --selinux-relabel <span class="se">\
-</span><span class="se"></span>        --update fedora-33
-</code></pre></div><p>Once the disk image is ready, we create our VM with <code>virt-install</code>.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">VM_IMAGE</span><span class="o">=</span><span class="s2">&#34;vsockguest_f33.qcow2&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">host$ virt-builder --root-password<span class="o">=</span>password:mypassword <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --ssh-inject root:file:/home/user/.ssh/id_rsa.pub <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --output<span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --format<span class="o">=</span>qcow2 --size 10G --selinux-relabel <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --update fedora-33
+</span></span></code></pre></div><p>Once the disk image is ready, we create our VM with <code>virt-install</code>.
 We can specify the VM settings like the number of vCPUs, the amount of RAM,
 and the <code>CID</code> assigned to the VM [42]:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virt-install --name vsockguest <span class="se">\
-</span><span class="se"></span>        --ram <span class="m">2048</span> --vcpus <span class="m">2</span> --os-variant fedora33 <span class="se">\
-</span><span class="se"></span>        --import --disk <span class="nv">path</span><span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span>,bus<span class="o">=</span>virtio <span class="se">\
-</span><span class="se"></span>        --graphics none --vsock cid.address<span class="o">=</span><span class="m">42</span>
-</code></pre></div><p>After the creation of the VM, we will remain attached to the console and
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ virt-install --name vsockguest <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --ram <span class="m">2048</span> --vcpus <span class="m">2</span> --os-variant fedora33 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --import --disk <span class="nv">path</span><span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span>,bus<span class="o">=</span>virtio <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --graphics none --vsock cid.address<span class="o">=</span><span class="m">42</span>
+</span></span></code></pre></div><p>After the creation of the VM, we will remain attached to the console and
 we can detach from it by pressing <code>ctrl-]</code>.</p>
 <p>We can reattach to the console in this way:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virsh console vsockguest
-</code></pre></div><p>If the VM is turned off, we can boot it and attach directly to the console
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ virsh console vsockguest
+</span></span></code></pre></div><p>If the VM is turned off, we can boot it and attach directly to the console
 in this way:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ virsh start --console vsockguest
-</code></pre></div><h3 id="ncat-like">ncat like</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ virsh start --console vsockguest
+</span></span></code></pre></div><h3 id="ncat-like">ncat like</h3>
 <p>It&rsquo;s possible to use <code>socat</code> like <code>ncat</code>, transferring <code>stdin</code> and <code>stdout</code> via VSOCK.</p>
 <h4 id="guest-listening">Guest listening</h4>
 <p>In this example we start <code>socat</code> in the guest listening on port <code>1234</code>:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat - VSOCK-LISTEN:1234
-</code></pre></div><p>Then we connect from the host using the <code>CID 42</code> assigned to the VM:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat - VSOCK-CONNECT:42:1234
-</code></pre></div><p>At this point we can exchange characters between guest and host, since <code>stdin</code>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">guest$ socat - VSOCK-LISTEN:1234
+</span></span></code></pre></div><p>Then we connect from the host using the <code>CID 42</code> assigned to the VM:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ socat - VSOCK-CONNECT:42:1234
+</span></span></code></pre></div><p>At this point we can exchange characters between guest and host, since <code>stdin</code>
 and <code>stdout</code> are linked through the VSOCK socket.</p>
 <h4 id="host-listening">Host listening</h4>
 <p>In this example we do the opposite, starting <code>socat</code> in the host listening
 on port <code>1234</code>:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat - VSOCK-LISTEN:1234
-</code></pre></div><p>Then, in the guest, we connect to the host using the <em>well defined</em> <code>CID 2</code>.
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ socat - VSOCK-LISTEN:1234
+</span></span></code></pre></div><p>Then, in the guest, we connect to the host using the <em>well defined</em> <code>CID 2</code>.
 It&rsquo;s always used to reach the host:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat - VSOCK-CONNECT:2:1234
-</code></pre></div><h3 id="ssh-over-vsock">ssh over VSOCK</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">guest$ socat - VSOCK-CONNECT:2:1234
+</span></span></code></pre></div><h3 id="ssh-over-vsock">ssh over VSOCK</h3>
 <p>The coolest feature of <code>socat</code> is to concatenate sockets of different address
 families, so in this example we redirect ssh traffic through VSOCK socket
 exposed by the VM.</p>
@@ -435,14 +440,14 @@ we want to provide some network connectivity, like the ssh access.</p>
 <p>First of all, in the guest we start <code>socat</code> linking the VSOCK socket listening on
 port 22, to a TCP socket which will connect to the local TCP port 22 where the
 ssh server is listening:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
-</code></pre></div><p>On the host we link a TCP socket listening on a port of our choice (e.g. 4321)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
+</span></span></code></pre></div><p>On the host we link a TCP socket listening on a port of our choice (e.g. 4321)
 to the guest port 22 just opened using VSOCK:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
-</code></pre></div><p>Finally from the host we can connect to the guest using ssh on the local port
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
+</span></span></code></pre></div><p>Finally from the host we can connect to the guest using ssh on the local port
 4321, where <code>socat</code> is listening:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ ssh -p <span class="m">4321</span> root@localhost
-</code></pre></div><p><code>socat</code> redirects all the traffic between the sockets and allow us to use ssh over
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ ssh -p <span class="m">4321</span> root@localhost
+</span></span></code></pre></div><p><code>socat</code> redirects all the traffic between the sockets and allow us to use ssh over
 VSOCK to reach the guest.</p>
 <h3 id="connecting-sibling-vms">Connecting sibling VMs</h3>
 <p>Another scenario where socat can be very useful is connecting two sibling VMs
@@ -455,14 +460,14 @@ other.</p>
 <p>Guest 42 will listen on port 1234 and guest 24 will initiate the connection.
 But before we do this we need to set up the bridge in the host with <code>socat</code> to
 allow the two VMs to communicate:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">host$ socat VSOCK-LISTEN:1234 VSOCK-CONNECT:42:1234
-</code></pre></div><p>At this point we can launch <code>ncat</code> in the VMs and communicate:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest_42$ nc --vsock -l <span class="m">1234</span>
-</code></pre></div><p>Note: as destination CID we have to use the host&rsquo;s well-known CID (2) because
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ socat VSOCK-LISTEN:1234 VSOCK-CONNECT:42:1234
+</span></span></code></pre></div><p>At this point we can launch <code>ncat</code> in the VMs and communicate:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">guest_42$ nc --vsock -l <span class="m">1234</span>
+</span></span></code></pre></div><p>Note: as destination CID we have to use the host&rsquo;s well-known CID (2) because
 we need to connect to the <code>socat</code> bridge running in the host, that will
 redirect packets correctly between the two machines:</p>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">guest_24$ nc --vsock <span class="m">2</span> <span class="m">1234</span>
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">guest_24$ nc --vsock <span class="m">2</span> <span class="m">1234</span>
+</span></span></code></pre></div>
 
         
           <div class="blog-tags">
@@ -605,12 +610,15 @@ redirect packets correctly between the two machines:</p>
       
 <footer>
   <div class="container">
+    
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <ul class="list-inline text-center footer-links">
           
               <li>
-                <a href="mailto:sgarzare@redhat.com" title="Email me">
+		
+		  <a href="mailto:sgarzare@redhat.com" title="Email me">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
@@ -618,7 +626,9 @@ redirect packets correctly between the two machines:</p>
                 </a>
               </li>
               <li>
-                <a href="https://github.com/stefano-garzarella" title="GitHub">
+		
+		  <a href="https://github.com/stefano-garzarella" title="GitHub">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-github fa-stack-1x fa-inverse"></i>
@@ -626,7 +636,9 @@ redirect packets correctly between the two machines:</p>
                 </a>
               </li>
               <li>
-                <a href="https://gitlab.com/sgarzarella" title="GitLab">
+		
+		  <a href="https://gitlab.com/sgarzarella" title="GitLab">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
@@ -634,7 +646,9 @@ redirect packets correctly between the two machines:</p>
                 </a>
               </li>
               <li>
-                <a href="https://bitbucket.org/sgarzarella" title="Bitbucket">
+		
+		  <a href="https://bitbucket.org/sgarzarella" title="Bitbucket">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-bitbucket fa-stack-1x fa-inverse"></i>
@@ -642,7 +656,9 @@ redirect packets correctly between the two machines:</p>
                 </a>
               </li>
               <li>
-                <a href="https://twitter.com/sgarzarella" title="Twitter">
+		
+		  <a href="https://twitter.com/sgarzarella" title="Twitter">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
@@ -650,7 +666,9 @@ redirect packets correctly between the two machines:</p>
                 </a>
               </li>
               <li>
-                <a href="https://linkedin.com/in/stefanogarzarella" title="LinkedIn">
+		
+		  <a href="https://linkedin.com/in/stefanogarzarella" title="LinkedIn">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
@@ -687,21 +705,21 @@ redirect packets correctly between the two machines:</p>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.80.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.114.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
     </div>
   </div>
-</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
 <script src="https://stefano-garzarella.github.io/js/main.js"></script>
 <script src="https://stefano-garzarella.github.io/js/highlight.min.js"></script>
 <script> hljs.initHighlightingOnLoad(); </script>
-<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://stefano-garzarella.github.io/js/load-photoswipe.js"></script>
 
 
