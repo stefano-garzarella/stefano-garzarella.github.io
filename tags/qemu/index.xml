@@ -4,7 +4,6 @@
     <link>https://stefano-garzarella.github.io/tags/qemu/</link>
     <description>Recent content in qemu on sgarzare&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Fri, 22 Jan 2021 15:16:04 +0100</lastBuildDate>
@@ -107,14 +106,11 @@ we want to provide some network connectivity, like the ssh access.&lt;/p&gt;
 port 22, to a TCP socket which will connect to the local TCP port 22 where the
 ssh server is listening:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;guest$ socat VSOCK-LISTEN:22,reuseaddr,fork TCP:localhost:22
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;On the host we link a TCP socket listening on a port of our choice (e.g. 4321)
-to the guest port 22 just opened using VSOCK:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;host$ socat TCP4-LISTEN:4321,reuseaddr,fork VSOCK-CONNECT:42:22
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally from the host we can connect to the guest using ssh on the local port
-4321, where &lt;code&gt;socat&lt;/code&gt; is listening:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;host$ ssh -p &lt;span class=&#34;m&#34;&gt;4321&lt;/span&gt; root@localhost
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;socat&lt;/code&gt; redirects all the traffic between the sockets and allow us to use ssh over
-VSOCK to reach the guest.&lt;/p&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;On the host we can use &lt;code&gt;socat&lt;/code&gt; as &lt;code&gt;ProxyCommand&lt;/code&gt; of &lt;code&gt;ssh&lt;/code&gt; to forward the connection
+through the AF_VSOCK socket:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;host$ ssh -o &lt;span class=&#34;s2&#34;&gt;&amp;#34;ProxyCommand socat - VSOCK-CONNECT:42:22&amp;#34;&lt;/span&gt; root@localhost
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;socat&lt;/code&gt; redirects all the traffic and allow us to use ssh over VSOCK to reach
+the guest.&lt;/p&gt;
 &lt;h3 id=&#34;connecting-sibling-vms&#34;&gt;Connecting sibling VMs&lt;/h3&gt;
 &lt;p&gt;Another scenario where socat can be very useful is connecting two sibling VMs
 running on the same host.&lt;/p&gt;
@@ -650,7 +646,7 @@ file contains the following trace points used in the &lt;a href=&#34;https://git
 &lt;p&gt;If you want to add new trace points, you can simply add an I/O write to
 &lt;code&gt;LINUX_EXIT_PORT&lt;/code&gt; or &lt;code&gt;FW_EXIT_PORT&lt;/code&gt; I/O port with a value (&amp;gt; 7) that
 identifies the trace point:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nf&#34;&gt;outb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LINUX_EXIT_PORT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;outb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LINUX_EXIT_PORT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;code&gt;perf script&lt;/code&gt; output will contain &lt;code&gt;Exit point 10&lt;/code&gt; line that identifies your
 custom trace point:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; qemu_init_end: 143.770419
