@@ -17,9 +17,8 @@
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</guid>
-      <description>&lt;p&gt;A &lt;em&gt;vDPA device&lt;/em&gt; means a type of device whose &lt;strong&gt;datapath complies with the
-&lt;a href=&#34;https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html&#34;&gt;virtio specification&lt;/a&gt;&lt;/strong&gt;,
-but whose &lt;strong&gt;control path is vendor specific&lt;/strong&gt;.&lt;/p&gt;
+      <description>&lt;p&gt;A &lt;em&gt;vDPA device&lt;/em&gt; is a type of device that follows the &lt;strong&gt;&lt;a href=&#34;https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html&#34;&gt;virtio specification&lt;/a&gt;
+for its datapath&lt;/strong&gt; but has a &lt;strong&gt;vendor-specific control path&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;vDPA devices can be both physically located on the hardware or emulated by
 software.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://stefano-garzarella.github.io/img/vdpa_overview.png&#34; alt=&#34;vDPA overview&#34;&gt;&lt;/p&gt;
@@ -43,7 +42,7 @@ we collected some of them; I suggest you at least explore the following:&lt;/p&g
 &lt;li&gt;&lt;a href=&#34;https://www.redhat.com/en/blog/introducing-vduse-software-defined-datapath-virtio&#34;&gt;Introducing VDUSE: a software-defined datapath for virtio&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;block-devices&#34;&gt;Block devices&lt;/h2&gt;
-&lt;p&gt;Most of the work in vDPA has been driven by network devices, but in recent years
+&lt;p&gt;Most of the work in vDPA has been driven by network devices, but in recent years,
 we have also developed support for block devices.&lt;/p&gt;
 &lt;p&gt;The main use case is definitely leveraging the hardware to directly emulate the
 virtio-blk device and support different network backends such as Ceph RBD or
@@ -60,7 +59,7 @@ device by taking advantage of the driver implemented in libblkio.
 On the other hand, when QEMU doesn&amp;rsquo;t need to intervene, the fast path comes
 into play. In this case, the vDPA device can be directly exposed to the guest,
 bypassing QEMU&amp;rsquo;s emulation.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://gitlab.com/libblkio/libblkio&#34;&gt;libblkio&lt;/a&gt; exposes common API to acces
+&lt;p&gt;&lt;a href=&#34;https://gitlab.com/libblkio/libblkio&#34;&gt;libblkio&lt;/a&gt; exposes common API for accessing
 block devices in userspace. It supports several drivers. We will focus more
 on &lt;code&gt;virtio-blk-vhost-vdpa&lt;/code&gt; driver, which is used by &lt;code&gt;virtio-blk-vhost-vdpa&lt;/code&gt;
 block device in QEMU. It only supports slow path for now, but in the future

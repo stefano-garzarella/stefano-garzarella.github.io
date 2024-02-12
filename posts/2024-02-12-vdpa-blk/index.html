@@ -61,7 +61,7 @@
     "name" : "Stefano Garzarella"
   },
   "headline": "vDPA: support for block devices in Linux and QEMU",
-  "description" : "A vDPA device means a type of device whose datapath complies with the virtio specification, but whose control path is vendor specific.\nvDPA devices can be both physically located on the hardware or emulated by software.\nA small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:\nvhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters ",
+  "description" : "A vDPA device is a type of device that follows the virtio specification for its datapath but has a vendor-specific control path.\nvDPA devices can be both physically located on the hardware or emulated by software.\nA small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:\nvhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters ",
   "inLanguage" : "en",
   "wordCount":  1472 ,
   "datePublished" : "2024-02-12T18:42:57",
@@ -296,9 +296,8 @@ if (!doNotTrack) {
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        <p>A <em>vDPA device</em> means a type of device whose <strong>datapath complies with the
-<a href="https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html">virtio specification</a></strong>,
-but whose <strong>control path is vendor specific</strong>.</p>
+        <p>A <em>vDPA device</em> is a type of device that follows the <strong><a href="https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html">virtio specification</a>
+for its datapath</strong> but has a <strong>vendor-specific control path</strong>.</p>
 <p>vDPA devices can be both physically located on the hardware or emulated by
 software.</p>
 <p><img src="/img/vdpa_overview.png" alt="vDPA overview"></p>
@@ -322,7 +321,7 @@ we collected some of them; I suggest you at least explore the following:</p>
 <li><a href="https://www.redhat.com/en/blog/introducing-vduse-software-defined-datapath-virtio">Introducing VDUSE: a software-defined datapath for virtio</a></li>
 </ul>
 <h2 id="block-devices">Block devices</h2>
-<p>Most of the work in vDPA has been driven by network devices, but in recent years
+<p>Most of the work in vDPA has been driven by network devices, but in recent years,
 we have also developed support for block devices.</p>
 <p>The main use case is definitely leveraging the hardware to directly emulate the
 virtio-blk device and support different network backends such as Ceph RBD or
@@ -339,7 +338,7 @@ device by taking advantage of the driver implemented in libblkio.
 On the other hand, when QEMU doesn&rsquo;t need to intervene, the fast path comes
 into play. In this case, the vDPA device can be directly exposed to the guest,
 bypassing QEMU&rsquo;s emulation.</p>
-<p><a href="https://gitlab.com/libblkio/libblkio">libblkio</a> exposes common API to acces
+<p><a href="https://gitlab.com/libblkio/libblkio">libblkio</a> exposes common API for accessing
 block devices in userspace. It supports several drivers. We will focus more
 on <code>virtio-blk-vhost-vdpa</code> driver, which is used by <code>virtio-blk-vhost-vdpa</code>
 block device in QEMU. It only supports slow path for now, but in the future
