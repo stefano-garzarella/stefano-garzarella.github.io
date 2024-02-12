@@ -6,10 +6,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Fri, 22 Jan 2021 15:16:04 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 12 Feb 2024 18:42:57 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>vDPA: support for block devices in Linux and QEMU</title>
+      <link>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</link>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</guid>
+      <description>Introduction A vDPA device means a type of device whose datapath complies with the virtio specification, but whose control path is vendor specific.
+vDPA devices can be both physically located on the hardware or emulated by software.
+A small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:
+vhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters Useful Resources Many blog posts and talks have been published in recent years that can help you better understand vDPA and the use cases.</description>
+    </item>
     
     <item>
       <title>SOCAT now supports AF_VSOCK</title>

@@ -6,7 +6,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Fri, 22 Jan 2021 15:16:04 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 12 Feb 2024 18:42:57 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>conference</title>
       <link>https://stefano-garzarella.github.io/tags/conference/</link>
-      <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/tags/conference/</guid>
       <description></description>
@@ -23,9 +23,54 @@
     <item>
       <title>linux</title>
       <link>https://stefano-garzarella.github.io/tags/linux/</link>
-      <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>qemu</title>
+      <link>https://stefano-garzarella.github.io/tags/qemu/</link>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/qemu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>talk</title>
+      <link>https://stefano-garzarella.github.io/tags/talk/</link>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/talk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vdpa</title>
+      <link>https://stefano-garzarella.github.io/tags/vdpa/</link>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/vdpa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vduse</title>
+      <link>https://stefano-garzarella.github.io/tags/vduse/</link>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/vduse/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>virtio</title>
+      <link>https://stefano-garzarella.github.io/tags/virtio/</link>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/virtio/</guid>
       <description></description>
     </item>
     
@@ -39,29 +84,11 @@
     </item>
     
     <item>
-      <title>qemu</title>
-      <link>https://stefano-garzarella.github.io/tags/qemu/</link>
-      <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/qemu/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>socat</title>
       <link>https://stefano-garzarella.github.io/tags/socat/</link>
       <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/tags/socat/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>talk</title>
-      <link>https://stefano-garzarella.github.io/tags/talk/</link>
-      <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/talk/</guid>
       <description></description>
     </item>
     

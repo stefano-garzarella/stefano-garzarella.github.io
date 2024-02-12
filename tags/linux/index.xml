@@ -6,10 +6,237 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Fri, 22 Jan 2021 15:16:04 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 12 Feb 2024 18:42:57 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>vDPA: support for block devices in Linux and QEMU</title>
+      <link>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</link>
+      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;A &lt;em&gt;vDPA device&lt;/em&gt; means a type of device whose &lt;strong&gt;datapath complies with the
+&lt;a href=&#34;https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html&#34;&gt;virtio specification&lt;/a&gt;&lt;/strong&gt;,
+but whose &lt;strong&gt;control path is vendor specific&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;vDPA devices can be both physically located on the hardware or emulated by
+software.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://stefano-garzarella.github.io/img/vdpa_overview.png&#34; alt=&#34;vDPA overview&#34;&gt;&lt;/p&gt;
+&lt;p&gt;A small vDPA parent driver in the host kernel is required only for the control
+path. The main advantage is the &lt;strong&gt;unified software stack&lt;/strong&gt; for all vDPA
+devices:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;vhost interface&lt;/em&gt; (vhost-vdpa) for userspace or guest virtio driver, like a
+VM running in QEMU&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;virtio interface&lt;/em&gt; (virtio-vdpa) for bare-metal or containerized applications
+running in the host&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;management interface&lt;/em&gt; (vdpa netlink) for instantiating devices and
+configuring virtio parameters&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;useful-resources&#34;&gt;Useful Resources&lt;/h3&gt;
+&lt;p&gt;Many blog posts and talks have been published in recent years that can help you
+better understand vDPA and the use cases. On &lt;a href=&#34;https://vdpa-dev.gitlab.io/&#34;&gt;vdpa-dev.gitlab.io&lt;/a&gt;
+we collected some of them; I suggest you at least explore the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.redhat.com/en/blog/introduction-vdpa-kernel-framework&#34;&gt;Introduction to vDPA kernel framework&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.redhat.com/en/blog/introducing-vduse-software-defined-datapath-virtio&#34;&gt;Introducing VDUSE: a software-defined datapath for virtio&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;block-devices&#34;&gt;Block devices&lt;/h2&gt;
+&lt;p&gt;Most of the work in vDPA has been driven by network devices, but in recent years
+we have also developed support for block devices.&lt;/p&gt;
+&lt;p&gt;The main use case is definitely leveraging the hardware to directly emulate the
+virtio-blk device and support different network backends such as Ceph RBD or
+iSCSI. This is the goal of some SmartNICs or DPUs, which are able to emulate
+virtio-net devices of course, but also virtio-blk for network storage.&lt;/p&gt;
+&lt;p&gt;The abstraction provided by vDPA also makes software accelerators possible,
+similar to existing vhost or vhost-user devices.
+&lt;a href=&#34;https://kvmforum2021.sched.com/event/ke3a/vdpa-blk-unified-hardware-and-software-offload-for-virtio-blk-stefano-garzarella-red-hat&#34;&gt;We discussed about that at KVM Forum 2021&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;We talked about the fast path and the slow path in that talk. When QEMU needs
+to handle requests, like supporting live migration or executing I/O throttling,
+it uses the slow path. During the slow path, the device exposed to the guest is
+emulated in QEMU. QEMU intercepts the requests and forwards them to the vDPA
+device by taking advantage of the driver implemented in libblkio.
+On the other hand, when QEMU doesn&amp;rsquo;t need to intervene, the fast path comes
+into play. In this case, the vDPA device can be directly exposed to the guest,
+bypassing QEMU&amp;rsquo;s emulation.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://gitlab.com/libblkio/libblkio&#34;&gt;libblkio&lt;/a&gt; exposes common API to acces
+block devices in userspace. It supports several drivers. We will focus more
+on &lt;code&gt;virtio-blk-vhost-vdpa&lt;/code&gt; driver, which is used by &lt;code&gt;virtio-blk-vhost-vdpa&lt;/code&gt;
+block device in QEMU. It only supports slow path for now, but in the future
+it should be able to switch to fast path automatically. Since QEMU 7.2, it
+supports libblkio drivers, so you can use the following options to attach a
+vDPA block device to a VM:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;   -blockdev node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;drive_src1,driver&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;virtio-blk-vhost-vdpa,path&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/vhost-vdpa-0,cache.direct&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;   -device virtio-blk-pci,id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;src1,bootindex&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;2,drive&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;drive_src1 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Anyway, to fully leverage the performance of a vDPA hardware device, we can
+always use the generic &lt;code&gt;vhost-vdpa-device-pci&lt;/code&gt; device offered by QEMU that
+supports any vDPA device and exposes it directly to the guest. Of course,
+QEMU is not able to intercept requests in this scenario and therefore some
+features offered by its block layer (e.g. live migration, disk format, etc.)
+are not supported. Since QEMU 8.0, you can use the following options to attach
+a generic vDPA device to a VM:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    -device vhost-vdpa-device-pci,vhostdev1&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/vhost-vdpa-0
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At KVM Forum 2022, &lt;a href=&#34;https://kvmforum2022.sched.com/event/15jLs/introducing-the-libblkio-high-performance-block-io-api-stefan-hajnoczi-alberto-faria-red-hat&#34;&gt;Alberto Faria and Stefan Hajnoczi introduced libblkio&lt;/a&gt;,
+while &lt;a href=&#34;https://kvmforum2022.sched.com/event/15jK5/qemu-storage-daemon-and-libblkio-exploring-new-shores-for-the-qemu-block-layer-kevin-wolf-stefano-garzarella-red-hat&#34;&gt;Kevin Wolf and I discussed its usage in the QEMU Storage Deamon (QSD)&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;software-devices&#34;&gt;Software devices&lt;/h2&gt;
+&lt;p&gt;One of the significant benefits of vDPA is its strong abstraction, enabling
+the implementation of virtio devices in both hardware and software—whether in
+the kernel or user space. This unification under a single framework, where
+devices appear identical for QEMU facilitates the seamless integration of
+hardware and software components.&lt;/p&gt;
+&lt;h3 id=&#34;kernel-devices&#34;&gt;Kernel devices&lt;/h3&gt;
+&lt;p&gt;Regarding in-kernel devices, starting from Linux v5.13, there exists a simple
+simulator designed for development and debugging purposes. It is available
+through the &lt;code&gt;vdpa-sim-blk&lt;/code&gt; kernel module, which emulates a 128 MB ramdisk.
+As highlighted in the presentation at KVM Forum 2021, a future device in the
+kernel (similar to the repeatedly proposed but never merged &lt;code&gt;vhost-blk&lt;/code&gt;)
+could potentially offer excellent performance. Such a device could be used
+as an alternative when hardware is unavailable, for instance, facilitating
+live migration in any system, regardless of whether the destination system
+features a SmartNIC/DPU or not.&lt;/p&gt;
+&lt;h3 id=&#34;user-space-devices&#34;&gt;User space devices&lt;/h3&gt;
+&lt;p&gt;Instead, regarding user space, we can use VDUSE. QSD supports it and thus
+allows us to export any disk image supported by QEMU, such as a vDPA device
+in this way:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;qemu-storage-daemon &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --blockdev file,filename&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/disk.qcow2,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;file &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --blockdev qcow2,file&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;file,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    --export &lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vduse-blk,id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vduse0,name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vduse0,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2,writable&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;containers-vms-or-bare-metal&#34;&gt;Containers, VMs, or bare-metal&lt;/h2&gt;
+&lt;p&gt;As mentioned in the introduction, vDPA supports different buses such as
+&lt;code&gt;vhost-vdpa&lt;/code&gt; and &lt;code&gt;virtio-vdpa&lt;/code&gt;. This flexibility enables the utilization of
+vDPA devices with virtual machines or user space drivers (e.g., libblkio)
+through the &lt;code&gt;vhost-vdpa&lt;/code&gt; bus. Additionally, it allows interaction with
+applications running directly on the host or within containers via the
+&lt;code&gt;virtio-vdpa&lt;/code&gt; bus.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;vdpa&lt;/code&gt; tool in iproute2 facilitates the management of vdpa devices
+through netlink, enabling the allocation and deallocation of these devices.&lt;/p&gt;
+&lt;p&gt;Starting with Linux 5.17, vDPA drivers support &lt;code&gt;driver_ovveride&lt;/code&gt;. This
+enhancement allows dynamic reconfiguration during runtime, permitting the
+migration of a device from one bus to another in this way:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# load vdpa buses&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ modprobe -a virtio-vdpa vhost-vdpa
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# load vdpa-blk in-kernel simulator&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ modprobe vdpa-sim-blk
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# instantiate a new vdpasim_blk device called `vdpa0`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ vdpa dev add mgmtdev vdpasim_blk name vdpa0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# `vdpa0` is attached to the first vDPA bus driver loaded&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ driverctl -b vdpa list-devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vdpa0 virtio_vdpa
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# change the `vdpa0` bus to `vhost-vdpa`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ driverctl -b vdpa set-override vdpa0 vhost_vdpa
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# `vdpa0` is now attached to the `vhost-vdpa` bus&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ driverctl -b vdpa list-devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vdpa0 vhost_vdpa &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Note: driverctl(8) integrates with udev so the binding is preserved.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
+&lt;p&gt;Below are several examples on how to use vdpa-sim-blk or QSD+VDUSE with VMs
+(QEMU) or Containers (podman).
+These steps are easily adaptable to any hardware that supports virtio-blk
+devices via vDPA.&lt;/p&gt;
+&lt;h3 id=&#34;qcow2-image-available-for-host-applications-and-containers&#34;&gt;qcow2 image available for host applications and containers&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# load vdpa buses&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ modprobe -a virtio-vdpa vhost-vdpa
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# create an empty qcow2 image&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ qemu-img create -f qcow2 test.qcow2 10G
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# load vduse kernel module&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ modprobe vduse
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# launch QSD exposing the `test.qcow2` image as `vduse0` vDPA device&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ qemu-storage-daemon --blockdev file,filename&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;test.qcow2,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;file &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --blockdev qcow2,file&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;file,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --export vduse-blk,id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vduse0,name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vduse0,num-queues&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2,writable&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# instantiate the `vduse0` device (same name used in QSD)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ vdpa dev add name vduse0 mgmtdev vduse
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# be sure to attach it to the `virtio-vdpa` device to use with host applications&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ driverctl -b vdpa set-override vduse0 virtio_vdpa
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# device exposed as a virtio device, but attached to the host kernel&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ lsblk -pv
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NAME     TYPE TRAN   SIZE RQ-SIZE  MQ
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/vda disk virtio  10G     &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;launch-a-vm-using-a-vdpa-device&#34;&gt;Launch a VM using a vDPA device&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# download Fedora cloud image (or use any other bootable image you want)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ wget https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# launch QSD exposing the VM image as `vduse1` vDPA device&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ qemu-storage-daemon &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --blockdev file,filename&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;Fedora-Cloud-Base-39-1.5.x86_64.qcow2,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;file &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --blockdev qcow2,file&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;file,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  --export vduse-blk,id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vduse1,name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;vduse1,num-queues&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1,node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;qcow2,writable&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# instantiate the `vduse1` device (same name used in QSD)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ vdpa dev add name vduse1 mgmtdev vduse
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# initially it&amp;#39;s attached to the host (`/dev/vdb`), because `virtio-vdpa`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# is the first kernel module we loaded&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ lsblk -pv
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NAME     TYPE TRAN   SIZE RQ-SIZE  MQ
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/vda disk virtio  10G     &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/vdb disk virtio   5G     &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ lsblk /dev/vdb
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;vdb    251:16   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    5G  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; disk 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├─vdb1 251:17   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    1M  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; part 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├─vdb2 251:18   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; 1000M  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; part 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├─vdb3 251:19   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;  100M  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; part 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;├─vdb4 251:20   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;    4M  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; part 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─vdb5 251:21   &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;  3.9G  &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; part 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# and it is identified as `virtio1` in the host&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ ls /sys/bus/vdpa/devices/vduse1/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver  driver_override  power  subsystem  uevent  virtio1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# attach it to the `vhost-vdpa` device to use the device with VMs&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ driverctl -b vdpa set-override vduse1 vhost_vdpa
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# `/dev/vdb` is not available anymore&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ lsblk -pv
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NAME     TYPE TRAN   SIZE RQ-SIZE  MQ
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/vda disk virtio  10G     &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# the device is identified as `vhost-vdpa-1` in the host&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ ls /sys/bus/vdpa/devices/vduse1/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;driver  driver_override  power  subsystem  uevent  vhost-vdpa-1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ ls -l /dev/vhost-vdpa-1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;crw-------. &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; root root 511, &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; Feb &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt; 17:58 /dev/vhost-vdpa-1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# launch QEMU using `/dev/vhost-vdpa-1` device with the&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# `virtio-blk-vhost-vdpa` libblkio driver&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ qemu-system-x86_64 -m 512M -smp &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; -M q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm,memory-backend&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;mem &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -object memory-backend-memfd,share&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on,id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;mem,size&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;512M&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -blockdev node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;drive0,driver&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;virtio-blk-vhost-vdpa,path&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/vhost-vdpa-1,cache.direct&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -device virtio-blk-pci,drive&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;drive0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# `virtio-blk-vhost-vdpa` blockdev can be used with any QEMU block layer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# features (e.g live migration, I/O throttling).&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# In this example we are using I/O throttling:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ qemu-system-x86_64 -m 512M -smp &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; -M q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm,memory-backend&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;mem &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -object memory-backend-memfd,share&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on,id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;mem,size&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;512M&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -blockdev node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;drive0,driver&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;virtio-blk-vhost-vdpa,path&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/vhost-vdpa-1,cache.direct&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -blockdev node-name&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;throttle0,driver&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;throttle,file&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;drive0,throttle-group&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;limits0 &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -object throttle-group,id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;limits0,x-iops-total&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2000&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -device virtio-blk-pci,drive&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;throttle0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Alternatively, we can use the generic `vhost-vdpa-device-pci` to take&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# advantage of all the performance, but without having any QEMU block layer&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# features available&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ qemu-system-x86_64 -m 512M -smp &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; -M q35,accel&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;kvm,memory-backend&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;mem &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -object memory-backend-memfd,share&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;on,id&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;mem,size&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;512M&amp;#34;&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;  -device vhost-vdpa-device-pci,vhostdev&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/vhost-vdpa-0
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
     
     <item>
       <title>SOCAT now supports AF_VSOCK</title>
@@ -646,7 +873,7 @@ file contains the following trace points used in the &lt;a href=&#34;https://git
 &lt;p&gt;If you want to add new trace points, you can simply add an I/O write to
 &lt;code&gt;LINUX_EXIT_PORT&lt;/code&gt; or &lt;code&gt;FW_EXIT_PORT&lt;/code&gt; I/O port with a value (&amp;gt; 7) that
 identifies the trace point:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;n&#34;&gt;outb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LINUX_EXIT_PORT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;nf&#34;&gt;outb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LINUX_EXIT_PORT&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The &lt;code&gt;perf script&lt;/code&gt; output will contain &lt;code&gt;Exit point 10&lt;/code&gt; line that identifies your
 custom trace point:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt; qemu_init_end: 143.770419
