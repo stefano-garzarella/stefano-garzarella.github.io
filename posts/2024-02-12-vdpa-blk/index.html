@@ -61,9 +61,9 @@
     "name" : "Stefano Garzarella"
   },
   "headline": "vDPA: support for block devices in Linux and QEMU",
-  "description" : "Introduction A vDPA device means a type of device whose datapath complies with the virtio specification, but whose control path is vendor specific.\nvDPA devices can be both physically located on the hardware or emulated by software.\nA small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:\nvhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters Useful Resources Many blog posts and talks have been published in recent years that can help you better understand vDPA and the use cases.",
+  "description" : "A vDPA device means a type of device whose datapath complies with the virtio specification, but whose control path is vendor specific.\nvDPA devices can be both physically located on the hardware or emulated by software.\nA small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:\nvhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters ",
   "inLanguage" : "en",
-  "wordCount":  1453 ,
+  "wordCount":  1452 ,
   "datePublished" : "2024-02-12T18:42:57",
   "dateModified" : "2024-02-12T18:42:57",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -296,8 +296,7 @@ if (!doNotTrack) {
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        <h2 id="introduction">Introduction</h2>
-<p>A <em>vDPA device</em> means a type of device whose <strong>datapath complies with the
+        <p>A <em>vDPA device</em> means a type of device whose <strong>datapath complies with the
 <a href="https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html">virtio specification</a></strong>,
 but whose <strong>control path is vendor specific</strong>.</p>
 <p>vDPA devices can be both physically located on the hardware or emulated by

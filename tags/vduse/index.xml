@@ -17,8 +17,7 @@
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</guid>
-      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
-&lt;p&gt;A &lt;em&gt;vDPA device&lt;/em&gt; means a type of device whose &lt;strong&gt;datapath complies with the
+      <description>&lt;p&gt;A &lt;em&gt;vDPA device&lt;/em&gt; means a type of device whose &lt;strong&gt;datapath complies with the
 &lt;a href=&#34;https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html&#34;&gt;virtio specification&lt;/a&gt;&lt;/strong&gt;,
 but whose &lt;strong&gt;control path is vendor specific&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;vDPA devices can be both physically located on the hardware or emulated by

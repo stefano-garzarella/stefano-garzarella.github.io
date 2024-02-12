@@ -271,7 +271,7 @@ if (!doNotTrack) {
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1453&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1452&nbsp;words
   
   
     
@@ -285,10 +285,23 @@ if (!doNotTrack) {
     </p>
     <div class="post-entry">
         
-        Introduction A vDPA device means a type of device whose datapath complies with the virtio specification, but whose control path is vendor specific.
-vDPA devices can be both physically located on the hardware or emulated by software.
-A small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:
-vhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters Useful Resources Many blog posts and talks have been published in recent years that can help you better understand vDPA and the use cases.
+        <p>A <em>vDPA device</em> means a type of device whose <strong>datapath complies with the
+<a href="https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html">virtio specification</a></strong>,
+but whose <strong>control path is vendor specific</strong>.</p>
+<p>vDPA devices can be both physically located on the hardware or emulated by
+software.</p>
+<p><img src="/img/vdpa_overview.png" alt="vDPA overview"></p>
+<p>A small vDPA parent driver in the host kernel is required only for the control
+path. The main advantage is the <strong>unified software stack</strong> for all vDPA
+devices:</p>
+<ul>
+<li><em>vhost interface</em> (vhost-vdpa) for userspace or guest virtio driver, like a
+VM running in QEMU</li>
+<li><em>virtio interface</em> (virtio-vdpa) for bare-metal or containerized applications
+running in the host</li>
+<li><em>management interface</em> (vdpa netlink) for instantiating devices and
+configuring virtio parameters</li>
+</ul>
         <a href="https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/" class="post-read-more">[Read More]</a>
         
     </div>

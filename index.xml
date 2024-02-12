@@ -17,10 +17,23 @@
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</guid>
-      <description>Introduction A vDPA device means a type of device whose datapath complies with the virtio specification, but whose control path is vendor specific.
-vDPA devices can be both physically located on the hardware or emulated by software.
-A small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:
-vhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters Useful Resources Many blog posts and talks have been published in recent years that can help you better understand vDPA and the use cases.</description>
+      <description>&lt;p&gt;A &lt;em&gt;vDPA device&lt;/em&gt; means a type of device whose &lt;strong&gt;datapath complies with the
+&lt;a href=&#34;https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html&#34;&gt;virtio specification&lt;/a&gt;&lt;/strong&gt;,
+but whose &lt;strong&gt;control path is vendor specific&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;vDPA devices can be both physically located on the hardware or emulated by
+software.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://stefano-garzarella.github.io/img/vdpa_overview.png&#34; alt=&#34;vDPA overview&#34;&gt;&lt;/p&gt;
+&lt;p&gt;A small vDPA parent driver in the host kernel is required only for the control
+path. The main advantage is the &lt;strong&gt;unified software stack&lt;/strong&gt; for all vDPA
+devices:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;vhost interface&lt;/em&gt; (vhost-vdpa) for userspace or guest virtio driver, like a
+VM running in QEMU&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;virtio interface&lt;/em&gt; (virtio-vdpa) for bare-metal or containerized applications
+running in the host&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;management interface&lt;/em&gt; (vdpa netlink) for instantiating devices and
+configuring virtio parameters&lt;/li&gt;
+&lt;/ul&gt;</description>
     </item>
     
     <item>
