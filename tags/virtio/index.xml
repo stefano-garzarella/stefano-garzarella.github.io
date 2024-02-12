@@ -136,8 +136,8 @@ migration of a device from one bus to another in this way:&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# Note: driverctl(8) integrates with udev so the binding is preserved.&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
-&lt;p&gt;Below are several examples on how to use vdpa-sim-blk or QSD+VDUSE with VMs
-(QEMU) or Containers (podman).
+&lt;p&gt;Below are several examples on how to use &lt;em&gt;VDUSE&lt;/em&gt; and the &lt;em&gt;QEMU Storage Daemon&lt;/em&gt;
+with VMs (&lt;code&gt;QEMU&lt;/code&gt;) or Containers (&lt;code&gt;podman&lt;/code&gt;).
 These steps are easily adaptable to any hardware that supports virtio-blk
 devices via vDPA.&lt;/p&gt;
 &lt;h3 id=&#34;qcow2-image-available-for-host-applications-and-containers&#34;&gt;qcow2 image available for host applications and containers&lt;/h3&gt;
@@ -165,6 +165,9 @@ devices via vDPA.&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ lsblk -pv
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;NAME     TYPE TRAN   SIZE RQ-SIZE  MQ
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/dev/vda disk virtio  10G     &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# start a container with `/dev/vda` attached&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;podman run -it --rm --device /dev/vda --group-add keep-groups fedora:39 bash
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;launch-a-vm-using-a-vdpa-device&#34;&gt;Launch a VM using a vDPA device&lt;/h3&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# download Fedora cloud image (or use any other bootable image you want)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ wget https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2

@@ -63,7 +63,7 @@
   "headline": "vDPA: support for block devices in Linux and QEMU",
   "description" : "A vDPA device means a type of device whose datapath complies with the virtio specification, but whose control path is vendor specific.\nvDPA devices can be both physically located on the hardware or emulated by software.\nA small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:\nvhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters ",
   "inLanguage" : "en",
-  "wordCount":  1452 ,
+  "wordCount":  1472 ,
   "datePublished" : "2024-02-12T18:42:57",
   "dateModified" : "2024-02-12T18:42:57",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -415,8 +415,8 @@ migration of a device from one bus to another in this way:</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># Note: driverctl(8) integrates with udev so the binding is preserved.</span>
 </span></span></code></pre></div><h2 id="examples">Examples</h2>
-<p>Below are several examples on how to use vdpa-sim-blk or QSD+VDUSE with VMs
-(QEMU) or Containers (podman).
+<p>Below are several examples on how to use <em>VDUSE</em> and the <em>QEMU Storage Daemon</em>
+with VMs (<code>QEMU</code>) or Containers (<code>podman</code>).
 These steps are easily adaptable to any hardware that supports virtio-blk
 devices via vDPA.</p>
 <h3 id="qcow2-image-available-for-host-applications-and-containers">qcow2 image available for host applications and containers</h3>
@@ -444,6 +444,9 @@ devices via vDPA.</p>
 </span></span><span class="line"><span class="cl">$ lsblk -pv
 </span></span><span class="line"><span class="cl">NAME     TYPE TRAN   SIZE RQ-SIZE  MQ
 </span></span><span class="line"><span class="cl">/dev/vda disk virtio  10G     <span class="m">256</span>   <span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># start a container with `/dev/vda` attached</span>
+</span></span><span class="line"><span class="cl">podman run -it --rm --device /dev/vda --group-add keep-groups fedora:39 bash
 </span></span></code></pre></div><h3 id="launch-a-vm-using-a-vdpa-device">Launch a VM using a vDPA device</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># download Fedora cloud image (or use any other bootable image you want)</span>
 </span></span><span class="line"><span class="cl">$ wget https://download.fedoraproject.org/pub/fedora/linux/releases/39/Cloud/x86_64/images/Fedora-Cloud-Base-39-1.5.x86_64.qcow2
