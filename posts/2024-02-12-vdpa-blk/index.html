@@ -354,7 +354,7 @@ QEMU is not able to intercept requests in this scenario and therefore some
 features offered by its block layer (e.g. live migration, disk format, etc.)
 are not supported. Since QEMU 8.0, you can use the following options to attach
 a generic vDPA device to a VM:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">    -device vhost-vdpa-device-pci,vhostdev1<span class="o">=</span>/dev/vhost-vdpa-0
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">    -device vhost-vdpa-device-pci,vhostdev<span class="o">=</span>/dev/vhost-vdpa-0
 </span></span></code></pre></div><p>At KVM Forum 2022, <a href="https://kvmforum2022.sched.com/event/15jLs/introducing-the-libblkio-high-performance-block-io-api-stefan-hajnoczi-alberto-faria-red-hat">Alberto Faria and Stefan Hajnoczi introduced libblkio</a>,
 while <a href="https://kvmforum2022.sched.com/event/15jK5/qemu-storage-daemon-and-libblkio-exploring-new-shores-for-the-qemu-block-layer-kevin-wolf-stefano-garzarella-red-hat">Kevin Wolf and I discussed its usage in the QEMU Storage Deamon (QSD)</a>.</p>
 <h2 id="software-devices">Software devices</h2>

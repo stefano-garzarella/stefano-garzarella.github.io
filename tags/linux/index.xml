@@ -75,7 +75,7 @@ QEMU is not able to intercept requests in this scenario and therefore some
 features offered by its block layer (e.g. live migration, disk format, etc.)
 are not supported. Since QEMU 8.0, you can use the following options to attach
 a generic vDPA device to a VM:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    -device vhost-vdpa-device-pci,vhostdev1&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/vhost-vdpa-0
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    -device vhost-vdpa-device-pci,vhostdev&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/dev/vhost-vdpa-0
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At KVM Forum 2022, &lt;a href=&#34;https://kvmforum2022.sched.com/event/15jLs/introducing-the-libblkio-high-performance-block-io-api-stefan-hajnoczi-alberto-faria-red-hat&#34;&gt;Alberto Faria and Stefan Hajnoczi introduced libblkio&lt;/a&gt;,
 while &lt;a href=&#34;https://kvmforum2022.sched.com/event/15jK5/qemu-storage-daemon-and-libblkio-exploring-new-shores-for-the-qemu-block-layer-kevin-wolf-stefano-garzarella-red-hat&#34;&gt;Kevin Wolf and I discussed its usage in the QEMU Storage Deamon (QSD)&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&#34;software-devices&#34;&gt;Software devices&lt;/h2&gt;
