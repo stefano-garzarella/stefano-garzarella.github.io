@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>QEMU 4.0 boots uncompressed Linux x86_64 kernel - Virtualization and networking blog</title>
+
+  <meta name="description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).
+The x86/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.">
+  <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "sgarzare\u0027s blog",
+    
+    "url": "https:\/\/stefano-garzarella.github.io"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/stefano-garzarella.github.io"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/stefano-garzarella.github.io",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/stefano-garzarella.github.io\/post\/2019-08-23-qemu-linux-kernel-pvh\/",
+          "name": "Qemu 4.0 boots uncompressed linux x86 64 kernel"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Stefano Garzarella"
+  },
+  "headline": "QEMU 4.0 boots uncompressed Linux x86_64 kernel",
+  "description" : "QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86\/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).\nThe x86\/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.\n",
+  "inLanguage" : "en",
+  "wordCount":  311 ,
+  "datePublished" : "2019-08-23T15:26:54",
+  "dateModified" : "2019-08-23T15:26:54",
+  "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
+  "keywords" : [ "qemu, linux, boot" ],
+  "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/post\/2019-08-23-qemu-linux-kernel-pvh\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/stefano-garzarella.github.io",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="QEMU 4.0 boots uncompressed Linux x86_64 kernel" />
+<meta property="og:description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y must be enabled in the Linux config file).
+The x86/HVM direct boot ABI was initially developed for Xen guests, but with latest changes in both QEMU and Linux, QEMU is able to use that same entry point for booting KVM guests.">
+<meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
+<meta property="og:url" content="https://stefano-garzarella.github.io/post/2019-08-23-qemu-linux-kernel-pvh/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="sgarzare&#39;s blog" />
+
+  <meta name="twitter:title" content="QEMU 4.0 boots uncompressed Linux x86_64 kernel" />
+  <meta name="twitter:description" content="QEMU 4.0 is now able to boot directly into the uncompressed Linux x86_64 kernel binary with minimal firmware involvement using the PVH entry point defined in the x86/HVM direct boot ABI. (CONFIG_PVH=y …">
+  <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@sgarzarella" />
+  <meta name="twitter:creator" content="@sgarzarella" />
+  <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.111.3">
+  <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://stefano-garzarella.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-146409373-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://stefano-garzarella.github.io">sgarzare&#39;s blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Home" href="/">Home</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Posts" href="/post">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="sgarzare&#39;s blog" href="https://stefano-garzarella.github.io">
+            <img class="avatar-img" src="https://stefano-garzarella.github.io/img/avatar-icon.jpg" alt="sgarzare&#39;s blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search sgarzare&#39;s blog</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>QEMU 4.0 boots uncompressed Linux x86_64 kernel</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/23
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;311&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p><strong>QEMU 4.0</strong> is now able to boot directly into the <strong>uncompressed Linux x86_64 kernel binary</strong> with minimal firmware involvement using the <strong>PVH entry point</strong> defined in the <a href="https://xenbits.xen.org/docs/unstable/misc/pvh.html">x86/HVM direct boot ABI</a>. (<code>CONFIG_PVH=y</code> must be enabled in the Linux config file).</p>
+<p>The x86/HVM direct boot ABI was initially developed for Xen guests, but with <a href="#patches">latest changes in both QEMU and Linux</a>, QEMU is able to use that same entry point for booting KVM guests.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>QEMU &gt;= 4.0</li>
+<li>Linux kernel &gt;= 4.21
+<ul>
+<li><code>CONFIG_PVH=y</code> enabled</li>
+<li><code>vmlinux</code> uncompressed image</li>
+</ul>
+</li>
+</ul>
+<h2 id="how-to-use">How to use</h2>
+<p>To boot the PVH kernel image, you can use the <code>-kernel</code> parameter specifying the path to the <code>vmlinux</code> image.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">qemu-system-x86_64 -machine q35,accel=kvm \
+</span></span><span class="line"><span class="cl">    -kernel /path/to/vmlinux \
+</span></span><span class="line"><span class="cl">    -drive file=/path/to/rootfs.ext2,if=virtio,format=raw \
+</span></span><span class="line"><span class="cl">    -append &#39;root=/dev/vda console=ttyS0&#39; -vga none -display none \
+</span></span><span class="line"><span class="cl">    -serial mon:stdio
+</span></span></code></pre></div><p>The <code>-initrd</code> and <code>-append</code> parameters are also supported as for compressed images.</p>
+<h3 id="details">Details</h3>
+<p>QEMU will automatically recognize if the <code>vmlinux</code> image has the PVH entry point and it will use SeaBIOS with the new <code>pvh.bin</code> optionrom to load the uncompressed image into the guest VM.</p>
+<p>As an alternative, <a href="https://github.com/bonzini/qboot">qboot</a> can be used to load the PVH image.</p>
+<h3 id="performance">Performance</h3>
+<p>Perf script and patches used to measure boot time: <a href="https://github.com/stefano-garzarella/qemu-boot-time">https://github.com/stefano-garzarella/qemu-boot-time</a>.</p>
+<p><em>The following values are expressed in milliseconds [ms]</em></p>
+<ul>
+<li>
+<p>QEMU (q35 machine) + SeaBIOS + bzImage</p>
+<ul>
+<li><code>qemu_init_end</code>: 36.072056</li>
+<li><code>linux_start_kernel</code>: 114.669522 (+78.597466)</li>
+<li><code>linux_start_user</code>: 191.748567 (+77.079045)</li>
+</ul>
+</li>
+<li>
+<p><strong>QEMU (q35 machine) + SeaBIOS + vmlinux(PVH)</strong></p>
+<ul>
+<li><code>qemu_init_end</code>: 51.588200</li>
+<li><code>linux_start_kernel</code>: 62.124665 (+10.536465)</li>
+<li><code>linux_start_user</code>: 139.460582 (+77.335917)</li>
+</ul>
+</li>
+<li>
+<p>QEMU (q35 machine) + qboot + bzImage</p>
+<ul>
+<li>qemu_init_end: 36.443638</li>
+<li>linux_start_kernel: 106.73115 (+70.287512)</li>
+<li>linux_start_user: 184.575531 (+77.844381)</li>
+</ul>
+</li>
+<li>
+<p>QEMU (q35 machine) + qboot + vmlinux(PVH)</p>
+<ul>
+<li>qemu_init_end: 51.877656</li>
+<li>linux_start_kernel: 56.710735 (+4.833079)</li>
+<li>linux_start_user: 133.808972 (+77.098237)</li>
+</ul>
+</li>
+<li>
+<p>Tracepoints:</p>
+<ul>
+<li><code>qemu_init_end</code>: first kvm_entry (i.e. QEMU initialization has finished)</li>
+<li><code>linux_start_kernel</code>: first entry of the Linux kernel (<code>start_kernel()</code>)</li>
+<li><code>linux_start_user</code>: before starting the init process</li>
+</ul>
+</li>
+</ul>
+<h2 id="patches">Patches</h2>
+<p>Linux patches merged upstream in Linux 4.21:</p>
+<ul>
+<li><a href="https://lkml.org/lkml/2018/12/14/1330">https://lkml.org/lkml/2018/12/14/1330</a></li>
+</ul>
+<p>QEMU patches merged upstream in QEMU 4.0:</p>
+<ul>
+<li><a href="https://www.mail-archive.com/qemu-devel@nongnu.org/msg587312.html">https://www.mail-archive.com/qemu-devel@nongnu.org/msg587312.html</a></li>
+<li><a href="https://www.mail-archive.com/qemu-devel@nongnu.org/msg588561.html">https://www.mail-archive.com/qemu-devel@nongnu.org/msg588561.html</a></li>
+</ul>
+<p>qboot patches merged upstream:</p>
+<ul>
+<li><a href="https://github.com/bonzini/qboot/pull/17">https://github.com/bonzini/qboot/pull/17</a></li>
+<li><a href="https://github.com/bonzini/qboot/pull/18">https://github.com/bonzini/qboot/pull/18</a></li>
+</ul>
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+            
+              <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fpost%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;text=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fstefano-garzarella.github.io%2fpost%2f2019-08-23-qemu-linux-kernel-pvh%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fpost%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;title=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fpost%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;title=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fpost%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;title=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fpost%2f2019-08-23-qemu-linux-kernel-pvh%2f&amp;description=QEMU%204.0%20boots%20uncompressed%20Linux%20x86_64%20kernel" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/2024-02-12-vdpa-blk/">vDPA: support for block devices in Linux and QEMU</a></li>
+                
+                    <li><a href="/posts/2024-02-12-vdpa-blk/">vDPA: support for block devices in Linux and QEMU</a></li>
+                
+                    <li><a href="/post/2021-01-22-socat-vsock/">SOCAT now supports AF_VSOCK</a></li>
+                
+                    <li><a href="/posts/2021-01-22-socat-vsock/">SOCAT now supports AF_VSOCK</a></li>
+                
+                    <li><a href="/post/2020-02-20-vsock-nested-vms-loopback/">AF_VSOCK: nested VMs and loopback support available</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://stefano-garzarella.github.io/post/2019-08-22-vsock-iperf3/" data-toggle="tooltip" data-placement="top" title="iperf3-vsock: how to measure VSOCK performance">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://stefano-garzarella.github.io/post/2019-08-24-qemu-linux-boot-time/" data-toggle="tooltip" data-placement="top" title="How to measure the boot time of a Linux VM with QEMU/KVM">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:sgarzare@redhat.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/stefano-garzarella" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/sgarzarella" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://bitbucket.org/sgarzarella" title="Bitbucket">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-bitbucket fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://twitter.com/sgarzarella" title="Twitter">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://linkedin.com/in/stefanogarzarella" title="LinkedIn">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="https://stefano-garzarella.github.io/page/about">Stefano Garzarella</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://stefano-garzarella.github.io">sgarzare&#39;s blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.111.3</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://stefano-garzarella.github.io/js/main.js"></script>
+<script src="https://stefano-garzarella.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://stefano-garzarella.github.io/js/load-photoswipe.js"></script>
+
+
+
+<script>
+  (function() {
+    var cx = '011433376634952630999:louybk8offk';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+$(function(){
+  $('#show-comments').on('click', function(){
+    var disqus_shortname = 'stefano-garzarella-github-io';
+      
+    (function() {
+      var disqus = document.createElement('script'); 
+      disqus.type = 'text/javascript'; 
+      disqus.async = true;
+      disqus.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(disqus);
+    })();
+      
+    $(this).hide(); 
+    });
+  });
+      
+</script>
+<script id="dsq-count-scr" src="//stefano-garzarella-github-io.disqus.com/count.js" async></script>
+
+
+
+
+    
+  </body>
+</html>
+

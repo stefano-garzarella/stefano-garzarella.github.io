@@ -90,7 +90,7 @@ if (!doNotTrack) {
         
           
             <li>
-              <a title="Posts" href="/posts">Posts</a>
+              <a title="Posts" href="/post">Posts</a>
             </li>
           
         
@@ -244,6 +244,93 @@ if (!doNotTrack) {
         <div class="posts-list">
           
             <article class="post-preview">
+    <a href="https://stefano-garzarella.github.io/post/2021-01-22-socat-vsock/">
+        <h2 class="post-title">SOCAT now supports AF_VSOCK</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2021/01/22
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;775&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p><a href="http://www.dest-unreach.org/isocat/">SOCAT</a>
+is a CLI utility which enables the concatenation
+of two sockets together.
+It establishes two bidirectional byte streams and transfers data between them.</p>
+<p><code>socat</code> supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.)
+to construct the streams. The latest version <strong>1.7.4</strong>, released earlier this
+year [2021-01-04], supports also AF_VSOCK addresses:</p>
+<ul>
+<li>
+<p><a href="http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_LISTEN">VSOCK-LISTEN</a>:<code>&lt;port&gt;</code></p>
+<ul>
+<li>Listen on <code>port</code> and accepts a VSOCK connection.</li>
+</ul>
+</li>
+<li>
+<p><a href="http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_CONNECT">VSOCK-CONNECT</a>:<code>&lt;cid&gt;:&lt;port&gt;</code></p>
+<ul>
+<li>Establishes a VSOCK stream connection to the specified <code>cid</code> and <code>port</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="fosdem-2021">FOSDEM 2021</h2>
+<p>If you are interested on VSOCK, I&rsquo;ll talk witn Andra Paraschiv (AWS) about it
+at FOSDEM 2021.
+The talk is titled
+<a href="https://fosdem.org/2021/schedule/event/vai_virtio_vsock">Leveraging virtio-vsock in the cloud and containers</a>
+and it&rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).</p>
+<p>We will show cool VSOCK use cases and some demos about developing, debugging,
+and measuring the VSOCK performance, including <code>socat</code> demos.</p>
+        <a href="https://stefano-garzarella.github.io/post/2021-01-22-socat-vsock/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/socat/">socat</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
     <a href="https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/">
         <h2 class="post-title">SOCAT now supports AF_VSOCK</h2>
         
@@ -331,6 +418,80 @@ and measuring the VSOCK performance, including <code>socat</code> demos.</p>
 </article>
           
             <article class="post-preview">
+    <a href="https://stefano-garzarella.github.io/post/2020-02-20-vsock-nested-vms-loopback/">
+        <h2 class="post-title">AF_VSOCK: nested VMs and loopback support available</h2>
+        
+        <h3 class="post-subtitle">
+            Recent updates in Linux 5.5 and Linux 5.6
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2020/02/25
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;492&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p>During the last
+<a href="/posts/2019-11-08-kvmforum-2019-vsock/">KVM Forum 2019</a>,
+we discussed some next steps and several requests came from the audience.</p>
+<p>In the last months, we worked on that and recent Linux releases contain
+interesting new features that we will describe in this blog post:</p>
+<ul>
+<li><a href="#nested-vms">Nested VMs support</a>, available in Linux 5.5</li>
+<li><a href="#local-communication">Local communication support</a>, available in Linux 5.6</li>
+</ul>
+<h2 id="devconfcz-2020">DevConf.CZ 2020</h2>
+<p>These updates and an introduction to AF_VSOCK were presented at
+<strong>DevConf.CZ 2020</strong> during the
+&ldquo;<a href="https://devconfcz2020a.sched.com/event/YOwb/vsock-vm-host-socket-with-minimal-configuration">VSOCK: VM↔host socket with minimal configuration</a>&rdquo; talk.
+<a href="https://static.sched.com/hosted_files/devconfcz2020a/b1/DevConf.CZ_2020_vsock_v1.1.pdf">Slides</a> and <a href="https://youtu.be/R5DQWdPUQSY">recording</a> are available.</p>
+        <a href="https://stefano-garzarella.github.io/post/2020-02-20-vsock-nested-vms-loopback/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
     <a href="https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/">
         <h2 class="post-title">AF_VSOCK: nested VMs and loopback support available</h2>
         
@@ -381,6 +542,75 @@ interesting new features that we will describe in this blog post:</p>
 &ldquo;<a href="https://devconfcz2020a.sched.com/event/YOwb/vsock-vm-host-socket-with-minimal-configuration">VSOCK: VM↔host socket with minimal configuration</a>&rdquo; talk.
 <a href="https://static.sched.com/hosted_files/devconfcz2020a/b1/DevConf.CZ_2020_vsock_v1.1.pdf">Slides</a> and <a href="https://youtu.be/R5DQWdPUQSY">recording</a> are available.</p>
         <a href="https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://stefano-garzarella.github.io/post/2019-11-08-kvmforum-2019-vsock/">
+        <h2 class="post-title">KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</h2>
+        
+        <h3 class="post-subtitle">
+            Status, Performance and Challenges
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/11/09
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1063&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p><a href="https://static.sched.com/hosted_files/kvmforum2019/50/KVMForum_2019_virtio_vsock_Andra_Paraschiv_Stefano_Garzarella_v1.3.pdf">Slides</a> and
+<a href="https://youtu.be/LFqz-VZPhFE">recording</a> are available for the &ldquo;<a href="https://sched.co/TmwK">virtio-vsock in QEMU,
+Firecracker and Linux: Status, Performance and Challenges</a>&rdquo;
+talk that Andra Paraschiv and I presented at
+<a href="https://events19.linuxfoundation.org/events/kvm-forum-2019/">KVM Forum 2019</a>.
+This was the 13th edition of the KVM Forum conference. It took place in Lyon,
+France in October 2019.</p>
+<p>We talked about the current status and future works of VSOCK drivers in Linux
+and how Firecracker and QEMU provides the virtio-vsock device.</p>
+        <a href="https://stefano-garzarella.github.io/post/2019-11-08-kvmforum-2019-vsock/" class="post-read-more">[Read More]</a>
         
     </div>
 
@@ -467,6 +697,68 @@ and how Firecracker and QEMU provides the virtio-vsock device.</p>
         <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
         
         <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://stefano-garzarella.github.io/post/2019-08-22-vsock-iperf3/">
+        <h2 class="post-title">iperf3-vsock: how to measure VSOCK performance</h2>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/22
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;340&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p>The <a href="https://github.com/stefano-garzarella/iperf-vsock">iperf-vsock</a> repository
+contains few patches to add the support of VSOCK address family to <code>iperf3</code>.
+In this way <code>iperf3</code> can be used to measure the performance between guest and
+host using VSOCK sockets.</p>
+<p>The VSOCK address family facilitates communication between virtual
+machines and the host they are running on.</p>
+<p>To test VSOCK sockets (only Linux), you must use the new option <code>--vsock</code> on
+both server and client.
+Other iperf3 options (e.g. <code>-t, -l, -P, -R, --bidir</code>) are well supported by
+VSOCK tests.</p>
+        <a href="https://stefano-garzarella.github.io/post/2019-08-22-vsock-iperf3/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+        
+        <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
         
     </div>
     
