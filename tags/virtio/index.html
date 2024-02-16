@@ -90,7 +90,7 @@ if (!doNotTrack) {
         
           
             <li>
-              <a title="Posts" href="/post">Posts</a>
+              <a title="Posts" href="/posts">Posts</a>
             </li>
           
         
@@ -242,84 +242,6 @@ if (!doNotTrack) {
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
         <div class="posts-list">
-          
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/post/2024-02-12-vdpa-blk/">
-        <h2 class="post-title">vDPA: support for block devices in Linux and QEMU</h2>
-        
-        <h3 class="post-subtitle">
-            Using libblkio, QEMU Storage Daemon, and VDUSE
-        </h3>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2024/02/12
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1472&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p>A <em>vDPA device</em> is a type of device that follows the <strong><a href="https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html">virtio specification</a>
-for its datapath</strong> but has a <strong>vendor-specific control path</strong>.</p>
-<p>vDPA devices can be both physically located on the hardware or emulated by
-software.</p>
-<p><img src="/img/vdpa_overview.png" alt="vDPA overview"></p>
-<p>A small vDPA parent driver in the host kernel is required only for the control
-path. The main advantage is the <strong>unified software stack</strong> for all vDPA
-devices:</p>
-<ul>
-<li><em>vhost interface</em> (vhost-vdpa) for userspace or guest virtio driver, like a
-VM running in QEMU</li>
-<li><em>virtio interface</em> (virtio-vdpa) for bare-metal or containerized applications
-running in the host</li>
-<li><em>management interface</em> (vdpa netlink) for instantiating devices and
-configuring virtio parameters</li>
-</ul>
-        <a href="https://stefano-garzarella.github.io/post/2024-02-12-vdpa-blk/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/virtio/">virtio</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/vdpa/">vdpa</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/vduse/">vduse</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
-        
-    </div>
-    
-
-</article>
           
             <article class="post-preview">
     <a href="https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/">

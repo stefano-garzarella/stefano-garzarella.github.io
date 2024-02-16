@@ -11,9 +11,6 @@
     <loc>https://stefano-garzarella.github.io/posts/</loc>
     <lastmod>2024-02-12T18:42:57+01:00</lastmod>
   </url><url>
-    <loc>https://stefano-garzarella.github.io/post/</loc>
-    <lastmod>2024-02-12T18:42:57+01:00</lastmod>
-  </url><url>
     <loc>https://stefano-garzarella.github.io/tags/qemu/</loc>
     <lastmod>2024-02-12T18:42:57+01:00</lastmod>
   </url><url>
@@ -27,9 +24,6 @@
     <lastmod>2024-02-12T18:42:57+01:00</lastmod>
   </url><url>
     <loc>https://stefano-garzarella.github.io/tags/vdpa/</loc>
-    <lastmod>2024-02-12T18:42:57+01:00</lastmod>
-  </url><url>
-    <loc>https://stefano-garzarella.github.io/post/2024-02-12-vdpa-blk/</loc>
     <lastmod>2024-02-12T18:42:57+01:00</lastmod>
   </url><url>
     <loc>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</loc>
@@ -47,17 +41,11 @@
     <loc>https://stefano-garzarella.github.io/tags/socat/</loc>
     <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url><url>
-    <loc>https://stefano-garzarella.github.io/post/2021-01-22-socat-vsock/</loc>
-    <lastmod>2021-01-22T15:16:04+01:00</lastmod>
-  </url><url>
     <loc>https://stefano-garzarella.github.io/posts/2021-01-22-socat-vsock/</loc>
     <lastmod>2021-01-22T15:16:04+01:00</lastmod>
   </url><url>
     <loc>https://stefano-garzarella.github.io/tags/vsock/</loc>
     <lastmod>2021-01-22T15:16:04+01:00</lastmod>
-  </url><url>
-    <loc>https://stefano-garzarella.github.io/post/2020-02-20-vsock-nested-vms-loopback/</loc>
-    <lastmod>2020-02-25T20:30:21+01:00</lastmod>
   </url><url>
     <loc>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</loc>
     <lastmod>2020-02-25T20:30:21+01:00</lastmod>
@@ -68,20 +56,11 @@
     <loc>https://stefano-garzarella.github.io/tags/microvm/</loc>
     <lastmod>2019-12-22T17:46:44+01:00</lastmod>
   </url><url>
-    <loc>https://stefano-garzarella.github.io/post/2019-12-22-qemu-kernel-initrd-mmapped/</loc>
-    <lastmod>2019-12-22T17:46:44+01:00</lastmod>
-  </url><url>
     <loc>https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/</loc>
     <lastmod>2019-12-22T17:46:44+01:00</lastmod>
   </url><url>
-    <loc>https://stefano-garzarella.github.io/post/2019-11-08-kvmforum-2019-vsock/</loc>
-    <lastmod>2019-11-09T18:45:25+01:00</lastmod>
-  </url><url>
     <loc>https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/</loc>
     <lastmod>2019-11-09T18:45:25+01:00</lastmod>
-  </url><url>
-    <loc>https://stefano-garzarella.github.io/post/2019-08-24-qemu-linux-boot-time/</loc>
-    <lastmod>2019-08-24T15:03:30+02:00</lastmod>
   </url><url>
     <loc>https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/</loc>
     <lastmod>2019-08-24T15:03:30+02:00</lastmod>
@@ -92,14 +71,8 @@
     <loc>https://stefano-garzarella.github.io/page/</loc>
     <lastmod>2019-08-23T17:39:08+02:00</lastmod>
   </url><url>
-    <loc>https://stefano-garzarella.github.io/post/2019-08-23-qemu-linux-kernel-pvh/</loc>
-    <lastmod>2019-08-23T15:26:54+02:00</lastmod>
-  </url><url>
     <loc>https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/</loc>
     <lastmod>2019-08-23T15:26:54+02:00</lastmod>
-  </url><url>
-    <loc>https://stefano-garzarella.github.io/post/2019-08-22-vsock-iperf3/</loc>
-    <lastmod>2019-08-22T17:52:06+02:00</lastmod>
   </url><url>
     <loc>https://stefano-garzarella.github.io/posts/2019-08-22-vsock-iperf3/</loc>
     <lastmod>2019-08-22T17:52:06+02:00</lastmod>

@@ -90,7 +90,7 @@ if (!doNotTrack) {
         
           
             <li>
-              <a title="Posts" href="/post">Posts</a>
+              <a title="Posts" href="/posts">Posts</a>
             </li>
           
         
@@ -244,66 +244,6 @@ if (!doNotTrack) {
         <div class="posts-list">
           
             <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/post/2019-12-22-qemu-kernel-initrd-mmapped/">
-        <h2 class="post-title">QEMU 4.2 mmap(2)s kernel and initrd</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/12/22
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;439&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p>In order to save memory and boot time, <strong>QEMU 4.2</strong> and later versions are able to
-mmap(2) the kernel and initrd specified with <code>-kernel</code> and <code>-initrd</code> parameters.
-This approach allows us to avoid reading and copying them into a buffer,
-saving memory and time.</p>
-<p>The memory pages that contain kernel and initrd are shared between
-multiple VMs using the same kernel and initrd images.
-So, when many VMs are launched we can save memory by sharing pages, and save
-time by avoiding reading them each time from the disk.</p>
-        <a href="https://stefano-garzarella.github.io/post/2019-12-22-qemu-kernel-initrd-mmapped/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux&#34;</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/microvm/">microvm</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
-            <article class="post-preview">
     <a href="https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/">
         <h2 class="post-title">QEMU 4.2 mmap(2)s kernel and initrd</h2>
         
@@ -364,76 +304,6 @@ time by avoiding reading them each time from the disk.</p>
 </article>
           
             <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/post/2019-08-24-qemu-linux-boot-time/">
-        <h2 class="post-title">How to measure the boot time of a Linux VM with QEMU/KVM</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/24
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;5&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;882&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p>The <a href="https://github.com/stefano-garzarella/qemu-boot-time">stefano-garzarella/qemu-boot-time</a>
-repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU/KVM.</p>
-<p>Using I/O writes, we can trace events to measure the time consumed during the
-boot phase by the different components:</p>
-<ul>
-<li>firmware
-<ul>
-<li>SeaBIOS</li>
-<li>qboot</li>
-</ul>
-</li>
-<li>optionrom
-<ul>
-<li>linuxboot [bzImage]</li>
-<li><a href="/posts/2019-08-23-qemu-linux-kernel-pvh/">pvh [vmlinux + PVH entry point]</a></li>
-</ul>
-</li>
-<li>Linux kernel</li>
-</ul>
-        <a href="https://stefano-garzarella.github.io/post/2019-08-24-qemu-linux-boot-time/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
-            <article class="post-preview">
     <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/">
         <h2 class="post-title">How to measure the boot time of a Linux VM with QEMU/KVM</h2>
         
@@ -486,58 +356,6 @@ boot phase by the different components:</p>
 <li>Linux kernel</li>
 </ul>
         <a href="https://stefano-garzarella.github.io/posts/2019-08-24-qemu-linux-boot-time/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-    <div class="blog-tags">
-        
-        <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
-        
-        <a href="https://stefano-garzarella.github.io/tags/boot/">boot</a>&nbsp;
-        
-    </div>
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://stefano-garzarella.github.io/post/2019-08-23-qemu-linux-kernel-pvh/">
-        <h2 class="post-title">QEMU 4.0 boots uncompressed Linux x86_64 kernel</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on 2019/08/23
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;311&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        <p><strong>QEMU 4.0</strong> is now able to boot directly into the <strong>uncompressed Linux x86_64 kernel binary</strong> with minimal firmware involvement using the <strong>PVH entry point</strong> defined in the <a href="https://xenbits.xen.org/docs/unstable/misc/pvh.html">x86/HVM direct boot ABI</a>. (<code>CONFIG_PVH=y</code> must be enabled in the Linux config file).</p>
-<p>The x86/HVM direct boot ABI was initially developed for Xen guests, but with <a href="#patches">latest changes in both QEMU and Linux</a>, QEMU is able to use that same entry point for booting KVM guests.</p>
-        <a href="https://stefano-garzarella.github.io/post/2019-08-23-qemu-linux-kernel-pvh/" class="post-read-more">[Read More]</a>
         
     </div>
 

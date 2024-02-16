@@ -13,30 +13,6 @@
     
     <item>
       <title>vDPA: support for block devices in Linux and QEMU</title>
-      <link>https://stefano-garzarella.github.io/post/2024-02-12-vdpa-blk/</link>
-      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/post/2024-02-12-vdpa-blk/</guid>
-      <description>&lt;p&gt;A &lt;em&gt;vDPA device&lt;/em&gt; is a type of device that follows the &lt;strong&gt;&lt;a href=&#34;https://docs.oasis-open.org/virtio/virtio/v1.3/virtio-v1.3.html&#34;&gt;virtio specification&lt;/a&gt;
-for its datapath&lt;/strong&gt; but has a &lt;strong&gt;vendor-specific control path&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;vDPA devices can be both physically located on the hardware or emulated by
-software.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://stefano-garzarella.github.io/img/vdpa_overview.png&#34; alt=&#34;vDPA overview&#34;&gt;&lt;/p&gt;
-&lt;p&gt;A small vDPA parent driver in the host kernel is required only for the control
-path. The main advantage is the &lt;strong&gt;unified software stack&lt;/strong&gt; for all vDPA
-devices:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;vhost interface&lt;/em&gt; (vhost-vdpa) for userspace or guest virtio driver, like a
-VM running in QEMU&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;virtio interface&lt;/em&gt; (virtio-vdpa) for bare-metal or containerized applications
-running in the host&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;management interface&lt;/em&gt; (vdpa netlink) for instantiating devices and
-configuring virtio parameters&lt;/li&gt;
-&lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>vDPA: support for block devices in Linux and QEMU</title>
       <link>https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/</link>
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -57,43 +33,6 @@ running in the host&lt;/li&gt;
 &lt;li&gt;&lt;em&gt;management interface&lt;/em&gt; (vdpa netlink) for instantiating devices and
 configuring virtio parameters&lt;/li&gt;
 &lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>SOCAT now supports AF_VSOCK</title>
-      <link>https://stefano-garzarella.github.io/post/2021-01-22-socat-vsock/</link>
-      <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/post/2021-01-22-socat-vsock/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://www.dest-unreach.org/isocat/&#34;&gt;SOCAT&lt;/a&gt;
-is a CLI utility which enables the concatenation
-of two sockets together.
-It establishes two bidirectional byte streams and transfers data between them.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;socat&lt;/code&gt; supports several address types (e.g. TCP, UDP, UNIX domain sockets, etc.)
-to construct the streams. The latest version &lt;strong&gt;1.7.4&lt;/strong&gt;, released earlier this
-year [2021-01-04], supports also AF_VSOCK addresses:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_LISTEN&#34;&gt;VSOCK-LISTEN&lt;/a&gt;:&lt;code&gt;&amp;lt;port&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Listen on &lt;code&gt;port&lt;/code&gt; and accepts a VSOCK connection.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.dest-unreach.org/socat/doc/socat.html#ADDRESS_VSOCK_CONNECT&#34;&gt;VSOCK-CONNECT&lt;/a&gt;:&lt;code&gt;&amp;lt;cid&amp;gt;:&amp;lt;port&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Establishes a VSOCK stream connection to the specified &lt;code&gt;cid&lt;/code&gt; and &lt;code&gt;port&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;fosdem-2021&#34;&gt;FOSDEM 2021&lt;/h2&gt;
-&lt;p&gt;If you are interested on VSOCK, I&amp;rsquo;ll talk witn Andra Paraschiv (AWS) about it
-at FOSDEM 2021.
-The talk is titled
-&lt;a href=&#34;https://fosdem.org/2021/schedule/event/vai_virtio_vsock&#34;&gt;Leveraging virtio-vsock in the cloud and containers&lt;/a&gt;
-and it&amp;rsquo;s scheduled for Saturday, February 6th 2021 at 11:30 AM (CET).&lt;/p&gt;
-&lt;p&gt;We will show cool VSOCK use cases and some demos about developing, debugging,
-and measuring the VSOCK performance, including &lt;code&gt;socat&lt;/code&gt; demos.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -135,28 +74,6 @@ and measuring the VSOCK performance, including &lt;code&gt;socat&lt;/code&gt; de
     
     <item>
       <title>AF_VSOCK: nested VMs and loopback support available</title>
-      <link>https://stefano-garzarella.github.io/post/2020-02-20-vsock-nested-vms-loopback/</link>
-      <pubDate>Tue, 25 Feb 2020 20:30:21 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/post/2020-02-20-vsock-nested-vms-loopback/</guid>
-      <description>&lt;p&gt;During the last
-&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-11-08-kvmforum-2019-vsock/&#34;&gt;KVM Forum 2019&lt;/a&gt;,
-we discussed some next steps and several requests came from the audience.&lt;/p&gt;
-&lt;p&gt;In the last months, we worked on that and recent Linux releases contain
-interesting new features that we will describe in this blog post:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;#nested-vms&#34;&gt;Nested VMs support&lt;/a&gt;, available in Linux 5.5&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;#local-communication&#34;&gt;Local communication support&lt;/a&gt;, available in Linux 5.6&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;devconfcz-2020&#34;&gt;DevConf.CZ 2020&lt;/h2&gt;
-&lt;p&gt;These updates and an introduction to AF_VSOCK were presented at
-&lt;strong&gt;DevConf.CZ 2020&lt;/strong&gt; during the
-&amp;ldquo;&lt;a href=&#34;https://devconfcz2020a.sched.com/event/YOwb/vsock-vm-host-socket-with-minimal-configuration&#34;&gt;VSOCK: VM↔host socket with minimal configuration&lt;/a&gt;&amp;rdquo; talk.
-&lt;a href=&#34;https://static.sched.com/hosted_files/devconfcz2020a/b1/DevConf.CZ_2020_vsock_v1.1.pdf&#34;&gt;Slides&lt;/a&gt; and &lt;a href=&#34;https://youtu.be/R5DQWdPUQSY&#34;&gt;recording&lt;/a&gt; are available.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>AF_VSOCK: nested VMs and loopback support available</title>
       <link>https://stefano-garzarella.github.io/posts/2020-02-20-vsock-nested-vms-loopback/</link>
       <pubDate>Tue, 25 Feb 2020 20:30:21 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -179,22 +96,6 @@ interesting new features that we will describe in this blog post:&lt;/p&gt;
     
     <item>
       <title>QEMU 4.2 mmap(2)s kernel and initrd</title>
-      <link>https://stefano-garzarella.github.io/post/2019-12-22-qemu-kernel-initrd-mmapped/</link>
-      <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/post/2019-12-22-qemu-kernel-initrd-mmapped/</guid>
-      <description>&lt;p&gt;In order to save memory and boot time, &lt;strong&gt;QEMU 4.2&lt;/strong&gt; and later versions are able to
-mmap(2) the kernel and initrd specified with &lt;code&gt;-kernel&lt;/code&gt; and &lt;code&gt;-initrd&lt;/code&gt; parameters.
-This approach allows us to avoid reading and copying them into a buffer,
-saving memory and time.&lt;/p&gt;
-&lt;p&gt;The memory pages that contain kernel and initrd are shared between
-multiple VMs using the same kernel and initrd images.
-So, when many VMs are launched we can save memory by sharing pages, and save
-time by avoiding reading them each time from the disk.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>QEMU 4.2 mmap(2)s kernel and initrd</title>
       <link>https://stefano-garzarella.github.io/posts/2019-12-22-qemu-kernel-initrd-mmapped/</link>
       <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -207,23 +108,6 @@ saving memory and time.&lt;/p&gt;
 multiple VMs using the same kernel and initrd images.
 So, when many VMs are launched we can save memory by sharing pages, and save
 time by avoiding reading them each time from the disk.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</title>
-      <link>https://stefano-garzarella.github.io/post/2019-11-08-kvmforum-2019-vsock/</link>
-      <pubDate>Sat, 09 Nov 2019 18:45:25 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/post/2019-11-08-kvmforum-2019-vsock/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://static.sched.com/hosted_files/kvmforum2019/50/KVMForum_2019_virtio_vsock_Andra_Paraschiv_Stefano_Garzarella_v1.3.pdf&#34;&gt;Slides&lt;/a&gt; and
-&lt;a href=&#34;https://youtu.be/LFqz-VZPhFE&#34;&gt;recording&lt;/a&gt; are available for the &amp;ldquo;&lt;a href=&#34;https://sched.co/TmwK&#34;&gt;virtio-vsock in QEMU,
-Firecracker and Linux: Status, Performance and Challenges&lt;/a&gt;&amp;rdquo;
-talk that Andra Paraschiv and I presented at
-&lt;a href=&#34;https://events19.linuxfoundation.org/events/kvm-forum-2019/&#34;&gt;KVM Forum 2019&lt;/a&gt;.
-This was the 13th edition of the KVM Forum conference. It took place in Lyon,
-France in October 2019.&lt;/p&gt;
-&lt;p&gt;We talked about the current status and future works of VSOCK drivers in Linux
-and how Firecracker and QEMU provides the virtio-vsock device.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -241,34 +125,6 @@ This was the 13th edition of the KVM Forum conference. It took place in Lyon,
 France in October 2019.&lt;/p&gt;
 &lt;p&gt;We talked about the current status and future works of VSOCK drivers in Linux
 and how Firecracker and QEMU provides the virtio-vsock device.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>How to measure the boot time of a Linux VM with QEMU/KVM</title>
-      <link>https://stefano-garzarella.github.io/post/2019-08-24-qemu-linux-boot-time/</link>
-      <pubDate>Sat, 24 Aug 2019 15:03:30 +0200</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/post/2019-08-24-qemu-linux-boot-time/</guid>
-      <description>&lt;p&gt;The &lt;a href=&#34;https://github.com/stefano-garzarella/qemu-boot-time&#34;&gt;stefano-garzarella/qemu-boot-time&lt;/a&gt;
-repository contains a Python perf-script and (Linux, QEMU, SeaBIOS) patches
-to measure the boot time of a Linux VM with QEMU/KVM.&lt;/p&gt;
-&lt;p&gt;Using I/O writes, we can trace events to measure the time consumed during the
-boot phase by the different components:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;firmware
-&lt;ul&gt;
-&lt;li&gt;SeaBIOS&lt;/li&gt;
-&lt;li&gt;qboot&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;optionrom
-&lt;ul&gt;
-&lt;li&gt;linuxboot [bzImage]&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/&#34;&gt;pvh [vmlinux + PVH entry point]&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Linux kernel&lt;/li&gt;
-&lt;/ul&gt;</description>
     </item>
     
     <item>
@@ -311,40 +167,12 @@ The postings on this site are my own and don&amp;rsquo;t necessarily represent R
     
     <item>
       <title>QEMU 4.0 boots uncompressed Linux x86_64 kernel</title>
-      <link>https://stefano-garzarella.github.io/post/2019-08-23-qemu-linux-kernel-pvh/</link>
-      <pubDate>Fri, 23 Aug 2019 15:26:54 +0200</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/post/2019-08-23-qemu-linux-kernel-pvh/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;QEMU 4.0&lt;/strong&gt; is now able to boot directly into the &lt;strong&gt;uncompressed Linux x86_64 kernel binary&lt;/strong&gt; with minimal firmware involvement using the &lt;strong&gt;PVH entry point&lt;/strong&gt; defined in the &lt;a href=&#34;https://xenbits.xen.org/docs/unstable/misc/pvh.html&#34;&gt;x86/HVM direct boot ABI&lt;/a&gt;. (&lt;code&gt;CONFIG_PVH=y&lt;/code&gt; must be enabled in the Linux config file).&lt;/p&gt;
-&lt;p&gt;The x86/HVM direct boot ABI was initially developed for Xen guests, but with &lt;a href=&#34;#patches&#34;&gt;latest changes in both QEMU and Linux&lt;/a&gt;, QEMU is able to use that same entry point for booting KVM guests.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>QEMU 4.0 boots uncompressed Linux x86_64 kernel</title>
       <link>https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/</link>
       <pubDate>Fri, 23 Aug 2019 15:26:54 +0200</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/</guid>
       <description>&lt;p&gt;&lt;strong&gt;QEMU 4.0&lt;/strong&gt; is now able to boot directly into the &lt;strong&gt;uncompressed Linux x86_64 kernel binary&lt;/strong&gt; with minimal firmware involvement using the &lt;strong&gt;PVH entry point&lt;/strong&gt; defined in the &lt;a href=&#34;https://xenbits.xen.org/docs/unstable/misc/pvh.html&#34;&gt;x86/HVM direct boot ABI&lt;/a&gt;. (&lt;code&gt;CONFIG_PVH=y&lt;/code&gt; must be enabled in the Linux config file).&lt;/p&gt;
 &lt;p&gt;The x86/HVM direct boot ABI was initially developed for Xen guests, but with &lt;a href=&#34;#patches&#34;&gt;latest changes in both QEMU and Linux&lt;/a&gt;, QEMU is able to use that same entry point for booting KVM guests.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>iperf3-vsock: how to measure VSOCK performance</title>
-      <link>https://stefano-garzarella.github.io/post/2019-08-22-vsock-iperf3/</link>
-      <pubDate>Thu, 22 Aug 2019 17:52:06 +0200</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/post/2019-08-22-vsock-iperf3/</guid>
-      <description>&lt;p&gt;The &lt;a href=&#34;https://github.com/stefano-garzarella/iperf-vsock&#34;&gt;iperf-vsock&lt;/a&gt; repository
-contains few patches to add the support of VSOCK address family to &lt;code&gt;iperf3&lt;/code&gt;.
-In this way &lt;code&gt;iperf3&lt;/code&gt; can be used to measure the performance between guest and
-host using VSOCK sockets.&lt;/p&gt;
-&lt;p&gt;The VSOCK address family facilitates communication between virtual
-machines and the host they are running on.&lt;/p&gt;
-&lt;p&gt;To test VSOCK sockets (only Linux), you must use the new option &lt;code&gt;--vsock&lt;/code&gt; on
-both server and client.
-Other iperf3 options (e.g. &lt;code&gt;-t, -l, -P, -R, --bidir&lt;/code&gt;) are well supported by
-VSOCK tests.&lt;/p&gt;</description>
     </item>
     
     <item>
