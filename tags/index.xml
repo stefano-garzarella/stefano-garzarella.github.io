@@ -4,6 +4,7 @@
     <link>https://stefano-garzarella.github.io/tags/</link>
     <description>Recent content in Tags on sgarzare&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Mon, 12 Feb 2024 18:42:57 +0100</lastBuildDate>
@@ -12,7 +13,7 @@
     
     
     <item>
-      <title>conference</title>
+      <title>Conference</title>
       <link>https://stefano-garzarella.github.io/tags/conference/</link>
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -21,7 +22,7 @@
     </item>
     
     <item>
-      <title>linux</title>
+      <title>Linux</title>
       <link>https://stefano-garzarella.github.io/tags/linux/</link>
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -30,7 +31,7 @@
     </item>
     
     <item>
-      <title>qemu</title>
+      <title>Qemu</title>
       <link>https://stefano-garzarella.github.io/tags/qemu/</link>
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -39,7 +40,7 @@
     </item>
     
     <item>
-      <title>talk</title>
+      <title>Talk</title>
       <link>https://stefano-garzarella.github.io/tags/talk/</link>
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -48,7 +49,7 @@
     </item>
     
     <item>
-      <title>vdpa</title>
+      <title>Vdpa</title>
       <link>https://stefano-garzarella.github.io/tags/vdpa/</link>
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -57,7 +58,7 @@
     </item>
     
     <item>
-      <title>vduse</title>
+      <title>Vduse</title>
       <link>https://stefano-garzarella.github.io/tags/vduse/</link>
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -66,7 +67,7 @@
     </item>
     
     <item>
-      <title>virtio</title>
+      <title>Virtio</title>
       <link>https://stefano-garzarella.github.io/tags/virtio/</link>
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -75,7 +76,7 @@
     </item>
     
     <item>
-      <title>net</title>
+      <title>Net</title>
       <link>https://stefano-garzarella.github.io/tags/net/</link>
       <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -84,7 +85,7 @@
     </item>
     
     <item>
-      <title>socat</title>
+      <title>Socat</title>
       <link>https://stefano-garzarella.github.io/tags/socat/</link>
       <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -93,7 +94,7 @@
     </item>
     
     <item>
-      <title>vsock</title>
+      <title>Vsock</title>
       <link>https://stefano-garzarella.github.io/tags/vsock/</link>
       <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -102,7 +103,7 @@
     </item>
     
     <item>
-      <title>boot</title>
+      <title>Boot</title>
       <link>https://stefano-garzarella.github.io/tags/boot/</link>
       <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
@@ -111,7 +112,16 @@
     </item>
     
     <item>
-      <title>microvm</title>
+      <title>Linux&#34;</title>
+      <link>https://stefano-garzarella.github.io/tags/linux/</link>
+      <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Microvm</title>
       <link>https://stefano-garzarella.github.io/tags/microvm/</link>
       <pubDate>Sun, 22 Dec 2019 17:46:44 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>

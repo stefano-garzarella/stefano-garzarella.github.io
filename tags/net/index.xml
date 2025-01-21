@@ -1,9 +1,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>net on sgarzare&#39;s blog</title>
+    <title>Net on sgarzare&#39;s blog</title>
     <link>https://stefano-garzarella.github.io/tags/net/</link>
-    <description>Recent content in net on sgarzare&#39;s blog</description>
+    <description>Recent content in Net on sgarzare&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Fri, 22 Jan 2021 15:16:04 +0100</lastBuildDate>

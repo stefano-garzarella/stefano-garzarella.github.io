@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
   <head>
@@ -12,21 +14,20 @@
 
       <title>vDPA: support for block devices in Linux and QEMU - Virtualization and networking blog</title>
 
-  <meta name="description" content="Using libblkio, QEMU Storage Daemon, and VDUSE">
-  <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
+  <meta name="description" content="Using libblkio, QEMU Storage Daemon, and VDUSE"><script type="application/ld+json">
 {
     "@context": "http://schema.org",
     "@type": "WebSite",
     "name": "sgarzare\u0027s blog",
     
-    "url": "https:\/\/stefano-garzarella.github.io"
+    "url": "https:\/\/stefano-garzarella.github.io\/"
 }
 </script><script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "Organization",
   "name": "",
-  "url": "https:\/\/stefano-garzarella.github.io"
+  "url": "https:\/\/stefano-garzarella.github.io\/"
   
   
   
@@ -41,7 +42,7 @@
         "@type": "ListItem",
         "position": 1,
         "item": {
-          "@id": "https:\/\/stefano-garzarella.github.io",
+          "@id": "https:\/\/stefano-garzarella.github.io\/",
           "name": "home"
         }
     },{
@@ -58,20 +59,20 @@
   "@context": "http://schema.org",
   "@type": "Article",
   "author": {
-    "name" : "Stefano Garzarella"
+    "name" : ""
   },
   "headline": "vDPA: support for block devices in Linux and QEMU",
   "description" : "A vDPA device is a type of device that follows the virtio specification for its datapath but has a vendor-specific control path.\nvDPA devices can be both physically located on the hardware or emulated by software.\nA small vDPA parent driver in the host kernel is required only for the control path. The main advantage is the unified software stack for all vDPA devices:\nvhost interface (vhost-vdpa) for userspace or guest virtio driver, like a VM running in QEMU virtio interface (virtio-vdpa) for bare-metal or containerized applications running in the host management interface (vdpa netlink) for instantiating devices and configuring virtio parameters ",
   "inLanguage" : "en",
   "wordCount":  1472 ,
-  "datePublished" : "2024-02-12T18:42:57",
-  "dateModified" : "2024-02-12T18:42:57",
+  "datePublished" : "2024-02-12T18:42:57\u002b01:00",
+  "dateModified" : "2024-02-12T18:42:57\u002b01:00",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
   "keywords" : [ "virtio, vdpa, vduse, linux, qemu, conference, talk" ],
   "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2024-02-12-vdpa-blk\/",
   "publisher" : {
     "@type": "Organization",
-    "name" : "https:\/\/stefano-garzarella.github.io",
+    "name" : "https:\/\/stefano-garzarella.github.io\/",
     "logo" : {
         "@type" : "ImageObject",
         "url" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -81,6 +82,7 @@
   }
 }
 </script>
+
 
 <meta property="og:title" content="vDPA: support for block devices in Linux and QEMU" />
 <meta property="og:description" content="Using libblkio, QEMU Storage Daemon, and VDUSE">
@@ -93,29 +95,22 @@
   <meta name="twitter:description" content="Using libblkio, QEMU Storage Daemon, and VDUSE">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@sgarzarella" />
-  <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.111.3">
+  <meta name="generator" content="Hugo 0.126.2">
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css" integrity="sha384-h/hnnw1Bi4nbpD6kE7nYfCXzovi622sY5WBxww8ARKwpdLj5kUWjRuyiXaD1U2JT" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
   <link rel="stylesheet" href="https://stefano-garzarella.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-146409373-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+  
+    
+      
+    
+  
+
+
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
@@ -127,7 +122,7 @@ if (!doNotTrack) {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="https://stefano-garzarella.github.io">sgarzare&#39;s blog</a>
+      <a class="navbar-brand" href="https://stefano-garzarella.github.io/">sgarzare&#39;s blog</a>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
@@ -173,8 +168,9 @@ if (!doNotTrack) {
     
       <div class="avatar-container">
         <div class="avatar-img-border">
-          <a title="sgarzare&#39;s blog" href="https://stefano-garzarella.github.io">
+          <a title="sgarzare&#39;s blog" href="https://stefano-garzarella.github.io/">
             <img class="avatar-img" src="https://stefano-garzarella.github.io/img/avatar-icon.jpg" alt="sgarzare&#39;s blog" />
+           
           </a>
         </div>
       </div>
@@ -293,7 +289,7 @@ if (!doNotTrack) {
   
   
     
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;
     
   
   
@@ -539,18 +535,25 @@ devices via vDPA.</p>
         
           <div class="blog-tags">
             
+              
               <a href="https://stefano-garzarella.github.io/tags/virtio/">virtio</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/vdpa/">vdpa</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/vduse/">vduse</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
             
           </div>
@@ -566,7 +569,7 @@ devices via vDPA.</p>
     <ul class="share">
       
       <li>
-        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2024-02-12-vdpa-blk%2f&amp;text=vDPA%3a%20support%20for%20block%20devices%20in%20Linux%20and%20QEMU&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2024-02-12-vdpa-blk%2f&amp;text=vDPA%3a%20support%20for%20block%20devices%20in%20Linux%20and%20QEMU&amp;via=" target="_blank" title="Share on Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -657,90 +660,18 @@ devices via vDPA.</p>
   </div>
 </div>
 
-      
-<footer>
+      <footer>
   <div class="container">
     
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <ul class="list-inline text-center footer-links">
           
-              <li>
-		
-		  <a href="mailto:sgarzare@redhat.com" title="Email me">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://github.com/stefano-garzarella" title="GitHub">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://gitlab.com/sgarzarella" title="GitLab">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://bitbucket.org/sgarzarella" title="Bitbucket">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-bitbucket fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://twitter.com/sgarzarella" title="Twitter">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://linkedin.com/in/stefanogarzarella" title="LinkedIn">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
           
-          <li>
-            <a href="" title="RSS">
-              <span class="fa-stack fa-lg">
-                <i class="fas fa-circle fa-stack-2x"></i>
-                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
-              </span>
-            </a>
-          </li>
+          
           
         </ul>
         <p class="credits copyright text-muted">
-          
-            
-              <a href="https://stefano-garzarella.github.io/page/about">Stefano Garzarella</a>
-            
           
 
           &nbsp;&bull;&nbsp;&copy;
@@ -750,12 +681,12 @@ devices via vDPA.</p>
 
           
             &nbsp;&bull;&nbsp;
-            <a href="https://stefano-garzarella.github.io">sgarzare&#39;s blog</a>
+            <a href="https://stefano-garzarella.github.io/">sgarzare&#39;s blog</a>
           
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.111.3</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.126.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
@@ -785,6 +716,7 @@ devices via vDPA.</p>
     s.parentNode.insertBefore(gcse, s);
   })();
 </script>
+
 
 
 

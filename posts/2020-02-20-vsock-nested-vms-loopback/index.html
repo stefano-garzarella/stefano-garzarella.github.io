@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
   <head>
@@ -12,21 +14,20 @@
 
       <title>AF_VSOCK: nested VMs and loopback support available - Virtualization and networking blog</title>
 
-  <meta name="description" content="Recent updates in Linux 5.5 and Linux 5.6">
-  <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
+  <meta name="description" content="Recent updates in Linux 5.5 and Linux 5.6"><script type="application/ld+json">
 {
     "@context": "http://schema.org",
     "@type": "WebSite",
     "name": "sgarzare\u0027s blog",
     
-    "url": "https:\/\/stefano-garzarella.github.io"
+    "url": "https:\/\/stefano-garzarella.github.io\/"
 }
 </script><script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "Organization",
   "name": "",
-  "url": "https:\/\/stefano-garzarella.github.io"
+  "url": "https:\/\/stefano-garzarella.github.io\/"
   
   
   
@@ -41,7 +42,7 @@
         "@type": "ListItem",
         "position": 1,
         "item": {
-          "@id": "https:\/\/stefano-garzarella.github.io",
+          "@id": "https:\/\/stefano-garzarella.github.io\/",
           "name": "home"
         }
     },{
@@ -58,20 +59,20 @@
   "@context": "http://schema.org",
   "@type": "Article",
   "author": {
-    "name" : "Stefano Garzarella"
+    "name" : ""
   },
   "headline": "AF_VSOCK: nested VMs and loopback support available",
   "description" : "During the last KVM Forum 2019, we discussed some next steps and several requests came from the audience.\nIn the last months, we worked on that and recent Linux releases contain interesting new features that we will describe in this blog post:\nNested VMs support, available in Linux 5.5 Local communication support, available in Linux 5.6 DevConf.CZ 2020 These updates and an introduction to AF_VSOCK were presented at DevConf.CZ 2020 during the \u0026ldquo;VSOCK: VM↔host socket with minimal configuration\u0026rdquo; talk. Slides and recording are available.\n",
   "inLanguage" : "en",
   "wordCount":  492 ,
-  "datePublished" : "2020-02-25T20:30:21",
-  "dateModified" : "2020-02-25T20:30:21",
+  "datePublished" : "2020-02-25T20:30:21\u002b01:00",
+  "dateModified" : "2020-02-25T20:30:21\u002b01:00",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
   "keywords" : [ "vsock, linux, qemu, net, conference, talk" ],
   "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2020-02-20-vsock-nested-vms-loopback\/",
   "publisher" : {
     "@type": "Organization",
-    "name" : "https:\/\/stefano-garzarella.github.io",
+    "name" : "https:\/\/stefano-garzarella.github.io\/",
     "logo" : {
         "@type" : "ImageObject",
         "url" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -81,6 +82,7 @@
   }
 }
 </script>
+
 
 <meta property="og:title" content="AF_VSOCK: nested VMs and loopback support available" />
 <meta property="og:description" content="Recent updates in Linux 5.5 and Linux 5.6">
@@ -93,29 +95,22 @@
   <meta name="twitter:description" content="Recent updates in Linux 5.5 and Linux 5.6">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@sgarzarella" />
-  <meta name="twitter:creator" content="@sgarzarella" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.111.3">
+  <meta name="generator" content="Hugo 0.126.2">
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.6.0/css/all.css" integrity="sha384-h/hnnw1Bi4nbpD6kE7nYfCXzovi622sY5WBxww8ARKwpdLj5kUWjRuyiXaD1U2JT" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
   <link rel="stylesheet" href="https://stefano-garzarella.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
 
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-146409373-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
+  
+    
+      
+    
+  
+
+
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
@@ -127,7 +122,7 @@ if (!doNotTrack) {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="https://stefano-garzarella.github.io">sgarzare&#39;s blog</a>
+      <a class="navbar-brand" href="https://stefano-garzarella.github.io/">sgarzare&#39;s blog</a>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
@@ -173,8 +168,9 @@ if (!doNotTrack) {
     
       <div class="avatar-container">
         <div class="avatar-img-border">
-          <a title="sgarzare&#39;s blog" href="https://stefano-garzarella.github.io">
+          <a title="sgarzare&#39;s blog" href="https://stefano-garzarella.github.io/">
             <img class="avatar-img" src="https://stefano-garzarella.github.io/img/avatar-icon.jpg" alt="sgarzare&#39;s blog" />
+           
           </a>
         </div>
       </div>
@@ -293,7 +289,7 @@ if (!doNotTrack) {
   
   
     
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;
     
   
   
@@ -438,16 +434,22 @@ test for <a href="https://rwmj.wordpress.com/2019/10/21/nbd-over-af_vsock/">nbdk
         
           <div class="blog-tags">
             
+              
               <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/conference/">conference</a>&nbsp;
             
+              
               <a href="https://stefano-garzarella.github.io/tags/talk/">talk</a>&nbsp;
             
           </div>
@@ -463,7 +465,7 @@ test for <a href="https://rwmj.wordpress.com/2019/10/21/nbd-over-af_vsock/">nbdk
     <ul class="share">
       
       <li>
-        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2020-02-20-vsock-nested-vms-loopback%2f&amp;text=AF_VSOCK%3a%20nested%20VMs%20and%20loopback%20support%20available&amp;via=sgarzarella" target="_blank" title="Share on Twitter">
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2020-02-20-vsock-nested-vms-loopback%2f&amp;text=AF_VSOCK%3a%20nested%20VMs%20and%20loopback%20support%20available&amp;via=" target="_blank" title="Share on Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -558,90 +560,18 @@ test for <a href="https://rwmj.wordpress.com/2019/10/21/nbd-over-af_vsock/">nbdk
   </div>
 </div>
 
-      
-<footer>
+      <footer>
   <div class="container">
     
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <ul class="list-inline text-center footer-links">
           
-              <li>
-		
-		  <a href="mailto:sgarzare@redhat.com" title="Email me">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://github.com/stefano-garzarella" title="GitHub">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://gitlab.com/sgarzarella" title="GitLab">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://bitbucket.org/sgarzarella" title="Bitbucket">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-bitbucket fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://twitter.com/sgarzarella" title="Twitter">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://linkedin.com/in/stefanogarzarella" title="LinkedIn">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
           
-          <li>
-            <a href="" title="RSS">
-              <span class="fa-stack fa-lg">
-                <i class="fas fa-circle fa-stack-2x"></i>
-                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
-              </span>
-            </a>
-          </li>
+          
           
         </ul>
         <p class="credits copyright text-muted">
-          
-            
-              <a href="https://stefano-garzarella.github.io/page/about">Stefano Garzarella</a>
-            
           
 
           &nbsp;&bull;&nbsp;&copy;
@@ -651,12 +581,12 @@ test for <a href="https://rwmj.wordpress.com/2019/10/21/nbd-over-af_vsock/">nbdk
 
           
             &nbsp;&bull;&nbsp;
-            <a href="https://stefano-garzarella.github.io">sgarzare&#39;s blog</a>
+            <a href="https://stefano-garzarella.github.io/">sgarzare&#39;s blog</a>
           
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.111.3</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.126.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
@@ -686,6 +616,7 @@ test for <a href="https://rwmj.wordpress.com/2019/10/21/nbd-over-af_vsock/">nbdk
     s.parentNode.insertBefore(gcse, s);
   })();
 </script>
+
 
 
 

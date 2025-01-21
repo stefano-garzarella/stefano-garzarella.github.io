@@ -4,6 +4,7 @@
     <link>https://stefano-garzarella.github.io/</link>
     <description>Recent content on sgarzare&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Mon, 12 Feb 2024 18:42:57 +0100</lastBuildDate>
@@ -161,8 +162,13 @@ boot phase by the different components:&lt;/p&gt;
       <pubDate>Fri, 23 Aug 2019 17:39:08 +0200</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/page/about/</guid>
-      <description>I am Software Engineer at Red Hat. I&amp;rsquo;m working on virtualization and networking topics in QEMU and Linux kernel. Current projects cover virtio-vsock, QEMU network storage, and lightweight VMs.
-The postings on this site are my own and don&amp;rsquo;t necessarily represent Red Hat&amp;rsquo;s positions, strategies or opinions.</description>
+      <description>Linux&amp;rsquo;s AF_VSOCK maintainer. Working in virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc. at Red Hat.
+The postings on this site are my own and don&amp;rsquo;t necessarily represent Red Hat&amp;rsquo;s positions, strategies or opinions.
+Contacts Work e-mail: sgarzare@redhat.com
+Personal e-mail: stefano.garzarella@gmail.com
+GitHub: https://github.com/stefano-garzarella
+GitLab: https://gitlab.com/sgarzarella
+LinkedIn: https://www.linkedin.com/in/stefanogarzarella</description>
     </item>
     
     <item>

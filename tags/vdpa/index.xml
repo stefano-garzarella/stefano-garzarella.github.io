@@ -1,9 +1,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>vdpa on sgarzare&#39;s blog</title>
+    <title>Vdpa on sgarzare&#39;s blog</title>
     <link>https://stefano-garzarella.github.io/tags/vdpa/</link>
-    <description>Recent content in vdpa on sgarzare&#39;s blog</description>
+    <description>Recent content in Vdpa on sgarzare&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Mon, 12 Feb 2024 18:42:57 +0100</lastBuildDate>

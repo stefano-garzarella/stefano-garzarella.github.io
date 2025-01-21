@@ -1,9 +1,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>boot on sgarzare&#39;s blog</title>
+    <title>Boot on sgarzare&#39;s blog</title>
     <link>https://stefano-garzarella.github.io/tags/boot/</link>
-    <description>Recent content in boot on sgarzare&#39;s blog</description>
+    <description>Recent content in Boot on sgarzare&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
     <lastBuildDate>Sun, 22 Dec 2019 17:46:44 +0100</lastBuildDate>
