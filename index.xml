@@ -162,7 +162,7 @@ boot phase by the different components:&lt;/p&gt;
       <pubDate>Fri, 23 Aug 2019 17:39:08 +0200</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/page/about/</guid>
-      <description>Linux&amp;rsquo;s AF_VSOCK maintainer. Working in virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc. at Red Hat.
+      <description>Linux&amp;rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.
 The postings on this site are my own and don&amp;rsquo;t necessarily represent Red Hat&amp;rsquo;s positions, strategies or opinions.
 Contacts Work e-mail: sgarzare@redhat.com
 Personal e-mail: stefano.garzarella@gmail.com

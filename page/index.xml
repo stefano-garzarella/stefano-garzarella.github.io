@@ -18,7 +18,7 @@
       <pubDate>Fri, 23 Aug 2019 17:39:08 +0200</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/page/about/</guid>
-      <description>&lt;p&gt;Linux&amp;rsquo;s AF_VSOCK maintainer. Working in virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc. at Red Hat.&lt;/p&gt;
+      <description>&lt;p&gt;Linux&amp;rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.&lt;/p&gt;
 &lt;p&gt;The postings on this site are my own and don&amp;rsquo;t necessarily represent Red Hat&amp;rsquo;s positions, strategies or opinions.&lt;/p&gt;
 &lt;h3 id=&#34;contacts&#34;&gt;Contacts&lt;/h3&gt;
 &lt;p&gt;Work e-mail: &lt;a href=&#34;mailto:sgarzare@redhat.com&#34;&gt;sgarzare@redhat.com&lt;/a&gt;&lt;br&gt;
