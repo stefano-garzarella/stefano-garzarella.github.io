@@ -162,13 +162,14 @@ boot phase by the different components:&lt;/p&gt;
       <pubDate>Fri, 23 Aug 2019 17:39:08 +0200</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/page/about/</guid>
-      <description>Linux&amp;rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.
-The postings on this site are my own and don&amp;rsquo;t necessarily represent Red Hat&amp;rsquo;s positions, strategies or opinions.
-Contacts Work e-mail: sgarzare@redhat.com
-Personal e-mail: stefano.garzarella@gmail.com
-GitHub: https://github.com/stefano-garzarella
-GitLab: https://gitlab.com/sgarzarella
-LinkedIn: https://www.linkedin.com/in/stefanogarzarella</description>
+      <description>&lt;p&gt;Linux&amp;rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.&lt;/p&gt;
+&lt;p&gt;The postings on this site are my own and don&amp;rsquo;t necessarily represent Red Hat&amp;rsquo;s positions, strategies or opinions.&lt;/p&gt;
+&lt;h3 id=&#34;contacts&#34;&gt;Contacts&lt;/h3&gt;
+&lt;p&gt;Work e-mail: &lt;a href=&#34;mailto:sgarzare@redhat.com&#34;&gt;sgarzare@redhat.com&lt;/a&gt;&lt;br&gt;
+Personal e-mail: &lt;a href=&#34;mailto:stefano.garzarella@gmail.com&#34;&gt;stefano.garzarella@gmail.com&lt;/a&gt;&lt;br&gt;
+GitHub: &lt;a href=&#34;https://github.com/stefano-garzarella&#34;&gt;https://github.com/stefano-garzarella&lt;/a&gt;&lt;br&gt;
+GitLab: &lt;a href=&#34;https://gitlab.com/sgarzarella&#34;&gt;https://gitlab.com/sgarzarella&lt;/a&gt;&lt;br&gt;
+LinkedIn: &lt;a href=&#34;https://www.linkedin.com/in/stefanogarzarella&#34;&gt;https://www.linkedin.com/in/stefanogarzarella&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
