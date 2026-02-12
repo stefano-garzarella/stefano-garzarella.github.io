@@ -1,0 +1,784 @@
+
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>AF_VSOCK: network namespace support is here - Virtualization and networking blog</title>
+
+  <meta name="description" content="New in Linux 7.0">
+  <meta name="author" content="Stefano Garzarella"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "sgarzare\u0027s blog",
+    
+    "url": "https:\/\/stefano-garzarella.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/stefano-garzarella.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/stefano-garzarella.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/stefano-garzarella.github.io\/posts\/2026-02-11-vsock-netns\/",
+          "name": "Af vsock network namespace support is here"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Stefano Garzarella"
+  },
+  "headline": "AF_VSOCK: network namespace support is here",
+  "description" : "A missing piece for AF_VSOCK in the Linux kernel has been network namespace support. We discussed it as a future challenge during the KVM Forum 2019 talk and it was mentioned in several conference discussions since then.\nI started working on namespace support back in 2019, but never had the chance to complete it. Last year, Bobby Eshleman (Meta) restarted the effort and drove it through 16 revisions of the patch series. Daniel Berrangé, Michael S. Tsirkin, Paolo Abeni, and I contributed with reviews and suggestions that shaped the current user API. The result has been merged into net-next and will be available in Linux 7.0.\n",
+  "inLanguage" : "en",
+  "wordCount":  1438 ,
+  "datePublished" : "2026-02-11T18:00:00\u002b01:00",
+  "dateModified" : "2026-02-11T18:00:00\u002b01:00",
+  "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
+  "keywords" : [ "vsock, linux, qemu, net" ],
+  "mainEntityOfPage" : "https:\/\/stefano-garzarella.github.io\/posts\/2026-02-11-vsock-netns\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/stefano-garzarella.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+
+<meta property="og:title" content="AF_VSOCK: network namespace support is here" />
+<meta property="og:description" content="New in Linux 7.0">
+<meta property="og:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
+<meta property="og:url" content="https://stefano-garzarella.github.io/posts/2026-02-11-vsock-netns/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="sgarzare&#39;s blog" />
+
+  <meta name="twitter:title" content="AF_VSOCK: network namespace support is here" />
+  <meta name="twitter:description" content="New in Linux 7.0">
+  <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.152.2">
+  <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/brands.css" integrity="sha384-+eXGm6TmVoCZR1gX03US+L++L2mJIfOvp2X0+luTuEktXaF5F+e3zn0sO0HBvOyT" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/fontawesome.css" integrity="sha384-B5nyPZa7e84uCJEYHtevCdVYtQosWsbDSRtq3cy/jeSVtQW05GL8CKXO7waXsjPK" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/regular.css" integrity="sha384-V71z/A/p/DGaZAryHhiSXRQj8HdQmK2nBgL2bX23MGD+h6ZKpyxOO76f5eSXmIaj" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/solid.css" integrity="sha384-1IIShlrK5iYgvS7OAgIH3prz4RAFP7hHZ2MaLIb9l3+trFwwnw/NdCWcUHlymZDU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/svg.css" integrity="sha384-iBa7uugTOHXqQ2ngvDYJyKrPPQbd9n2P3EQe+o/0+HZe5TNvV+LO5X0lLLUrXLHP" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/svg-with-js.css" integrity="sha384-STWnS5AGz6M2YxsnGAd536EqcE2y+ktGovMMuhtXLsCBtl7lujeQj2eN4eDxa57x" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/v4-font-face.css" integrity="sha384-fH83IkgQi7kturzlxpXfNdsR8aUOcqj5HUORRVnSvJgObZkIw6aqKAaQx20IWyB/" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/v4-shims.css" integrity="sha384-cCODJHSivNBsaHei/8LC0HUD58kToSbDU+xT7Rs51BO1v/IvgT/uM0W6xMoUqKfn" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/v5-font-face.css" integrity="sha384-atSdF89mIn15dv+o2LKkDM6mCh3hwh6A7mwZ6F2it/kenqZbMu+QW/ye1OG4XSWV" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://stefano-garzarella.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://stefano-garzarella.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://stefano-garzarella.github.io/">sgarzare&#39;s blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Home" href="/">Home</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Posts" href="/posts">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="sgarzare&#39;s blog" href="https://stefano-garzarella.github.io/">
+            <img class="avatar-img" src="https://stefano-garzarella.github.io/img/avatar-icon.jpg" alt="sgarzare&#39;s blog" />
+           
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search sgarzare&#39;s blog</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>AF_VSOCK: network namespace support is here</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">New in Linux 7.0</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on 2026/02/11
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;min
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1438&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Stefano Garzarella
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>A missing piece for <strong>AF_VSOCK</strong> in the Linux kernel has been
+<strong>network namespace</strong> support. We discussed it as a future challenge during the
+<a href="/posts/2019-11-08-kvmforum-2019-vsock/">KVM Forum 2019</a> talk
+and it was mentioned in several conference discussions since then.</p>
+<p>I started working on namespace support back in
+<a href="https://lore.kernel.org/netdev/20200116172428.311437-1-sgarzare@redhat.com/">2019</a>,
+but never had the chance to complete it. Last year, <strong>Bobby Eshleman</strong> (Meta)
+restarted the effort and drove it through 16 revisions of the patch series.
+<strong>Daniel Berrangé</strong>, <strong>Michael S. Tsirkin</strong>, <strong>Paolo Abeni</strong>, and I contributed with
+reviews and suggestions that shaped the current user API.
+The result has been merged into <code>net-next</code> and will be available in
+<strong>Linux 7.0</strong>.</p>
+<h2 id="background">Background</h2>
+<p>Network namespaces are a fundamental building block for containers in Linux.
+They provide isolation of the network stack, so each namespace has its own
+interfaces, routing tables, and sockets.</p>
+<p>Before Linux 7.0, AF_VSOCK was not namespace-aware. All vsock sockets lived in
+the same global space, regardless of the network namespace they were created
+in. This caused two problems:</p>
+<ul>
+<li><strong>No isolation</strong>: a VM started inside a network namespace (or container)
+was reachable via vsock from any other namespace on the host, breaking the
+isolation that containers expect.</li>
+<li><strong>No CID reuse</strong>: since CIDs were global, two VMs in different namespaces
+could not use the same CID, even if they were completely isolated from
+each other at the network level.</li>
+</ul>
+<h2 id="design">Design</h2>
+<p>The new implementation introduces two modes, configured per network namespace:</p>
+<ul>
+<li><strong>global</strong>: CIDs are shared across namespaces. This is the original behavior
+and the default, so existing setups continue to work without any change.</li>
+<li><strong>local</strong>: namespaces are completely isolated. Sockets in a local-mode
+namespace can only communicate with other sockets in the same namespace.</li>
+</ul>
+<p>Two sysctl knobs are available since Linux 7.0:</p>
+<ul>
+<li><code>/proc/sys/net/vsock/child_ns_mode</code>: the parent namespace uses this to set
+the mode that new child namespaces will inherit. Accepts <code>global</code> or <code>local</code>.</li>
+<li><code>/proc/sys/net/vsock/ns_mode</code>: read-only, shows the mode of the current
+namespace. The mode is immutable after namespace creation.</li>
+</ul>
+<p>This design ensures backward compatibility: the default is <code>global</code>, matching
+the previous behavior. Namespace isolation is opt-in.</p>
+<p>Each namespace gets its mode from the parent&rsquo;s <code>child_ns_mode</code> at
+creation time. Once set, the namespace&rsquo;s <code>ns_mode</code> is immutable: every
+socket and VM in that namespace follows it. Changing <code>child_ns_mode</code>
+in the parent only affects future child namespaces, not existing ones.</p>
+<h2 id="supported-vsock-transports">Supported vsock transports</h2>
+<p>This series adds namespace support to two transports:</p>
+<ul>
+<li><strong>vhost-vsock</strong>: host-to-guest (H2G) transport, emulates the virtio-vsock
+device for KVM guests</li>
+<li><strong>vsock-loopback</strong>: local transport, useful for testing and debugging
+without running VMs</li>
+</ul>
+<p>The missing transports are the guest-to-host (G2H) ones (virtio, hyperv, vmci).
+These run in the guest as device drivers, and we currently don&rsquo;t have a way to
+assign a vsock device to a specific namespace, since vsock devices are not
+standard network devices. For now, they operate in <code>global</code> mode, so they are reachable from
+any <code>global</code> namespace, but not from <code>local</code> namespaces. This means that
+sockets in a <code>local</code> namespace cannot communicate with the host through
+these transports. We plan to work on that in the future.</p>
+<h2 id="examples">Examples</h2>
+<h3 id="loopback">Loopback</h3>
+<p>In the following examples, the commands without a namespace prefix run in the
+initial network namespace (init_netns), which is the default namespace where
+all processes start. The init_netns is always in <code>global</code> mode.</p>
+<p>These examples use the vsock loopback device for local communication,
+without any VM involved.</p>
+<p>Make sure the <code>vsock_loopback</code> kernel module is loaded:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo modprobe vsock_loopback
+</span></span></code></pre></div><h4 id="namespace-isolation-with-unshare">Namespace isolation with unshare</h4>
+<h5 id="global-mode-default">Global mode (default)</h5>
+<p>By default, <code>child_ns_mode</code> is set to <code>global</code>. This is the same behavior
+as before Linux 7.0: vsock sockets are shared across namespaces.</p>
+<p>A listener started in a new namespace is reachable from the init_netns
+using the loopback CID (<code>VMADDR_CID_LOCAL = 1</code>):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> global <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
+</span></span><span class="line"><span class="cl">$ unshare --user --net nc --vsock -l <span class="m">1234</span> <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">1</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># reachable - global mode, no isolation</span>
+</span></span></code></pre></div><h5 id="local-mode">Local mode</h5>
+<p>Setting <code>child_ns_mode</code> to <code>local</code> enables isolation. New namespaces will
+have their own vsock space:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nb">local</span> <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
+</span></span></code></pre></div><p>Now a listener in a new namespace is not reachable from the init_netns:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ unshare --user --net nc --vsock -l <span class="m">1234</span> <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">1</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">Ncat: Connection reset by peer.
+</span></span></code></pre></div><h4 id="namespace-isolation-with-ip-netns">Namespace isolation with ip netns</h4>
+<p>The same can be done with <code>ip netns</code>, which requires root (or <code>CAP_SYS_ADMIN</code>).</p>
+<p>First, create a <code>global</code> namespace and check its mode:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> global <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
+</span></span><span class="line"><span class="cl">$ sudo ip netns add vsock_ns_global
+</span></span><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_global cat /proc/sys/net/vsock/ns_mode
+</span></span><span class="line"><span class="cl">global
+</span></span></code></pre></div><p>A listener in the <code>global</code> namespace is reachable from the init_netns:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_global nc --vsock -l <span class="m">1234</span> <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">1</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># reachable - global mode, no isolation</span>
+</span></span></code></pre></div><p>Now create a <code>local</code> namespace and check its mode:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nb">local</span> <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
+</span></span><span class="line"><span class="cl">$ sudo ip netns add vsock_ns_local
+</span></span><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_local cat /proc/sys/net/vsock/ns_mode
+</span></span><span class="line"><span class="cl"><span class="nb">local</span>
+</span></span></code></pre></div><p>A listener in the <code>local</code> namespace is not reachable from the init_netns:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_local nc --vsock -l <span class="m">1234</span> <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">1</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">Ncat: Connection reset by peer.
+</span></span></code></pre></div><p>But communication within the same namespace still works:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_local nc --vsock <span class="m">1</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># reachable - same namespace</span>
+</span></span></code></pre></div><h4 id="container-isolation-with-podman">Container isolation with podman</h4>
+<p>Since <code>podman</code> creates a network namespace for each container by default,
+vsock namespace support applies to containers as well.</p>
+<p>First, build a Fedora-based image with <code>ncat</code> installed:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ podman build -t fedora-ncat - <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;FROM fedora
+</span></span></span><span class="line"><span class="cl"><span class="s2">RUN dnf -y install nmap-ncat&#34;</span>
+</span></span></code></pre></div><p>With the default <code>global</code> mode, two containers share the same vsock space.
+A listener in one container is reachable from another <code>global</code> container:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> global <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
+</span></span><span class="line"><span class="cl">$ podman run --rm --init -d fedora-ncat sh -c <span class="s2">&#34;echo hello world | nc --vsock -l 1234&#34;</span>
+</span></span><span class="line"><span class="cl">$ podman run --rm --init -it fedora-ncat nc --vsock <span class="m">1</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">hello world
+</span></span></code></pre></div><p>With <code>local</code> mode, each container gets its own isolated vsock namespace:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nb">local</span> <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
+</span></span><span class="line"><span class="cl">$ podman run --rm --init -d fedora-ncat sh -c <span class="s2">&#34;echo hello world | nc --vsock -l 1234&#34;</span>
+</span></span><span class="line"><span class="cl">$ podman run --rm --init -it fedora-ncat nc --vsock <span class="m">1</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">Ncat: Connection reset by peer.
+</span></span><span class="line"><span class="cl"><span class="c1"># containers are isolated from each other</span>
+</span></span></code></pre></div><h3 id="vms-with-qemu">VMs with QEMU</h3>
+<p>The vhost-vsock H2G transport exposes the <code>/dev/vhost-vsock</code> device, which
+QEMU opens at VM startup to emulate the virtio-vsock device for the guest.
+Since namespace support applies to this transport, VMs inherit the namespace
+mode as well.</p>
+<p>In the following examples, we reuse the <code>vsock_ns_global</code> and <code>vsock_ns_local</code>
+namespaces created in the previous section.</p>
+<h4 id="global-mode">Global mode</h4>
+<p>With <code>global</code> mode, the VM started in a <code>global</code> namespace is reachable
+from any other <code>global</code> namespace, including the init_netns:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_global <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    qemu-system-x86_64 -m 1G -M q35,accel<span class="o">=</span>kvm <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -drive <span class="nv">file</span><span class="o">=</span>guest.qcow2,if<span class="o">=</span>virtio,snapshot<span class="o">=</span>on <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -device vhost-vsock-pci,guest-cid<span class="o">=</span><span class="m">42</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># start a listener in the guest (global namespace)</span>
+</span></span><span class="line"><span class="cl">guest_global$ nc --vsock -l <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># from the init_netns (global) - reachable</span>
+</span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">42</span> <span class="m">1234</span>
+</span></span></code></pre></div><h4 id="local-mode-1">Local mode</h4>
+<p>With <code>local</code> mode, the VM is only reachable from within the same namespace:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_local <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    qemu-system-x86_64 -m 1G -M q35,accel<span class="o">=</span>kvm <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -drive <span class="nv">file</span><span class="o">=</span>guest.qcow2,if<span class="o">=</span>virtio,snapshot<span class="o">=</span>on <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -device vhost-vsock-pci,guest-cid<span class="o">=</span><span class="m">42</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># start a listener in the guest (local namespace)</span>
+</span></span><span class="line"><span class="cl">guest_local$ nc --vsock -l <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># from the init_netns (global) - isolated</span>
+</span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">42</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">Ncat: Connection reset by peer.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># from the same namespace - reachable</span>
+</span></span><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_local nc --vsock <span class="m">42</span> <span class="m">1234</span>
+</span></span></code></pre></div><h4 id="guest-to-host-g2h-behavior">Guest-to-host (G2H) behavior</h4>
+<p>As mentioned in the <a href="#supported-vsock-transports">Supported vsock transports</a>
+section, the G2H virtio transport does not support namespaces yet. The
+virtio-vsock device in the guest always operates in <code>global</code> mode, so
+only sockets in <code>global</code> namespaces can communicate with the host.</p>
+<p>Using the VM started in <code>vsock_ns_global</code>, a listener in the guest&rsquo;s
+init_netns is reachable from the host:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># start a listener in the guest</span>
+</span></span><span class="line"><span class="cl">guest_global$ nc --vsock -l <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># from the host - reachable</span>
+</span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">42</span> <span class="m">1234</span>
+</span></span></code></pre></div><p>But a listener started in a <code>local</code> namespace inside the guest is not
+reachable from the host:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># create a local namespace in the guest and start a listener</span>
+</span></span><span class="line"><span class="cl">guest_global$ <span class="nb">echo</span> <span class="nb">local</span> <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
+</span></span><span class="line"><span class="cl">guest_global$ unshare --user --net nc --vsock -l <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># from the host - isolated</span>
+</span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">42</span> <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">Ncat: Connection reset by peer.
+</span></span></code></pre></div><h4 id="cid-reuse">CID reuse</h4>
+<p>Note that we used the same CID (<code>42</code>) in both examples without turning off
+the first VM. This is possible because the second VM is in a <code>local</code>
+namespace, so its CID space is isolated. With <code>global</code> mode, QEMU would
+fail to start the second VM because the CID is already in use.</p>
+<h2 id="patches">Patches</h2>
+<ul>
+<li><a href="https://lore.kernel.org/netdev/20260121-vsock-vmtest-v16-0-2859a7512097@meta.com/">[PATCH net-next v16 00/12] vsock: add namespace support to vhost-vsock and loopback</a></li>
+</ul>
+
+        
+          <div class="blog-tags">
+            
+              
+              <a href="https://stefano-garzarella.github.io/tags/vsock/">vsock</a>&nbsp;
+            
+              
+              <a href="https://stefano-garzarella.github.io/tags/linux/">linux</a>&nbsp;
+            
+              
+              <a href="https://stefano-garzarella.github.io/tags/qemu/">qemu</a>&nbsp;
+            
+              
+              <a href="https://stefano-garzarella.github.io/tags/net/">net</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2026-02-11-vsock-netns%2f&amp;text=AF_VSOCK%3a%20network%20namespace%20support%20is%20here&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2026-02-11-vsock-netns%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2026-02-11-vsock-netns%2f&amp;title=AF_VSOCK%3a%20network%20namespace%20support%20is%20here" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2026-02-11-vsock-netns%2f&amp;title=AF_VSOCK%3a%20network%20namespace%20support%20is%20here" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2026-02-11-vsock-netns%2f&amp;title=AF_VSOCK%3a%20network%20namespace%20support%20is%20here" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2026-02-11-vsock-netns%2f&amp;description=AF_VSOCK%3a%20network%20namespace%20support%20is%20here" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+
+      
+      <li>
+        <a href="mailto:?body=https%3a%2f%2fstefano-garzarella.github.io%2fposts%2f2026-02-11-vsock-netns%2f&amp;subject=AF_VSOCK%3a%20network%20namespace%20support%20is%20here" title="Share via email">
+          <i class="fab fa-at"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/posts/2024-02-12-vdpa-blk/">vDPA: support for block devices in Linux and QEMU</a></li>
+                
+                    <li><a href="/posts/2021-01-22-socat-vsock/">SOCAT now supports AF_VSOCK</a></li>
+                
+                    <li><a href="/posts/2020-02-20-vsock-nested-vms-loopback/">AF_VSOCK: nested VMs and loopback support available</a></li>
+                
+                    <li><a href="/posts/2019-12-22-qemu-kernel-initrd-mmapped/">QEMU 4.2 mmap(2)s kernel and initrd</a></li>
+                
+                    <li><a href="/posts/2019-11-08-kvmforum-2019-vsock/">KVM Forum 2019: virtio-vsock in QEMU, Firecracker and Linux</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://stefano-garzarella.github.io/posts/2024-02-12-vdpa-blk/" data-toggle="tooltip" data-placement="top" title="vDPA: support for block devices in Linux and QEMU">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+
+    </div>
+  </div>
+</div>
+
+      <footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:sgarzare@redhat.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/stefano-garzarella" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/sgarzarella" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://bitbucket.org/sgarzarella" title="Bitbucket">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-bitbucket fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://linkedin.com/in/stefanogarzarella" title="LinkedIn">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="https://stefano-garzarella.github.io/page/about">Stefano Garzarella</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2019 - 2026
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://stefano-garzarella.github.io/">sgarzare&#39;s blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.152.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://stefano-garzarella.github.io/js/main.js"></script>
+<script src="https://stefano-garzarella.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://stefano-garzarella.github.io/js/load-photoswipe.js"></script>
+
+
+
+<script>
+  (function() {
+    var cx = '011433376634952630999:louybk8offk';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+$(function(){
+  $('#show-comments').on('click', function(){
+    var disqus_shortname = 'stefano-garzarella-github-io';
+      
+    (function() {
+      var disqus = document.createElement('script'); 
+      disqus.type = 'text/javascript'; 
+      disqus.async = true;
+      disqus.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(disqus);
+    })();
+      
+    $(this).hide(); 
+    });
+  });
+      
+</script>
+<script id="dsq-count-scr" src="//stefano-garzarella-github-io.disqus.com/count.js" async></script>
+
+
+
+
+    
+  </body>
+</html>
+

@@ -7,10 +7,46 @@
     <language>en</language>
     <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
     <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
-    <lastBuildDate>Mon, 12 Feb 2024 18:42:57 +0100</lastBuildDate>
+    <lastBuildDate>Wed, 11 Feb 2026 18:00:00 +0100</lastBuildDate>
     
         <atom:link href="https://stefano-garzarella.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux</title>
+      <link>https://stefano-garzarella.github.io/tags/linux/</link>
+      <pubDate>Wed, 11 Feb 2026 18:00:00 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Net</title>
+      <link>https://stefano-garzarella.github.io/tags/net/</link>
+      <pubDate>Wed, 11 Feb 2026 18:00:00 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/net/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Qemu</title>
+      <link>https://stefano-garzarella.github.io/tags/qemu/</link>
+      <pubDate>Wed, 11 Feb 2026 18:00:00 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/qemu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vsock</title>
+      <link>https://stefano-garzarella.github.io/tags/vsock/</link>
+      <pubDate>Wed, 11 Feb 2026 18:00:00 +0100</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/tags/vsock/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Conference</title>
@@ -18,24 +54,6 @@
       <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/tags/conference/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Linux</title>
-      <link>https://stefano-garzarella.github.io/tags/linux/</link>
-      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/linux/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Qemu</title>
-      <link>https://stefano-garzarella.github.io/tags/qemu/</link>
-      <pubDate>Mon, 12 Feb 2024 18:42:57 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/qemu/</guid>
       <description></description>
     </item>
     
@@ -76,29 +94,11 @@
     </item>
     
     <item>
-      <title>Net</title>
-      <link>https://stefano-garzarella.github.io/tags/net/</link>
-      <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/net/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Socat</title>
       <link>https://stefano-garzarella.github.io/tags/socat/</link>
       <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/tags/socat/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Vsock</title>
-      <link>https://stefano-garzarella.github.io/tags/vsock/</link>
-      <pubDate>Fri, 22 Jan 2021 15:16:04 +0100</pubDate>
-      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
-      <guid>https://stefano-garzarella.github.io/tags/vsock/</guid>
       <description></description>
     </item>
     
