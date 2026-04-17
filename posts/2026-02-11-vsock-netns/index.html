@@ -63,9 +63,9 @@
     "name" : "Stefano Garzarella"
   },
   "headline": "AF_VSOCK: network namespace support is here",
-  "description" : "A missing piece for AF_VSOCK in the Linux kernel has been network namespace support. We discussed it as a future challenge during the KVM Forum 2019 talk and it was mentioned in several conference discussions since then.\nI started working on namespace support back in 2019, but never had the chance to complete it. Last year, Bobby Eshleman (Meta) restarted the effort and drove it through 16 revisions of the patch series. Daniel Berrangé, Michael S. Tsirkin, Paolo Abeni, and I contributed with reviews and suggestions that shaped the current user API. The result has been merged into net-next and will be available in Linux 7.0.\n",
+  "description" : "A missing piece for AF_VSOCK in the Linux kernel has been network namespace support. We discussed it as a future challenge during the KVM Forum 2019 talk and it was mentioned in several conference discussions since then.\nI started working on namespace support back in 2019, but never had the chance to complete it. Last year, Bobby Eshleman (Meta) restarted the effort and drove it through 16 revisions of the patch series. Daniel Berrangé, Michael S. Tsirkin, Paolo Abeni, and I contributed with reviews and suggestions that shaped the current user API. The result has been merged into net-next and will be available in Linux 7.0.\nUpdated on 2026-04-17 to cover the write-once behavior of child_ns_mode, merged after the initial publication of this post.\n",
   "inLanguage" : "en",
-  "wordCount":  1438 ,
+  "wordCount":  1386 ,
   "datePublished" : "2026-02-11T18:00:00\u002b01:00",
   "dateModified" : "2026-02-11T18:00:00\u002b01:00",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -302,7 +302,7 @@
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;7&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1438&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1386&nbsp;words
   
   
     
@@ -340,6 +340,8 @@ restarted the effort and drove it through 16 revisions of the patch series.
 reviews and suggestions that shaped the current user API.
 The result has been merged into <code>net-next</code> and will be available in
 <strong>Linux 7.0</strong>.</p>
+<p><em>Updated on 2026-04-17 to cover the write-once behavior of <code>child_ns_mode</code>,
+merged after the initial publication of this post.</em></p>
 <h2 id="background">Background</h2>
 <p>Network namespaces are a fundamental building block for containers in Linux.
 They provide isolation of the network stack, so each namespace has its own
@@ -366,7 +368,8 @@ namespace can only communicate with other sockets in the same namespace.</li>
 <p>Two sysctl knobs are available since Linux 7.0:</p>
 <ul>
 <li><code>/proc/sys/net/vsock/child_ns_mode</code>: the parent namespace uses this to set
-the mode that new child namespaces will inherit. Accepts <code>global</code> or <code>local</code>.</li>
+the mode that new child namespaces will inherit. Accepts <code>global</code> or <code>local</code>.
+This sysctl is write-once: after the first write, it becomes immutable.</li>
 <li><code>/proc/sys/net/vsock/ns_mode</code>: read-only, shows the mode of the current
 namespace. The mode is immutable after namespace creation.</li>
 </ul>
@@ -374,8 +377,13 @@ namespace. The mode is immutable after namespace creation.</li>
 the previous behavior. Namespace isolation is opt-in.</p>
 <p>Each namespace gets its mode from the parent&rsquo;s <code>child_ns_mode</code> at
 creation time. Once set, the namespace&rsquo;s <code>ns_mode</code> is immutable: every
-socket and VM in that namespace follows it. Changing <code>child_ns_mode</code>
-in the parent only affects future child namespaces, not existing ones.</p>
+socket and VM in that namespace follows it.</p>
+<p>The <code>child_ns_mode</code> sysctl is also write-once: the first write locks
+the value and any subsequent write of a different value returns <code>-EBUSY</code>.
+This guarantees that a namespace manager can set the value once and be
+certain it won&rsquo;t change before creating its namespaces, preventing races
+where two administrator processes set conflicting modes and one ends up
+with a namespace in the wrong mode.</p>
 <h2 id="supported-vsock-transports">Supported vsock transports</h2>
 <p>This series adds namespace support to two transports:</p>
 <ul>
@@ -387,10 +395,10 @@ without running VMs</li>
 <p>The missing transports are the guest-to-host (G2H) ones (virtio, hyperv, vmci).
 These run in the guest as device drivers, and we currently don&rsquo;t have a way to
 assign a vsock device to a specific namespace, since vsock devices are not
-standard network devices. For now, they operate in <code>global</code> mode, so they are reachable from
-any <code>global</code> namespace, but not from <code>local</code> namespaces. This means that
-sockets in a <code>local</code> namespace cannot communicate with the host through
-these transports. We plan to work on that in the future.</p>
+standard network devices. For now, G2H transports operate in <code>global</code> mode, so
+they are reachable from any <code>global</code> namespace, but not from <code>local</code> namespaces.
+This means that sockets in a <code>local</code> namespace cannot communicate with the host
+through these transports. We plan to work on that in the future.</p>
 <h2 id="examples">Examples</h2>
 <h3 id="loopback">Loopback</h3>
 <p>In the following examples, the commands without a namespace prefix run in the
@@ -406,32 +414,34 @@ without any VM involved.</p>
 as before Linux 7.0: vsock sockets are shared across namespaces.</p>
 <p>A listener started in a new namespace is reachable from the init_netns
 using the loopback CID (<code>VMADDR_CID_LOCAL = 1</code>):</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> global <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
-</span></span><span class="line"><span class="cl">$ unshare --user --net nc --vsock -l <span class="m">1234</span> <span class="p">&amp;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ unshare --user --net nc --vsock -l <span class="m">1234</span> <span class="p">&amp;</span>
 </span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">1</span> <span class="m">1234</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># reachable - global mode, no isolation</span>
 </span></span></code></pre></div><h5 id="local-mode">Local mode</h5>
-<p>Setting <code>child_ns_mode</code> to <code>local</code> enables isolation. New namespaces will
-have their own vsock space:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nb">local</span> <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
-</span></span></code></pre></div><p>Now a listener in a new namespace is not reachable from the init_netns:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ unshare --user --net nc --vsock -l <span class="m">1234</span> <span class="p">&amp;</span>
+<p>Setting <code>child_ns_mode</code> to <code>local</code> enables isolation. Since this sysctl
+is write-once, we use a nested <code>unshare</code> to avoid locking the
+init_netns mode:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ unshare --user --map-root-user --net bash -c <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="s1">&#39;echo local &gt; /proc/sys/net/vsock/child_ns_mode &amp;&amp; \
+</span></span></span><span class="line"><span class="cl"><span class="s1">     unshare --net nc --vsock -l 1234&#39;</span> <span class="p">&amp;</span>
 </span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">1</span> <span class="m">1234</span>
 </span></span><span class="line"><span class="cl">Ncat: Connection reset by peer.
 </span></span></code></pre></div><h4 id="namespace-isolation-with-ip-netns">Namespace isolation with ip netns</h4>
 <p>The same can be done with <code>ip netns</code>, which requires root (or <code>CAP_SYS_ADMIN</code>).</p>
 <p>First, create a <code>global</code> namespace and check its mode:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> global <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
-</span></span><span class="line"><span class="cl">$ sudo ip netns add vsock_ns_global
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo ip netns add vsock_ns_global
 </span></span><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_global cat /proc/sys/net/vsock/ns_mode
 </span></span><span class="line"><span class="cl">global
 </span></span></code></pre></div><p>A listener in the <code>global</code> namespace is reachable from the init_netns:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_global nc --vsock -l <span class="m">1234</span> <span class="p">&amp;</span>
 </span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">1</span> <span class="m">1234</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># reachable - global mode, no isolation</span>
-</span></span></code></pre></div><p>Now create a <code>local</code> namespace and check its mode:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nb">local</span> <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
-</span></span><span class="line"><span class="cl">$ sudo ip netns add vsock_ns_local
+</span></span></code></pre></div><p>Now create a <code>local</code> namespace. Since <code>child_ns_mode</code> is write-once, we
+use <code>unshare</code> to create a parent namespace and set its mode to <code>local</code>
+before creating the child:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo unshare --net bash -c <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="s1">&#39;echo local &gt; /proc/sys/net/vsock/child_ns_mode &amp;&amp; \
+</span></span></span><span class="line"><span class="cl"><span class="s1">     ip netns add vsock_ns_local&#39;</span>
 </span></span><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_local cat /proc/sys/net/vsock/ns_mode
 </span></span><span class="line"><span class="cl"><span class="nb">local</span>
 </span></span></code></pre></div><p>A listener in the <code>local</code> namespace is not reachable from the init_netns:</p>
@@ -441,24 +451,6 @@ have their own vsock space:</p>
 </span></span></code></pre></div><p>But communication within the same namespace still works:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ sudo ip netns <span class="nb">exec</span> vsock_ns_local nc --vsock <span class="m">1</span> <span class="m">1234</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># reachable - same namespace</span>
-</span></span></code></pre></div><h4 id="container-isolation-with-podman">Container isolation with podman</h4>
-<p>Since <code>podman</code> creates a network namespace for each container by default,
-vsock namespace support applies to containers as well.</p>
-<p>First, build a Fedora-based image with <code>ncat</code> installed:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ podman build -t fedora-ncat - <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;FROM fedora
-</span></span></span><span class="line"><span class="cl"><span class="s2">RUN dnf -y install nmap-ncat&#34;</span>
-</span></span></code></pre></div><p>With the default <code>global</code> mode, two containers share the same vsock space.
-A listener in one container is reachable from another <code>global</code> container:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> global <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
-</span></span><span class="line"><span class="cl">$ podman run --rm --init -d fedora-ncat sh -c <span class="s2">&#34;echo hello world | nc --vsock -l 1234&#34;</span>
-</span></span><span class="line"><span class="cl">$ podman run --rm --init -it fedora-ncat nc --vsock <span class="m">1</span> <span class="m">1234</span>
-</span></span><span class="line"><span class="cl">hello world
-</span></span></code></pre></div><p>With <code>local</code> mode, each container gets its own isolated vsock namespace:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nb">local</span> <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
-</span></span><span class="line"><span class="cl">$ podman run --rm --init -d fedora-ncat sh -c <span class="s2">&#34;echo hello world | nc --vsock -l 1234&#34;</span>
-</span></span><span class="line"><span class="cl">$ podman run --rm --init -it fedora-ncat nc --vsock <span class="m">1</span> <span class="m">1234</span>
-</span></span><span class="line"><span class="cl">Ncat: Connection reset by peer.
-</span></span><span class="line"><span class="cl"><span class="c1"># containers are isolated from each other</span>
 </span></span></code></pre></div><h3 id="vms-with-qemu">VMs with QEMU</h3>
 <p>The vhost-vsock H2G transport exposes the <code>/dev/vhost-vsock</code> device, which
 QEMU opens at VM startup to emulate the virtio-vsock device for the guest.
@@ -510,8 +502,9 @@ init_netns is reachable from the host:</p>
 </span></span></code></pre></div><p>But a listener started in a <code>local</code> namespace inside the guest is not
 reachable from the host:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># create a local namespace in the guest and start a listener</span>
-</span></span><span class="line"><span class="cl">guest_global$ <span class="nb">echo</span> <span class="nb">local</span> <span class="p">|</span> sudo tee /proc/sys/net/vsock/child_ns_mode
-</span></span><span class="line"><span class="cl">guest_global$ unshare --user --net nc --vsock -l <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">guest_global$ unshare --user --map-root-user --net bash -c <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="s1">&#39;echo local &gt; /proc/sys/net/vsock/child_ns_mode &amp;&amp; \
+</span></span></span><span class="line"><span class="cl"><span class="s1">     unshare --net nc --vsock -l 1234&#39;</span> <span class="p">&amp;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># from the host - isolated</span>
 </span></span><span class="line"><span class="cl">$ nc --vsock <span class="m">42</span> <span class="m">1234</span>
@@ -524,6 +517,8 @@ fail to start the second VM because the CID is already in use.</p>
 <h2 id="patches">Patches</h2>
 <ul>
 <li><a href="https://lore.kernel.org/netdev/20260121-vsock-vmtest-v16-0-2859a7512097@meta.com/">[PATCH net-next v16 00/12] vsock: add namespace support to vhost-vsock and loopback</a></li>
+<li><a href="https://lore.kernel.org/netdev/20260223-vsock-ns-write-once-v3-0-c0cde6959923@meta.com/">[PATCH net v3 0/3] vsock: add write-once semantics to child_ns_mode</a></li>
+<li><a href="https://lore.kernel.org/netdev/20260401092153.28462-1-sgarzare@redhat.com/">[PATCH net] vsock: initialize child_ns_mode_locked in vsock_net_init()</a></li>
 </ul>
 
         

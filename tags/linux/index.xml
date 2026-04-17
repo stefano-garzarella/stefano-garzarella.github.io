@@ -30,6 +30,8 @@ restarted the effort and drove it through 16 revisions of the patch series.
 reviews and suggestions that shaped the current user API.
 The result has been merged into &lt;code&gt;net-next&lt;/code&gt; and will be available in
 &lt;strong&gt;Linux 7.0&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Updated on 2026-04-17 to cover the write-once behavior of &lt;code&gt;child_ns_mode&lt;/code&gt;,
+merged after the initial publication of this post.&lt;/em&gt;&lt;/p&gt;
 &lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
 &lt;p&gt;Network namespaces are a fundamental building block for containers in Linux.
 They provide isolation of the network stack, so each namespace has its own
@@ -56,7 +58,8 @@ namespace can only communicate with other sockets in the same namespace.&lt;/li&
 &lt;p&gt;Two sysctl knobs are available since Linux 7.0:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;/proc/sys/net/vsock/child_ns_mode&lt;/code&gt;: the parent namespace uses this to set
-the mode that new child namespaces will inherit. Accepts &lt;code&gt;global&lt;/code&gt; or &lt;code&gt;local&lt;/code&gt;.&lt;/li&gt;
+the mode that new child namespaces will inherit. Accepts &lt;code&gt;global&lt;/code&gt; or &lt;code&gt;local&lt;/code&gt;.
+This sysctl is write-once: after the first write, it becomes immutable.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;/proc/sys/net/vsock/ns_mode&lt;/code&gt;: read-only, shows the mode of the current
 namespace. The mode is immutable after namespace creation.&lt;/li&gt;
 &lt;/ul&gt;
@@ -64,8 +67,13 @@ namespace. The mode is immutable after namespace creation.&lt;/li&gt;
 the previous behavior. Namespace isolation is opt-in.&lt;/p&gt;
 &lt;p&gt;Each namespace gets its mode from the parent&amp;rsquo;s &lt;code&gt;child_ns_mode&lt;/code&gt; at
 creation time. Once set, the namespace&amp;rsquo;s &lt;code&gt;ns_mode&lt;/code&gt; is immutable: every
-socket and VM in that namespace follows it. Changing &lt;code&gt;child_ns_mode&lt;/code&gt;
-in the parent only affects future child namespaces, not existing ones.&lt;/p&gt;
+socket and VM in that namespace follows it.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;child_ns_mode&lt;/code&gt; sysctl is also write-once: the first write locks
+the value and any subsequent write of a different value returns &lt;code&gt;-EBUSY&lt;/code&gt;.
+This guarantees that a namespace manager can set the value once and be
+certain it won&amp;rsquo;t change before creating its namespaces, preventing races
+where two administrator processes set conflicting modes and one ends up
+with a namespace in the wrong mode.&lt;/p&gt;
 &lt;h2 id=&#34;supported-vsock-transports&#34;&gt;Supported vsock transports&lt;/h2&gt;
 &lt;p&gt;This series adds namespace support to two transports:&lt;/p&gt;
 &lt;ul&gt;
@@ -77,10 +85,10 @@ without running VMs&lt;/li&gt;
 &lt;p&gt;The missing transports are the guest-to-host (G2H) ones (virtio, hyperv, vmci).
 These run in the guest as device drivers, and we currently don&amp;rsquo;t have a way to
 assign a vsock device to a specific namespace, since vsock devices are not
-standard network devices. For now, they operate in &lt;code&gt;global&lt;/code&gt; mode, so they are reachable from
-any &lt;code&gt;global&lt;/code&gt; namespace, but not from &lt;code&gt;local&lt;/code&gt; namespaces. This means that
-sockets in a &lt;code&gt;local&lt;/code&gt; namespace cannot communicate with the host through
-these transports. We plan to work on that in the future.&lt;/p&gt;
+standard network devices. For now, G2H transports operate in &lt;code&gt;global&lt;/code&gt; mode, so
+they are reachable from any &lt;code&gt;global&lt;/code&gt; namespace, but not from &lt;code&gt;local&lt;/code&gt; namespaces.
+This means that sockets in a &lt;code&gt;local&lt;/code&gt; namespace cannot communicate with the host
+through these transports. We plan to work on that in the future.&lt;/p&gt;
 &lt;h2 id=&#34;examples&#34;&gt;Examples&lt;/h2&gt;
 &lt;h3 id=&#34;loopback&#34;&gt;Loopback&lt;/h3&gt;
 &lt;p&gt;In the following examples, the commands without a namespace prefix run in the
@@ -96,32 +104,34 @@ without any VM involved.&lt;/p&gt;
 as before Linux 7.0: vsock sockets are shared across namespaces.&lt;/p&gt;
 &lt;p&gt;A listener started in a new namespace is reachable from the init_netns
 using the loopback CID (&lt;code&gt;VMADDR_CID_LOCAL = 1&lt;/code&gt;):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; global &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo tee /proc/sys/net/vsock/child_ns_mode
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ unshare --user --net nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ unshare --user --net nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ nc --vsock &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# reachable - global mode, no isolation&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;local-mode&#34;&gt;Local mode&lt;/h5&gt;
-&lt;p&gt;Setting &lt;code&gt;child_ns_mode&lt;/code&gt; to &lt;code&gt;local&lt;/code&gt; enables isolation. New namespaces will
-have their own vsock space:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo tee /proc/sys/net/vsock/child_ns_mode
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now a listener in a new namespace is not reachable from the init_netns:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ unshare --user --net nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
+&lt;p&gt;Setting &lt;code&gt;child_ns_mode&lt;/code&gt; to &lt;code&gt;local&lt;/code&gt; enables isolation. Since this sysctl
+is write-once, we use a nested &lt;code&gt;unshare&lt;/code&gt; to avoid locking the
+init_netns mode:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ unshare --user --map-root-user --net bash -c &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;s1&#34;&gt;&amp;#39;echo local &amp;gt; /proc/sys/net/vsock/child_ns_mode &amp;amp;&amp;amp; \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;     unshare --net nc --vsock -l 1234&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ nc --vsock &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Ncat: Connection reset by peer.
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;namespace-isolation-with-ip-netns&#34;&gt;Namespace isolation with ip netns&lt;/h4&gt;
 &lt;p&gt;The same can be done with &lt;code&gt;ip netns&lt;/code&gt;, which requires root (or &lt;code&gt;CAP_SYS_ADMIN&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;First, create a &lt;code&gt;global&lt;/code&gt; namespace and check its mode:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; global &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo tee /proc/sys/net/vsock/child_ns_mode
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo ip netns add vsock_ns_global
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo ip netns add vsock_ns_global
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo ip netns &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; vsock_ns_global cat /proc/sys/net/vsock/ns_mode
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;global
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;A listener in the &lt;code&gt;global&lt;/code&gt; namespace is reachable from the init_netns:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo ip netns &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; vsock_ns_global nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ nc --vsock &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# reachable - global mode, no isolation&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now create a &lt;code&gt;local&lt;/code&gt; namespace and check its mode:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo tee /proc/sys/net/vsock/child_ns_mode
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo ip netns add vsock_ns_local
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now create a &lt;code&gt;local&lt;/code&gt; namespace. Since &lt;code&gt;child_ns_mode&lt;/code&gt; is write-once, we
+use &lt;code&gt;unshare&lt;/code&gt; to create a parent namespace and set its mode to &lt;code&gt;local&lt;/code&gt;
+before creating the child:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo unshare --net bash -c &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;s1&#34;&gt;&amp;#39;echo local &amp;gt; /proc/sys/net/vsock/child_ns_mode &amp;amp;&amp;amp; \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;     ip netns add vsock_ns_local&amp;#39;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo ip netns &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; vsock_ns_local cat /proc/sys/net/vsock/ns_mode
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;A listener in the &lt;code&gt;local&lt;/code&gt; namespace is not reachable from the init_netns:&lt;/p&gt;
@@ -131,24 +141,6 @@ have their own vsock space:&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But communication within the same namespace still works:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ sudo ip netns &lt;span class=&#34;nb&#34;&gt;exec&lt;/span&gt; vsock_ns_local nc --vsock &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# reachable - same namespace&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;container-isolation-with-podman&#34;&gt;Container isolation with podman&lt;/h4&gt;
-&lt;p&gt;Since &lt;code&gt;podman&lt;/code&gt; creates a network namespace for each container by default,
-vsock namespace support applies to containers as well.&lt;/p&gt;
-&lt;p&gt;First, build a Fedora-based image with &lt;code&gt;ncat&lt;/code&gt; installed:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ podman build -t fedora-ncat - &lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;FROM fedora
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s2&#34;&gt;RUN dnf -y install nmap-ncat&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With the default &lt;code&gt;global&lt;/code&gt; mode, two containers share the same vsock space.
-A listener in one container is reachable from another &lt;code&gt;global&lt;/code&gt; container:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; global &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo tee /proc/sys/net/vsock/child_ns_mode
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ podman run --rm --init -d fedora-ncat sh -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;echo hello world | nc --vsock -l 1234&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ podman run --rm --init -it fedora-ncat nc --vsock &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;hello world
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With &lt;code&gt;local&lt;/code&gt; mode, each container gets its own isolated vsock namespace:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo tee /proc/sys/net/vsock/child_ns_mode
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ podman run --rm --init -d fedora-ncat sh -c &lt;span class=&#34;s2&#34;&gt;&amp;#34;echo hello world | nc --vsock -l 1234&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ podman run --rm --init -it fedora-ncat nc --vsock &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Ncat: Connection reset by peer.
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# containers are isolated from each other&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;vms-with-qemu&#34;&gt;VMs with QEMU&lt;/h3&gt;
 &lt;p&gt;The vhost-vsock H2G transport exposes the &lt;code&gt;/dev/vhost-vsock&lt;/code&gt; device, which
 QEMU opens at VM startup to emulate the virtio-vsock device for the guest.
@@ -200,8 +192,9 @@ init_netns is reachable from the host:&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But a listener started in a &lt;code&gt;local&lt;/code&gt; namespace inside the guest is not
 reachable from the host:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# create a local namespace in the guest and start a listener&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;guest_global$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;local&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sudo tee /proc/sys/net/vsock/child_ns_mode
-&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;guest_global$ unshare --user --net nc --vsock -l &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;guest_global$ unshare --user --map-root-user --net bash -c &lt;span class=&#34;se&#34;&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;se&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;s1&#34;&gt;&amp;#39;echo local &amp;gt; /proc/sys/net/vsock/child_ns_mode &amp;amp;&amp;amp; \
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;     unshare --net nc --vsock -l 1234&amp;#39;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# from the host - isolated&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;$ nc --vsock &lt;span class=&#34;m&#34;&gt;42&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1234&lt;/span&gt;
@@ -214,6 +207,8 @@ fail to start the second VM because the CID is already in use.&lt;/p&gt;
 &lt;h2 id=&#34;patches&#34;&gt;Patches&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://lore.kernel.org/netdev/20260121-vsock-vmtest-v16-0-2859a7512097@meta.com/&#34;&gt;[PATCH net-next v16 00/12] vsock: add namespace support to vhost-vsock and loopback&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lore.kernel.org/netdev/20260223-vsock-ns-write-once-v3-0-c0cde6959923@meta.com/&#34;&gt;[PATCH net v3 0/3] vsock: add write-once semantics to child_ns_mode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://lore.kernel.org/netdev/20260401092153.28462-1-sgarzare@redhat.com/&#34;&gt;[PATCH net] vsock: initialize child_ns_mode_locked in vsock_net_init()&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</description>
     </item>
     
