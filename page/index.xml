@@ -18,7 +18,8 @@
       <pubDate>Fri, 23 Aug 2019 17:39:08 +0200</pubDate>
       <author>sgarzare@redhat.com (Stefano Garzarella)</author>
       <guid>https://stefano-garzarella.github.io/page/about/</guid>
-      <description>&lt;p&gt;Linux&amp;rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.&lt;/p&gt;
+      <description>&lt;p&gt;Linux&amp;rsquo;s AF_VSOCK maintainer, rust-vmm and COCONUT SVSM co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, confidential VMs, etc.&lt;/p&gt;
+&lt;p&gt;Whenever I get the chance, I love speaking about open source. Take a look at the archive of my &lt;a href=&#34;https://stefano-garzarella.github.io/page/talks/&#34;&gt;past and upcoming talks&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The postings on this site are my own and don&amp;rsquo;t necessarily represent Red Hat&amp;rsquo;s positions, strategies or opinions.&lt;/p&gt;
 &lt;h3 id=&#34;contacts&#34;&gt;Contacts&lt;/h3&gt;
 &lt;p&gt;Work e-mail: &lt;a href=&#34;mailto:sgarzare@redhat.com&#34;&gt;sgarzare@redhat.com&lt;/a&gt;&lt;br&gt;
@@ -26,6 +27,144 @@ Personal e-mail: &lt;a href=&#34;mailto:stefano.garzarella@gmail.com&#34;&gt;ste
 GitHub: &lt;a href=&#34;https://github.com/stefano-garzarella&#34;&gt;https://github.com/stefano-garzarella&lt;/a&gt;&lt;br&gt;
 GitLab: &lt;a href=&#34;https://gitlab.com/sgarzarella&#34;&gt;https://gitlab.com/sgarzarella&lt;/a&gt;&lt;br&gt;
 LinkedIn: &lt;a href=&#34;https://www.linkedin.com/in/stefanogarzarella&#34;&gt;https://www.linkedin.com/in/stefanogarzarella&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Talks</title>
+      <link>https://stefano-garzarella.github.io/page/talks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>https://stefano-garzarella.github.io/page/talks/</guid>
+      <description>&lt;p&gt;Whenever I get the chance, I love speaking about open source. Here’s an archive of my past and upcoming talks.&lt;/p&gt;
+&lt;h2 id=&#34;upcoming&#34;&gt;Upcoming&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Native AF_VSOCK API for userspace device emulation&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;LPC 2026&lt;/strong&gt; (Oct 5-7, 2026), Prague, Czechia&lt;br&gt;
+&lt;a href=&#34;https://lpc.events/event/20/contributions/2463/&#34;&gt;Abstract&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;AF_VSOCK: Namespaces, Zerocopy, and Beyond&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella, Bobby Eshleman&lt;/em&gt; - &lt;strong&gt;KVM Forum 2026&lt;/strong&gt; (Nov 12-12, 2026), Vancouver, Canada&lt;br&gt;
+&lt;a href=&#34;https://pretalx.com/kvm-forum-2026/talk/VKVWE8/&#34;&gt;Abstract&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2026&#34;&gt;2026&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;rust-vmm evolution on ecosystem and monorepo&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Ruoqing He, Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;FOSDEM 2026&lt;/strong&gt;, Brussels, Belgium&lt;br&gt;
+&lt;a href=&#34;https://archive.fosdem.org/2026/schedule/event/WEHLEY-rust-vmm_evolution_on_ecosystem_and_monorepo/&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://archive.fosdem.org/2026/events/attachments/WEHLEY-rust-vmm_evolution_on_ecosystem_and_monorepo/slides/266719/rust-vmm_q4zaofh.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Where should my VIRTIO device live?&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;FOSDEM 2026&lt;/strong&gt;, Brussels, Belgium&lt;br&gt;
+&lt;a href=&#34;https://archive.fosdem.org/2026/schedule/event/ZFYDF3-where_should_my_virtio_device_live/&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://archive.fosdem.org/2026/events/attachments/ZFYDF3-where_should_my_virtio_device_live/slides/266784/virtio_de_xtqqibd.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2025&#34;&gt;2025&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;A Linux Bus for SVSM Services: Build New, Reuse VIRTIO, or Both?&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;LPC 2025&lt;/strong&gt;, Tokyo, Japan (Remote)&lt;br&gt;
+&lt;a href=&#34;https://lpc.events/event/19/contributions/2185/&#34;&gt;Abstract&lt;/a&gt; | &lt;a href=&#34;https://lpc.events/event/19/contributions/2185/attachments/1881/4030/06-SVSM-Bus-Stefano-Garzarella.pdf&#34;&gt;Slides&lt;/a&gt; | &lt;a href=&#34;https://www.youtube.com/watch?v=RdVyN6P4UTQ&#34;&gt;Video&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;COCONUT SVSM: From Persistent State to New Trusted Services&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Oliver Steffen, Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;KVM Forum 2025&lt;/strong&gt;, Milan, Italy&lt;br&gt;
+&lt;a href=&#34;https://www.youtube.com/watch?v=6QX7pTimI8c&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2025/KVMForum_20_llGF8DH.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;rust-vmm: updates, adoption, and future directions&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Ruoqing He, Stefano Garzarella, Patrick Roy&lt;/em&gt; - &lt;strong&gt;KVM Forum 2025&lt;/strong&gt;, Milan, Italy&lt;br&gt;
+&lt;a href=&#34;https://www.youtube.com/watch?v=5h1HYOuCwLc&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2025/KVM_Forum_2_G52TiSW.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Updates on Coconut SVSM: Secure Services and Stateful Devices for Confidential Virtual Machines&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella, Oliver Steffen&lt;/em&gt; - &lt;strong&gt;FOSDEM 2025&lt;/strong&gt;, Brussels, Belgium&lt;br&gt;
+&lt;a href=&#34;https://archive.fosdem.org/2025/schedule/event/fosdem-2025-5412-updates-on-coconut-svsm-secure-services-and-stateful-devices-for-confidential-virtual-machines/&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://archive.fosdem.org/2025/events/attachments/fosdem-2025-5412-updates-on-coconut-svsm-secure-services-and-stateful-devices-for-confidential-virtual-machines/slides/237927/FOSDEM_20_X5nuOWj.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Can QEMU and vhost-user devices be used on macOS and *BSD?&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;FOSDEM 2025&lt;/strong&gt;, Brussels, Belgium&lt;br&gt;
+&lt;a href=&#34;https://archive.fosdem.org/2025/schedule/event/fosdem-2025-5100-can-qemu-and-vhost-user-devices-be-used-on-macos-and-bsd-/&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://archive.fosdem.org/2025/events/attachments/fosdem-2025-5100-can-qemu-and-vhost-user-devices-be-used-on-macos-and-bsd-/slides/238480/FOSDEM_20_O6dJsKR.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2024&#34;&gt;2024&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Coconut-SVSM: Early attestation to unlock persistent state&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella, Oliver Steffen&lt;/em&gt; - &lt;strong&gt;KVM Forum 2024&lt;/strong&gt;, Brno, Czech Republic&lt;br&gt;
+&lt;a href=&#34;https://www.youtube.com/watch?v=_huaTdI6Hb8&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2024/KVMForum_2024_SVSM_attestation.v2_N45MQqI.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;SVSM vTPM: From Boot Attestation to Persistent Storage and Beyond&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Claudio Carvalho, Stefano Garzarella, Tyler Fanelli&lt;/em&gt; - &lt;strong&gt;LPC 2024&lt;/strong&gt;, Vienna, Austria&lt;br&gt;
+&lt;a href=&#34;https://lpc.events/event/18/contributions/1917/&#34;&gt;Abstract&lt;/a&gt; | &lt;a href=&#34;https://lpc.events/event/18/contributions/1917/attachments/1596/3421/2024-lpc-vtpm-v2.pdf&#34;&gt;Slides&lt;/a&gt; | &lt;a href=&#34;https://www.youtube.com/watch?v=7h3eAux5TJc&#34;&gt;Video&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;News from the COCONUT-SVSM community&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Jörg Rödel, Claudio Carvalho, Gheorghe Almasi, Oliver Steffen, Stefano Garzarella, Ralph Waldenmaier&lt;/em&gt; - &lt;strong&gt;OC3 2024&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;https://www.youtube.com/watch?v=nwW9aLdcA4I&#34;&gt;Video&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2023&#34;&gt;2023&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ublk: virtual block devices in user space&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella, German Maglione&lt;/em&gt; - &lt;strong&gt;DevConf.CZ 2023&lt;/strong&gt;, Brno, Czech Republic&lt;br&gt;
+&lt;a href=&#34;https://devconfcz2023.sched.com/event/1MYlg/ublk-virtual-block-devices-in-user-space&#34;&gt;Abstract&lt;/a&gt; | &lt;a href=&#34;https://hosted-files.sched.co/devconfcz2023/07/DevConf_2023_ublk.pdf&#34;&gt;Slides&lt;/a&gt; | &lt;a href=&#34;https://www.youtube.com/watch?v=6JqNPirreoY&#34;&gt;Video&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2022&#34;&gt;2022&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;QEMU-Storage-Daemon and libblkio: Exploring New Shores for the QEMU Block Layer&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Kevin Wolf, Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;KVM Forum 2022&lt;/strong&gt;, Dublin, Ireland&lt;br&gt;
+&lt;a href=&#34;https://www.youtube.com/watch?v=rAL_tH-gr8k&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2022/kvmforum2022_qsd_libblkio_v1.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2021&#34;&gt;2021&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;vdpa-blk: Unified Hardware and Software Offload for virtio-blk&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;KVM Forum 2021&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;https://www.youtube.com/watch?v=zyDSUU0TLB4&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2021/KVMForum_2021_vdpa_blk_Stefano_Garzarella.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Leveraging virtio-vsock in the cloud and containers&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella, Andra Paraschiv&lt;/em&gt; - &lt;strong&gt;FOSDEM 2021&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;https://archive.fosdem.org/2021/schedule/event/vai_virtio_vsock/&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://archive.fosdem.org/2021/schedule/event/vai_virtio_vsock/attachments/slides/4513/export/events/attachments/virtualization_virtio_vsock/slides/4513/virtio_vsock_fosdem_2021.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2020&#34;&gt;2020&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Speeding Up VM’s I/O Sharing Host&amp;rsquo;s io_uring Queues With Guests&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;KVM Forum 2020&lt;/strong&gt;&lt;br&gt;
+&lt;a href=&#34;https://www.youtube.com/watch?v=aPyDk7I5_8Y&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2020/KVMForum_2020_io_uring_passthrough_Stefano_Garzarella.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;VSOCK: VM&amp;lt;-&amp;gt;host socket with minimal configuration&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;DevConf.CZ 2020&lt;/strong&gt;, Brno, Czech Republic&lt;br&gt;
+&lt;a href=&#34;https://devconfcz2020a.sched.com/event/YOwb/vsock-vm-host-socket-with-minimal-configuration&#34;&gt;Abstract&lt;/a&gt; | &lt;a href=&#34;https://static.sched.com/hosted_files/devconfcz2020/9e/vsock_v1.1.pdf&#34;&gt;Slides&lt;/a&gt; | &lt;a href=&#34;https://www.youtube.com/watch?v=R5DQWdPUQSY&#34;&gt;Video&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2019&#34;&gt;2019&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;virtio-vsock in QEMU, Firecracker and Linux: Status, Performance and Challenges&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella, Andra Paraschiv&lt;/em&gt; - &lt;strong&gt;KVM Forum 2019&lt;/strong&gt;, Lyon, France&lt;br&gt;
+&lt;a href=&#34;https://www.youtube.com/watch?v=LFqz-VZPhFE&#34;&gt;Abstract &amp;amp; Video&lt;/a&gt; | &lt;a href=&#34;https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2019/KVMForum_2019_virtio_vsock_Andra_Paraschiv_Stefano_Garzarella_v1.3.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2015&#34;&gt;2015&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ptnetmap: A netmap passthrough for virtual machines&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;AsiaBSDCon 2015&lt;/strong&gt;, Tokyo, Japan&lt;br&gt;
+&lt;a href=&#34;https://socsvn.freebsd.org/socsvn/soc2015/stefano/ptnetmap-docs/ptnetmap_AsiaBSDCon_2015.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2014&#34;&gt;2014&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Software segmentation offloading for FreeBSD&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;Stefano Garzarella&lt;/em&gt; - &lt;strong&gt;EuroBSDcon 2014&lt;/strong&gt;, Sofia, Bulgaria&lt;br&gt;
+&lt;a href=&#34;https://www.slideshare.net/eurobsdcon/20140928-gso-eurobsdcon2014&#34;&gt;Slides&lt;/a&gt; | &lt;a href=&#34;https://www.youtube.com/watch?v=f-B65R2W-y8&#34;&gt;Video&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     

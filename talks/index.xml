@@ -1,0 +1,160 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Talks on sgarzare&#39;s blog</title>
+    <link>http://localhost:1313/talks/</link>
+    <description>Recent content in Talks on sgarzare&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <managingEditor>sgarzare@redhat.com (Stefano Garzarella)</managingEditor>
+    <webMaster>sgarzare@redhat.com (Stefano Garzarella)</webMaster>
+    <lastBuildDate>Wed, 01 Jan 2025 00:00:00 +0000</lastBuildDate>
+    
+        <atom:link href="http://localhost:1313/talks/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Can QEMU and vhost-user devices be used on macOS and *BSD?</title>
+      <link>http://localhost:1313/talks/2025-can-qemu-and-vhost-user-devices-be-used-on-macos-and-bsd/</link>
+      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2025-can-qemu-and-vhost-user-devices-be-used-on-macos-and-bsd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Updates on Coconut SVSM: Secure Services and Stateful Devices for Confidential Virtual Machines</title>
+      <link>http://localhost:1313/talks/2025-updates-on-coconut-svsm-secure-services-and-stateful-devices-for-confidential-virtual-machines/</link>
+      <pubDate>Wed, 01 Jan 2025 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2025-updates-on-coconut-svsm-secure-services-and-stateful-devices-for-confidential-virtual-machines/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>COCONUT SVSM: From Persistent State to New Trusted Services</title>
+      <link>http://localhost:1313/talks/2024-coconut-svsm-from-persistent-state-to-new-trusted-services/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2024-coconut-svsm-from-persistent-state-to-new-trusted-services/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Coconut-SVSM: Early attestation to unlock persistent state</title>
+      <link>http://localhost:1313/talks/2024-coconut-svsm-early-attestation-to-unlock-persistent-state/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2024-coconut-svsm-early-attestation-to-unlock-persistent-state/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>News from the COCONUT-SVSM community</title>
+      <link>http://localhost:1313/talks/2024-news-from-the-coconut-svsm-community/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2024-news-from-the-coconut-svsm-community/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rust-vmm: updates, adoption, and future directions</title>
+      <link>http://localhost:1313/talks/2024-rust-vmm-updates-adoption-and-future-directions/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2024-rust-vmm-updates-adoption-and-future-directions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SVSM vTPM: From Boot Attestation to Persistent Storage and Beyond</title>
+      <link>http://localhost:1313/talks/2024-svsm-vtpm-from-boot-attestation-to-persistent-storage-and-beyond/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2024-svsm-vtpm-from-boot-attestation-to-persistent-storage-and-beyond/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ublk: virtual block devices in user space</title>
+      <link>http://localhost:1313/talks/2023-ublk-virtual-block-devices-in-user-space/</link>
+      <pubDate>Sun, 01 Jan 2023 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2023-ublk-virtual-block-devices-in-user-space/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>QEMU-Storage-Daemon and libblkio: Exploring New Shores for the QEMU Block Layer</title>
+      <link>http://localhost:1313/talks/2022-qemu-storage-daemon-and-libblkio-exploring-new-shores-for-the-qemu-block-layer/</link>
+      <pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2022-qemu-storage-daemon-and-libblkio-exploring-new-shores-for-the-qemu-block-layer/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Leveraging virtio-vsock in the cloud and containers</title>
+      <link>http://localhost:1313/talks/2021-leveraging-virtio-vsock-in-the-cloud-and-containers/</link>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2021-leveraging-virtio-vsock-in-the-cloud-and-containers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vdpa-blk: Unified Hardware and Software Offload for virtio-blk</title>
+      <link>http://localhost:1313/talks/2021-vdpa-blk-unified-hardware-and-software-offload-for-virtio-blk/</link>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2021-vdpa-blk-unified-hardware-and-software-offload-for-virtio-blk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Speeding Up VM’s I/O Sharing Host&#39;s io_uring Queues With Guests</title>
+      <link>http://localhost:1313/talks/2020-speeding-up-vm-s-i-o-sharing-host-s-io-uring-queues-with-guests/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2020-speeding-up-vm-s-i-o-sharing-host-s-io-uring-queues-with-guests/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>VSOCK: VM&lt;-&gt;host socket with minimal configuration</title>
+      <link>http://localhost:1313/talks/2020-vsock-vm-host-socket-with-minimal-configuration/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2020-vsock-vm-host-socket-with-minimal-configuration/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>virtio-vsock in QEMU, Firecracker and Linux: Status, Performance and Challenges</title>
+      <link>http://localhost:1313/talks/2019-virtio-vsock-in-qemu-firecracker-and-linux-status-performance-and-challenges/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2019-virtio-vsock-in-qemu-firecracker-and-linux-status-performance-and-challenges/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>A netmap passthrough for virtual machines</title>
+      <link>http://localhost:1313/talks/2015-a-netmap-passthrough-for-virtual-machines/</link>
+      <pubDate>Thu, 01 Jan 2015 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2015-a-netmap-passthrough-for-virtual-machines/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Software segmentation offloading for FreeBSD</title>
+      <link>http://localhost:1313/talks/2014-software-segmentation-offloading-for-freebsd/</link>
+      <pubDate>Wed, 01 Jan 2014 00:00:00 +0000</pubDate>
+      <author>sgarzare@redhat.com (Stefano Garzarella)</author>
+      <guid>http://localhost:1313/talks/2014-software-segmentation-offloading-for-freebsd/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

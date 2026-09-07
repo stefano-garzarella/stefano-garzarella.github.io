@@ -14,7 +14,8 @@
 
       <title>About - Virtualization and networking blog</title>
 
-  <meta name="description" content="Linux&rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.
+  <meta name="description" content="Linux&rsquo;s AF_VSOCK maintainer, rust-vmm and COCONUT SVSM co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, confidential VMs, etc.
+Whenever I get the chance, I love speaking about open source. Take a look at the archive of my past and upcoming talks.
 The postings on this site are my own and don&rsquo;t necessarily represent Red Hat&rsquo;s positions, strategies or opinions.
 Contacts
 Work e-mail: sgarzare@redhat.com
@@ -70,9 +71,9 @@ LinkedIn: https://www.linkedin.com/in/stefanogarzarella">
     "name" : "Stefano Garzarella"
   },
   "headline": "About",
-  "description" : "Linux\u0026rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices\/drivers, rust-vmm, confidential VMs, etc.\nThe postings on this site are my own and don\u0026rsquo;t necessarily represent Red Hat\u0026rsquo;s positions, strategies or opinions.\nContacts Work e-mail: sgarzare@redhat.com\nPersonal e-mail: stefano.garzarella@gmail.com\nGitHub: https:\/\/github.com\/stefano-garzarella\nGitLab: https:\/\/gitlab.com\/sgarzarella\nLinkedIn: https:\/\/www.linkedin.com\/in\/stefanogarzarella\n",
+  "description" : "Linux\u0026rsquo;s AF_VSOCK maintainer, rust-vmm and COCONUT SVSM co-maintainer. Working in open source projects related to virtualization, virtio devices\/drivers, confidential VMs, etc.\nWhenever I get the chance, I love speaking about open source. Take a look at the archive of my past and upcoming talks.\nThe postings on this site are my own and don\u0026rsquo;t necessarily represent Red Hat\u0026rsquo;s positions, strategies or opinions.\nContacts Work e-mail: sgarzare@redhat.com\nPersonal e-mail: stefano.garzarella@gmail.com\nGitHub: https:\/\/github.com\/stefano-garzarella\nGitLab: https:\/\/gitlab.com\/sgarzarella\nLinkedIn: https:\/\/www.linkedin.com\/in\/stefanogarzarella\n",
   "inLanguage" : "en",
-  "wordCount":  51 ,
+  "wordCount":  75 ,
   "datePublished" : "2019-08-23T17:39:08\u002b02:00",
   "dateModified" : "2019-08-23T17:39:08\u002b02:00",
   "image" : "https:\/\/stefano-garzarella.github.io\/img\/avatar-icon.jpg",
@@ -93,7 +94,8 @@ LinkedIn: https://www.linkedin.com/in/stefanogarzarella">
 
 
 <meta property="og:title" content="About" />
-<meta property="og:description" content="Linux&rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.
+<meta property="og:description" content="Linux&rsquo;s AF_VSOCK maintainer, rust-vmm and COCONUT SVSM co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, confidential VMs, etc.
+Whenever I get the chance, I love speaking about open source. Take a look at the archive of my past and upcoming talks.
 The postings on this site are my own and don&rsquo;t necessarily represent Red Hat&rsquo;s positions, strategies or opinions.
 Contacts
 Work e-mail: sgarzare@redhat.com
@@ -107,12 +109,12 @@ LinkedIn: https://www.linkedin.com/in/stefanogarzarella">
 <meta property="og:site_name" content="sgarzare&#39;s blog" />
 
   <meta name="twitter:title" content="About" />
-  <meta name="twitter:description" content="Linux&rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.
-The postings on this …">
+  <meta name="twitter:description" content="Linux&rsquo;s AF_VSOCK maintainer, rust-vmm and COCONUT SVSM co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, confidential VMs, etc.
+Whenever I get the …">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.152.2">
+  <meta name="generator" content="Hugo 0.162.1">
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/brands.css" integrity="sha384-+eXGm6TmVoCZR1gX03US+L++L2mJIfOvp2X0+luTuEktXaF5F+e3zn0sO0HBvOyT" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/fontawesome.css" integrity="sha384-B5nyPZa7e84uCJEYHtevCdVYtQosWsbDSRtq3cy/jeSVtQW05GL8CKXO7waXsjPK" crossorigin="anonymous">
@@ -131,7 +133,7 @@ The postings on this …">
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKHXSHN2MN"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -168,6 +170,12 @@ The postings on this …">
           
             <li>
               <a title="Posts" href="/posts">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Talks" href="/page/talks/">Talks</a>
             </li>
           
         
@@ -319,7 +327,8 @@ The postings on this …">
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        <p>Linux&rsquo;s AF_VSOCK maintainer and rust-vmm co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, rust-vmm, confidential VMs, etc.</p>
+        <p>Linux&rsquo;s AF_VSOCK maintainer, rust-vmm and COCONUT SVSM co-maintainer. Working in open source projects related to virtualization, virtio devices/drivers, confidential VMs, etc.</p>
+<p>Whenever I get the chance, I love speaking about open source. Take a look at the archive of my <a href="/page/talks/">past and upcoming talks</a>.</p>
 <p>The postings on this site are my own and don&rsquo;t necessarily represent Red Hat&rsquo;s positions, strategies or opinions.</p>
 <h3 id="contacts">Contacts</h3>
 <p>Work e-mail: <a href="mailto:sgarzare@redhat.com">sgarzare@redhat.com</a><br>
@@ -498,7 +507,7 @@ LinkedIn: <a href="https://www.linkedin.com/in/stefanogarzarella">https://www.li
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.152.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.162.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>

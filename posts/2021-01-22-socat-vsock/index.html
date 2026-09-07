@@ -157,7 +157,7 @@ socat supports several address types …">
   <meta name="twitter:image" content="https://stefano-garzarella.github.io/img/avatar-icon.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <link href='https://stefano-garzarella.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.152.2">
+  <meta name="generator" content="Hugo 0.162.1">
   <link rel="alternate" href="https://stefano-garzarella.github.io/index.xml" type="application/rss+xml" title="sgarzare&#39;s blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/brands.css" integrity="sha384-+eXGm6TmVoCZR1gX03US+L++L2mJIfOvp2X0+luTuEktXaF5F+e3zn0sO0HBvOyT" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/fontawesome.css" integrity="sha384-B5nyPZa7e84uCJEYHtevCdVYtQosWsbDSRtq3cy/jeSVtQW05GL8CKXO7waXsjPK" crossorigin="anonymous">
@@ -176,7 +176,7 @@ socat supports several address types …">
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKHXSHN2MN"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -213,6 +213,12 @@ socat supports several address types …">
           
             <li>
               <a title="Posts" href="/posts">Posts</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Talks" href="/page/talks/">Talks</a>
             </li>
           
         
@@ -429,17 +435,17 @@ simplifying the creation of guest disk image:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="nv">VM_IMAGE</span><span class="o">=</span><span class="s2">&#34;vsockguest_f33.qcow2&#34;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">host$ virt-builder --root-password<span class="o">=</span>password:mypassword <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --ssh-inject root:file:/home/user/.ssh/id_rsa.pub <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --output<span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --format<span class="o">=</span>qcow2 --size 10G --selinux-relabel <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --update fedora-33
+</span></span></span><span class="line"><span class="cl">        --ssh-inject root:file:/home/user/.ssh/id_rsa.pub <span class="se">\
+</span></span></span><span class="line"><span class="cl">        --output<span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">        --format<span class="o">=</span>qcow2 --size 10G --selinux-relabel <span class="se">\
+</span></span></span><span class="line"><span class="cl">        --update fedora-33
 </span></span></code></pre></div><p>Once the disk image is ready, we create our VM with <code>virt-install</code>.
 We can specify the VM settings like the number of vCPUs, the amount of RAM,
 and the <code>CID</code> assigned to the VM [42]:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">host$ virt-install --name vsockguest <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --ram <span class="m">2048</span> --vcpus <span class="m">2</span> --os-variant fedora33 <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --import --disk <span class="nv">path</span><span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span>,bus<span class="o">=</span>virtio <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>        --graphics none --vsock cid.address<span class="o">=</span><span class="m">42</span>
+</span></span></span><span class="line"><span class="cl">        --ram <span class="m">2048</span> --vcpus <span class="m">2</span> --os-variant fedora33 <span class="se">\
+</span></span></span><span class="line"><span class="cl">        --import --disk <span class="nv">path</span><span class="o">=</span><span class="si">${</span><span class="nv">VM_IMAGE</span><span class="si">}</span>,bus<span class="o">=</span>virtio <span class="se">\
+</span></span></span><span class="line"><span class="cl">        --graphics none --vsock cid.address<span class="o">=</span><span class="m">42</span>
 </span></span></code></pre></div><p>After the creation of the VM, we will remain attached to the console and
 we can detach from it by pressing <code>ctrl-]</code>.</p>
 <p>We can reattach to the console in this way:</p>
@@ -717,7 +723,7 @@ redirect packets correctly between the two machines:</p>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.152.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.162.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
